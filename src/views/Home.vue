@@ -158,7 +158,7 @@
 	</div>
 </template>
 
-<script>
+<script setup>
 import { ref, computed, onUpdated, onMounted } from "vue"; //new add
 import { marked as markedFactory } from "@/utils/lib/markdownProcess.js";
 import { textmath2laObj as textmath2laObjFactory } from "@/utils/lib/mathProcess.js";
@@ -170,337 +170,291 @@ import { useTip } from "../utils/tips";
 import settings from "../utils/setting";
 import EditIconsTab from "@/components/EditIconsTab.vue";
 import Modal from "../components/Modal.vue";
-import { EditorState, EditorView, basicSetup } from "@codemirror/basic-setup";
-import { EditorSelection } from "@codemirror/state";
+import { basicSetup } from "codemirror";
+import { EditorView } from "@codemirror/view";
+import { EditorState, EditorSelection } from "@codemirror/state";
 import { markdown } from "@codemirror/lang-markdown";
 import { autocompletion } from "@codemirror/autocomplete";
 import latexs from "../utils/latexs";
 
-export default {
-	name: "Home",
-	components: { EditIconsTab, Modal },
-	setup() {
-		const basic = true;
-
-		const selecteds = ref({
-			HTML_document_display: "markdown",
-			HTML_math_display: "block",
-			color_match: "blackTextOnWhiteBackground",
-			LaTeX_delimiter: "bracket",
-		});
-
-		const selectionStart = ref(-1);
-		const selectionEnd = ref(-1);
-		const showUseTipModal = ref(false);
-		const showSettingModal = ref(false);
-		const inputArea = ref(null);
-		const importFile = ref(null);
-		const codemirrorView = ref(null); //new add
-
-		const data = ref("");
-		const content = computed(() => {
-			return data.value.split("\n").map((line) => {
-				return textmath2laObjFactory({
-					latex_delimiter: selecteds.value["LaTeX_delimiter"],
-					asciimath_delimiter: "graveaccent",
-				})(line).reduce((a, b) => {
-					let result;
-					if (b.type === "latex-content") {
-						result = `<div class="sr-only">${latex2mmlFactory({
-							display: selecteds.value["HTML_math_display"],
-						})(b.data)}</div><div aria-hidden="true">${mml2svg(
-							latex2mmlFactory({
-								display: selecteds.value["HTML_math_display"],
-							})(b.data)
-						)}</div>`;
-					} else if (b.type === "asciimath-content") {
-						result = `<div class="sr-only">${asciimath2mmlFactory({
-							display: selecteds.value["HTML_math_display"],
-						})(b.data)}</div><div aria-hidden="true">${mml2svg(
-							asciimath2mmlFactory({
-								display: selecteds.value["HTML_math_display"],
-							})(b.data)
-						)}</div>`;
-					} else {
-						result = `${b.data}`;
-					}
-					return a + result;
-				}, "");
-			});
-		});
-
-		const contentmd = computed(() => {
-			return markedFactory({
-				latex_delimiter: selecteds.value["LaTeX_delimiter"],
+const basic = false;
+const selecteds = ref({
+	HTML_document_display: "markdown",
+	HTML_math_display: "block",
+	color_match: "blackTextOnWhiteBackground",
+	LaTeX_delimiter: "bracket",
+});
+const selectionStart = ref(-1);
+const selectionEnd = ref(-1);
+const showUseTipModal = ref(false);
+const showSettingModal = ref(false);
+const inputArea = ref(null);
+const importFile = ref(null);
+const codemirrorView = ref(null); //new add
+const data = ref("");
+const content = computed(() => {
+	return data.value.split("\n").map((line) => {
+		return textmath2laObjFactory({
+			latex_delimiter: selecteds.value["LaTeX_delimiter"],
+			asciimath_delimiter: "graveaccent",
+		})(line).reduce((a, b) => {
+			let result;
+			if (b.type === "latex-content") {
+				result = `<div class="sr-only">${latex2mmlFactory({
+					display: selecteds.value["HTML_math_display"],
+				})(b.data)}</div><div aria-hidden="true">${mml2svg(
+					latex2mmlFactory({
+						display: selecteds.value["HTML_math_display"],
+					})(b.data)
+				)}</div>`;
+			} else if (b.type === "asciimath-content") {
+				result = `<div class="sr-only">${asciimath2mmlFactory({
+					display: selecteds.value["HTML_math_display"],
+				})(b.data)}</div><div aria-hidden="true">${mml2svg(
+					asciimath2mmlFactory({
+						display: selecteds.value["HTML_math_display"],
+					})(b.data)
+				)}</div>`;
+			} else {
+				result = `${b.data}`;
+			}
+			return a + result;
+		}, "");
+	});
+});
+const contentmd = computed(() => {
+	return markedFactory({
+		latex_delimiter: selecteds.value["LaTeX_delimiter"],
+		asciimath_delimiter: "graveaccent",
+		display: selecteds.value["HTML_math_display"],
+	})(data.value);
+});
+const bdconvert = (mode) => (data) => {
+	return data
+		.split("\n")
+		.map((line) => {
+			let latex_delimiter = "dollar";
+			if (mode === "b2d") {
+				latex_delimiter = "bracket";
+			} else if (mode === "d2b") {
+				latex_delimiter = "dollar";
+			}
+			return textmath2laObjFactory({
+				latex_delimiter,
 				asciimath_delimiter: "graveaccent",
-				display: selecteds.value["HTML_math_display"],
-			})(data.value);
-		});
-
-		const bdconvert = (mode) => (data) => {
-			return data
-				.split("\n")
-				.map((line) => {
-					let latex_delimiter = "dollar";
+			})(line).reduce((a, b) => {
+				let result;
+				if (b.type === "latex-content") {
 					if (mode === "b2d") {
-						latex_delimiter = "bracket";
+						result = `$${b.data}$`;
 					} else if (mode === "d2b") {
-						latex_delimiter = "dollar";
+						result = `\\(${b.data}\\)`;
+					} else {
+						result = `\\(${b.data}\\)`;
 					}
-					return textmath2laObjFactory({
-						latex_delimiter,
-						asciimath_delimiter: "graveaccent",
-					})(line).reduce((a, b) => {
-						let result;
-						if (b.type === "latex-content") {
-							if (mode === "b2d") {
-								result = `$${b.data}$`;
-							} else if (mode === "d2b") {
-								result = `\\(${b.data}\\)`;
-							} else {
-								result = `\\(${b.data}\\)`;
-							}
-						} else if (b.type === "asciimath-content") {
-							result = `\`${b.data}\``;
-						} else {
-							result = `${b.data}`;
-						}
-						return a + result;
-					}, "");
-				})
-				.reduce((a, b) => {
-					return a + b + "\n";
-				}, "");
-		};
-
-		// new add
-		let insertMark;
-		let insertLatex;
-		let importAction;
-		let LaTeXSepConvert;
-		if (basic) {
-			insertMark = () => {
-				const target = inputArea.value;
-				const selectedText = target.value.slice(
-					target.selectionStart,
-					target.selectionEnd
-				);
-
-				let LaTeX_delimiter_start = "\\(";
-				let LaTeX_delimiter_end = "\\)";
-				if (selecteds.value["LaTeX_delimiter"] === "bracket") {
-					LaTeX_delimiter_start = "\\(";
-					LaTeX_delimiter_end = "\\)";
-				} else if (selecteds.value["LaTeX_delimiter"] === "dollar") {
-					LaTeX_delimiter_start = "$";
-					LaTeX_delimiter_end = "$";
+				} else if (b.type === "asciimath-content") {
+					result = `\`${b.data}\``;
+				} else {
+					result = `${b.data}`;
 				}
-				const startOffset = LaTeX_delimiter_start.length;
-				const endOffset = LaTeX_delimiter_end.length;
-
-				const content = `${LaTeX_delimiter_start}${selectedText}${LaTeX_delimiter_end}`;
-
-				data.value =
-					data.value.slice(0, target.selectionStart) +
-					content +
-					data.value.slice(target.selectionEnd, data.value.length);
-				selectionStart.value = target.selectionStart + startOffset;
-				selectionEnd.value = target.selectionEnd + endOffset;
-			};
-
-			insertLatex = (e) => {
-				const { latex, offset } = e;
-				const target = inputArea.value;
-				const content = latex;
-				data.value =
-					data.value.slice(0, target.selectionStart) +
-					content +
-					data.value.slice(target.selectionEnd, data.value.length);
-				selectionStart.value = target.selectionStart + latex.length + offset;
-				selectionEnd.value = target.selectionStart + latex.length + offset;
-			};
-
-			importAction = async (e) => {
-				try {
-					const file = e.target.files[0];
-					data.value = await getFileDataAsText(file);
-				} catch (err) {
-					console.log(err);
-				}
-			};
-			LaTeXSepConvert = (mode) => {
-				data.value = bdconvert(mode)(data.value);
-			};
-		} else {
-			insertMark = () => {
-				let LaTeX_delimiter_start = "\\(";
-				let LaTeX_delimiter_end = "\\)";
-				if (selecteds.value["LaTeX_delimiter"] === "bracket") {
-					LaTeX_delimiter_start = "\\(";
-					LaTeX_delimiter_end = "\\)";
-				} else if (selecteds.value["LaTeX_delimiter"] === "dollar") {
-					LaTeX_delimiter_start = "$";
-					LaTeX_delimiter_end = "$";
-				}
-				const startOffset = LaTeX_delimiter_start.length;
-				const endOffset = LaTeX_delimiter_end.length;
-
-				const view = codemirrorView.value;
-				view.dispatch(
-					view.state.changeByRange((range) => {
-						return {
-							changes: [
-								{ from: range.from, insert: LaTeX_delimiter_start },
-								{ from: range.to, insert: LaTeX_delimiter_end },
-							],
-							range: EditorSelection.range(
-								range.from + startOffset,
-								range.to + endOffset
-							),
-						};
-					})
-				);
-				view.focus();
-			};
-
-			insertLatex = (e) => {
-				const { latex, offset } = e;
-				const view = codemirrorView.value;
-				view.dispatch(
-					view.state.changeByRange((range) => ({
-						changes: [
-							{
-								from: range.from,
-								insert: latex.slice(0, latex.length + offset),
-							},
-							{
-								from: range.to,
-								insert: latex.slice(latex.length + offset, latex.length),
-							},
-						],
-						range: EditorSelection.range(
-							range.from + latex.length + offset,
-							range.from + latex.length + offset
-						),
-					}))
-				);
-				view.focus();
-			};
-
-			importAction = async (e) => {
-				try {
-					const file = e.target.files[0];
-					data.value = await getFileDataAsText(file);
-					createView(data.value);
-				} catch (err) {
-					console.log(err);
-				}
-			};
-
-			LaTeXSepConvert = (mode) => {
-				const value = bdconvert(mode)(data.value);
-				createView(value);
-			};
+				return a + result;
+			}, "");
+		})
+		.reduce((a, b) => {
+			return a + b + "\n";
+		}, "");
+};
+// new add
+let insertMark;
+let insertLatex;
+let importAction;
+let LaTeXSepConvert;
+if (basic) {
+	insertMark = () => {
+		const target = inputArea.value;
+		const selectedText = target.value.slice(
+			target.selectionStart,
+			target.selectionEnd
+		);
+		let LaTeX_delimiter_start = "\\(";
+		let LaTeX_delimiter_end = "\\)";
+		if (selecteds.value["LaTeX_delimiter"] === "bracket") {
+			LaTeX_delimiter_start = "\\(";
+			LaTeX_delimiter_end = "\\)";
+		} else if (selecteds.value["LaTeX_delimiter"] === "dollar") {
+			LaTeX_delimiter_start = "$";
+			LaTeX_delimiter_end = "$";
 		}
-
-		// new add
-
-		const importClick = () => {
-			importFile.value.click();
-		};
-
-		const exportClick = () => {
-			const output = data.value;
-			const url = window.URL.createObjectURL(new Blob([output]));
-			const link = document.createElement("a");
-			link.href = url;
-			link.setAttribute("download", "export.txt");
-			document.body.appendChild(link);
-			link.click();
-		};
-
-		onUpdated(() => {
-			if (selectionStart.value >= 0 && selectionEnd.value >= 0) {
-				const target = inputArea.value;
-				target.setSelectionRange(selectionStart.value, selectionEnd.value);
-				target.focus();
-				selectionStart.value = -1;
-				selectionEnd.value = -1;
-			}
-		});
-
-		onMounted(() => {
-			createView();
-		});
-
-		const myCompletions = (context) => {
-			let word = context.matchBefore(new RegExp("\\\\\\w*"));
-			if (!word || (word.from == word.to && !context.explicit)) return null;
-			const options = latexs.map((item) => {
+		const startOffset = LaTeX_delimiter_start.length;
+		const endOffset = LaTeX_delimiter_end.length;
+		const content = `${LaTeX_delimiter_start}${selectedText}${LaTeX_delimiter_end}`;
+		data.value =
+			data.value.slice(0, target.selectionStart) +
+			content +
+			data.value.slice(target.selectionEnd, data.value.length);
+		selectionStart.value = target.selectionStart + startOffset;
+		selectionEnd.value = target.selectionEnd + endOffset;
+	};
+	insertLatex = (e) => {
+		const { latex, offset } = e;
+		const target = inputArea.value;
+		const content = latex;
+		data.value =
+			data.value.slice(0, target.selectionStart) +
+			content +
+			data.value.slice(target.selectionEnd, data.value.length);
+		selectionStart.value = target.selectionStart + latex.length + offset;
+		selectionEnd.value = target.selectionStart + latex.length + offset;
+	};
+	importAction = async (e) => {
+		try {
+			const file = e.target.files[0];
+			data.value = await getFileDataAsText(file);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	LaTeXSepConvert = (mode) => {
+		data.value = bdconvert(mode)(data.value);
+	};
+} else {
+	insertMark = () => {
+		let LaTeX_delimiter_start = "\\(";
+		let LaTeX_delimiter_end = "\\)";
+		if (selecteds.value["LaTeX_delimiter"] === "bracket") {
+			LaTeX_delimiter_start = "\\(";
+			LaTeX_delimiter_end = "\\)";
+		} else if (selecteds.value["LaTeX_delimiter"] === "dollar") {
+			LaTeX_delimiter_start = "$";
+			LaTeX_delimiter_end = "$";
+		}
+		const startOffset = LaTeX_delimiter_start.length;
+		const endOffset = LaTeX_delimiter_end.length;
+		const view = codemirrorView.value;
+		view.dispatch(
+			view.state.changeByRange((range) => {
 				return {
-					label: item.latex,
-					type: "text",
-					apply: item.latex,
-				};
-			});
-			return {
-				from: word.from,
-				options,
-			};
-		};
-
-		const createView = (content = "") => {
-			if (codemirrorView.value) {
-				codemirrorView.value.destroy();
-			}
-			const editorView = EditorView.theme({
-				"&": {
-					fontSize: "16px",
-					backgroundColor: "white",
-					minHeight: "300px",
-					height: "100%",
-				},
-				".cm-scroller": { overflow: "auto" },
-			});
-			codemirrorView.value = new EditorView({
-				state: EditorState.create({
-					doc: content,
-					extensions: [
-						basicSetup,
-						autocompletion({
-							override: [myCompletions],
-						}),
-						markdown(),
-						EditorView.updateListener.of((update) => {
-							data.value = update.view.state.doc.toString();
-						}),
-						editorView,
-						EditorView.lineWrapping,
+					changes: [
+						{ from: range.from, insert: LaTeX_delimiter_start },
+						{ from: range.to, insert: LaTeX_delimiter_end },
 					],
-				}),
-				parent: document.getElementById("codemirror"),
-			});
-		};
+					range: EditorSelection.range(
+						range.from + startOffset,
+						range.to + endOffset
+					),
+				};
+			})
+		);
+		view.focus();
+	};
+	insertLatex = (e) => {
+		const { latex, offset } = e;
+		const view = codemirrorView.value;
+		view.dispatch(
+			view.state.changeByRange((range) => ({
+				changes: [
+					{
+						from: range.from,
+						insert: latex.slice(0, latex.length + offset),
+					},
+					{
+						from: range.to,
+						insert: latex.slice(latex.length + offset, latex.length),
+					},
+				],
+				range: EditorSelection.range(
+					range.from + latex.length + offset,
+					range.from + latex.length + offset
+				),
+			}))
+		);
+		view.focus();
+	};
+	importAction = async (e) => {
+		try {
+			const file = e.target.files[0];
+			data.value = await getFileDataAsText(file);
+			createView(data.value);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+	LaTeXSepConvert = (mode) => {
+		const value = bdconvert(mode)(data.value);
+		createView(value);
+	};
+}
+// new add
+const importClick = () => {
+	importFile.value.click();
+};
+const exportClick = () => {
+	const output = data.value;
+	const url = window.URL.createObjectURL(new Blob([output]));
+	const link = document.createElement("a");
+	link.href = url;
+	link.setAttribute("download", "export.txt");
+	document.body.appendChild(link);
+	link.click();
+};
+onUpdated(() => {
+	if (selectionStart.value >= 0 && selectionEnd.value >= 0) {
+		const target = inputArea.value;
+		target.setSelectionRange(selectionStart.value, selectionEnd.value);
+		target.focus();
+		selectionStart.value = -1;
+		selectionEnd.value = -1;
+	}
+});
+onMounted(() => {
+	createView();
+});
+const myCompletions = (context) => {
+	let word = context.matchBefore(new RegExp("\\\\\\w*"));
+	if (!word || (word.from == word.to && !context.explicit)) return null;
+	const options = latexs.map((item) => {
 		return {
-			basic,
-			data,
-			content,
-			contentmd,
-			inputArea,
-			insertMark,
-			insertLatex,
-			LaTeXSepConvert,
-			useTip,
-			selecteds,
-			settings,
-			showUseTipModal,
-			showSettingModal,
-			importFile,
-			importAction,
-			importClick,
-			exportClick,
+			label: item.latex,
+			type: "text",
+			apply: item.latex,
 		};
-	},
+	});
+	return {
+		from: word.from,
+		options,
+	};
+};
+const createView = (content = "") => {
+	if (codemirrorView.value) {
+		codemirrorView.value.destroy();
+	}
+	const editorView = EditorView.theme({
+		"&": {
+			fontSize: "16px",
+			backgroundColor: "white",
+			minHeight: "300px",
+			height: "100%",
+		},
+		".cm-scroller": { overflow: "auto" },
+	});
+	codemirrorView.value = new EditorView({
+		state: EditorState.create({
+			doc: content,
+			extensions: [
+				basicSetup,
+				autocompletion({
+					override: [myCompletions],
+				}),
+				markdown(),
+				EditorView.updateListener.of((update) => {
+					data.value = update.view.state.doc.toString();
+				}),
+				editorView,
+				EditorView.lineWrapping,
+			],
+		}),
+		parent: document.getElementById("codemirror"),
+	});
 };
 </script>
 <style scoped lang="scss">

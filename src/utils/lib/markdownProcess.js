@@ -113,7 +113,7 @@ const markedFactory =
 		};
 		marked.use({ renderer });
 
-		return marked(raw);
+		return marked.parse(raw);
 	};
 
 module.exports = {
