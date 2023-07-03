@@ -466,22 +466,22 @@ const createView = (content = "") => {
 // .right-side-input-textarea {
 // 	vertical-align: middle;
 // }
-.right-side-input-textarea::v-deep {
-	> * {
+.right-side-input-textarea {
+	:deep(> *) {
 		// display: inline-block;
 		margin: var(--spacing-2-5) var(--spacing-5);
 		vertical-align: middle;
 	}
 
-	ol {
+	:deep(ol) {
 		list-style-type: decimal;
 	}
 
-	ul {
+	:deep(ul) {
 		list-style-type: disc;
 	}
 
-	table {
+	:deep(table) {
 		border: 1px solid black;
 		tr {
 			border: inherit;
@@ -493,7 +493,7 @@ const createView = (content = "") => {
 		}
 	}
 
-	svg {
+	:deep(svg) {
 		@apply inline-block;
 	}
 }
