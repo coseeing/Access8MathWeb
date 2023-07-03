@@ -1,6 +1,5 @@
 module.exports = {
-	purge: { content: ["./public/**/*.html", "./src/**/*.vue"] },
-	darkMode: false, // or 'media' or 'class'
+	content: ["./public/**/*.html", "./src/**/*.vue"],
 	theme: {
 		extend: {
 			spacing: {
@@ -31,10 +30,6 @@ module.exports = {
 				bd2: "#1B66EF",
 			},
 		},
-	},
-	variants: {
-		display: ["group-hover"],
-		extend: {},
 	},
 	plugins: [],
 };

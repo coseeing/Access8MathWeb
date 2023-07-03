@@ -12,13 +12,13 @@
 			<div class="flex padding_bottom">
 				<TabList
 					as="div"
-					class="flex-auto xl:flex-grow-0 flex flex-wrap xl:flex-nowrap bg-white"
+					class="flex-auto xl:grow-0 flex flex-wrap xl:flex-nowrap bg-white"
 				>
 					<Tab
 						as="button"
 						v-for="(tab, main_k) in mains"
 						:key="main_k"
-						class="category-icon w-24 h-12 flex-basis-like-1/3 xl:flex-basis-auto flex-grow xl:flex-grow-0 xl:flex-shrink-0 order mx-0.5 border bg-gray-50 text-sm text-center cursor-pointer transition-color"
+						class="category-icon w-24 h-12 flex-basis-like-1/3 xl:flex-basis-auto grow xl:grow-0 xl:shrink-0 order mx-0.5 border bg-gray-50 text-sm text-center cursor-pointer transition-color"
 						:class="{ main_active: main_active === main_k }"
 						@click="main_active = main_k"
 					>
@@ -68,7 +68,7 @@
 								v-for="(tab, k) in tabs"
 								:key="k"
 								:aria-label="$t(`default.categorys.${tab}`)"
-								class="group relative category-icon h-12 flex-basis-like-1/3 xl:flex-basis-auto flex-grow xl:flex-shrink-0 order mx-0.5 border bg-gray-50 cursor-pointer transition-color"
+								class="group relative category-icon h-12 flex-basis-like-1/3 xl:flex-basis-auto grow xl:shrink-0 order mx-0.5 border bg-gray-50 cursor-pointer transition-color"
 								:class="{ active: active === k }"
 								@click="active = k"
 							>
