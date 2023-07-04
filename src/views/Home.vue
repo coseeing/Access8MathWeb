@@ -1,6 +1,6 @@
 ﻿<template>
 	<div
-		class="home flex flex-wrap pt-10 md:pt-p2 h-screen w-screen overflow-x-hidden overflow-y-auto"
+		class="home flex flex-wrap pt-16 md:pt-p2 h-screen w-screen overflow-x-hidden overflow-y-auto"
 	>
 		<!--Left side input panel-->
 		<div
