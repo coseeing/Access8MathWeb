@@ -1,27 +1,16 @@
 ﻿<template>
-	<div
-		class="header shadow-md md:shadow-lg bg-white text-md md:text-2xl font-bold fixed inset-x-0 z-10 flex justify-center md:justify-start content-center items-center"
+	<header
+		class="py-6 flex shadow-md md:shadow-lg bg-white text-md md:text-2xl font-bold fixed inset-x-0 z-10 justify-around items-center"
 	>
-		Access8Math
-	</div>
+		<div class="header">Access8Math</div>
+		<LanguageSwitchButton />
+	</header>
 </template>
 
 <script>
+import LanguageSwitchButton from "../components/LanguageSwitchButton.vue";
 export default {
 	name: "Header",
-	components: {},
+	components: { LanguageSwitchButton },
 };
 </script>
-<style scoped lang="scss">
-.header {
-	height: var(--spacing-10);
-	text-align: left;
-}
-
-@screen md {
-	.header {
-		height: 80px;
-		padding-left: 38px;
-	}
-}
-</style>
