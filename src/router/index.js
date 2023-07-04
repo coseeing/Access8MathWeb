@@ -3,7 +3,7 @@ import Layout from "../views/Layout.vue";
 
 const routes = [
 	{
-		path: "/",
+		path: "/:locale?",
 		name: "Layout",
 		component: Layout,
 		children: [
