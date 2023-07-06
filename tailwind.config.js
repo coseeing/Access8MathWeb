@@ -1,4 +1,4 @@
-module.exports = {
+export default {
 	content: ["./public/**/*.html", "./src/**/*.vue"],
 	theme: {
 		extend: {

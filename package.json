@@ -2,11 +2,12 @@
   "name": "Access8MathWeb",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
+    "dev": "vite",
+    "build": "vite build",
+    "server": "vite preview",
+    "lint": "eslint --ext js,vue --fix src/"
   },
   "dependencies": {
     "@codemirror/lang-markdown": "^6.0.5",
@@ -23,14 +24,8 @@
     "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.5",
-    "@intlify/vue-i18n-loader": "^2.1.2",
-    "@vue/cli-plugin-babel": "~5.0.8",
-    "@vue/cli-plugin-eslint": "~5.0.8",
-    "@vue/cli-plugin-pwa": "~5.0.8",
-    "@vue/cli-plugin-router": "~5.0.8",
-    "@vue/cli-plugin-vuex": "~5.0.8",
-    "@vue/cli-service": "~5.0.8",
+    "@intlify/unplugin-vue-i18n": "^0.12.0",
+    "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-prettier": "^7.1.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.43.0",
@@ -39,11 +34,8 @@
     "postcss": "^8.4.24",
     "prettier": "^2.8.8",
     "sass": "^1.49.8",
-    "sass-loader": "^8.0.2",
-    "svg-sprite-loader": "^6.0.11",
     "tailwindcss": "^3.3.2",
-    "vue-cli-plugin-i18n": "~2.3.2",
-    "vue-cli-plugin-tailwind": "~3.0.0",
-    "vue-loader-v16": "^16.0.0-beta.5.4"
+    "vite": "^4.3.9",
+    "vite-plugin-svg-icons": "^2.0.1"
   }
 }
