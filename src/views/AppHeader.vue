@@ -10,7 +10,7 @@
 <script>
 import LanguageSwitchButton from "../components/LanguageSwitchButton.vue";
 export default {
-	name: "Header",
+	name: "AppHeader",
 	components: { LanguageSwitchButton },
 };
 </script>

@@ -4,6 +4,7 @@ module.exports = {
 		const svgRule = config.module.rule("svg");
 		svgRule.uses.clear();
 		svgRule
+			.set("type", "javascript/auto")
 			.use("svg-sprite-loader")
 			.loader("svg-sprite-loader")
 			.options({

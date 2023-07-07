@@ -1,7 +1,5 @@
 @tailwind base;
-
 @tailwind components;
-
 @tailwind utilities;
 
 /* Only when we need to "handcoding" styling, then require these CSS Variable. */
@@ -43,21 +41,19 @@
 }
 
 @layer utilities {
-  @variants responsive {
-    .flex-basis-auto {
-      flex-basis: auto;
-    }
-    /* Purpose: For those flex item, that need to take up "1/1" or "1/2" or "1/3" of the space (parent width). */
-    /* "4/5" is arbitrary/rough "safe-enough" value to prevent padding/margin issues of parent/chidren. */
-    .flex-basis-like-1\/1 {
-      flex-basis: calc(100% * (4/5) / 1);
-    }
-    .flex-basis-like-1\/2 {
-      flex-basis: calc(100% * (4/5) / 2);
-    }
-    .flex-basis-like-1\/3 {
-      flex-basis: calc(100% * (4/5) / 3);
-    }
+  .flex-basis-auto {
+    flex-basis: auto;
+  }
+  /* Purpose: For those flex item, that need to take up "1/1" or "1/2" or "1/3" of the space (parent width). */
+  /* "4/5" is arbitrary/rough "safe-enough" value to prevent padding/margin issues of parent/chidren. */
+  .flex-basis-like-1\/1 {
+    flex-basis: calc(100% * (4/5) / 1);
+  }
+  .flex-basis-like-1\/2 {
+    flex-basis: calc(100% * (4/5) / 2);
+  }
+  .flex-basis-like-1\/3 {
+    flex-basis: calc(100% * (4/5) / 3);
   }
 }
 

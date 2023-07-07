@@ -4,7 +4,7 @@
 	>
 		<!--Left side input panel-->
 		<div
-			class="w-2/4 p-p1 flex-basis-like-1/1 flex-grow md:flex-1 bg-bg1 text-left pt-p1 pl-p3 pr-p3 flex flex-col"
+			class="w-2/4 p-p1 flex-basis-like-1/1 grow md:flex-1 bg-bg1 text-left pt-p1 pl-p3 pr-p3 flex flex-col"
 		>
 			<p role="heading" aria-level="1" class="text-2xl md:text-3xl">
 				{{ $t("default.editContent") }}
@@ -26,7 +26,7 @@
 					{{ $t("default.export") }}
 				</button>
 				<button
-					class="transform hover:scale-110 transition-scale"
+					class="hover:scale-110 transition-scale"
 					@click="showUseTipModal = true"
 					:aria-label="$t('default.descript')"
 				>
@@ -62,7 +62,7 @@
 		</div>
 		<!--Right side output panel-->
 		<div
-			class="w-2/4 flex-basis-like-1/1 flex-grow md:flex-1 text-left p-p1 pt-p1 pl-p3 flex flex-col"
+			class="w-2/4 flex-basis-like-1/1 grow md:flex-1 text-left p-p1 pt-p1 pl-p3 flex flex-col"
 		>
 			<div class="flex md:mb-m3 w-100">
 				<p role="heading" aria-level="1" class="text-2xl md:text-3xl w-100">
@@ -466,22 +466,22 @@ const createView = (content = "") => {
 // .right-side-input-textarea {
 // 	vertical-align: middle;
 // }
-.right-side-input-textarea::v-deep {
-	> * {
+.right-side-input-textarea {
+	:deep(> *) {
 		// display: inline-block;
 		margin: var(--spacing-2-5) var(--spacing-5);
 		vertical-align: middle;
 	}
 
-	ol {
+	:deep(ol) {
 		list-style-type: decimal;
 	}
 
-	ul {
+	:deep(ul) {
 		list-style-type: disc;
 	}
 
-	table {
+	:deep(table) {
 		border: 1px solid black;
 		tr {
 			border: inherit;
@@ -493,7 +493,7 @@ const createView = (content = "") => {
 		}
 	}
 
-	svg {
+	:deep(svg) {
 		@apply inline-block;
 	}
 }

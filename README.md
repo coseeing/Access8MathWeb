@@ -1,5 +1,10 @@
 # access8mathweb
 
+## Prerequisites
+
+- Node.js >= 18
+- NPM >= 9
+
 ## Project setup
 ```
 npm install
