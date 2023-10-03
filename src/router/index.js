@@ -15,14 +15,6 @@ const routes = [
 				},
 				component: () => import("../views/Home.vue"),
 			},
-			{
-				path: "/codemirror",
-				name: "homeCodemirror",
-				meta: {
-					label: "首頁2",
-				},
-				component: () => import("../views/HomeCodemirror.vue"),
-			},
 		],
 	},
 ];

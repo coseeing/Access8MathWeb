@@ -33,7 +33,7 @@ import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 const SUPPORTED_LOCALE_OPTIONS = Object.freeze([
-	{ label: "TC 中文", value: "" },
+	{ label: "TC 中文", value: "zh" },
 	{ label: "EN English", value: "en" },
 ]);
 let { locale } = useI18n();

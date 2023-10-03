@@ -28,7 +28,7 @@
 				<button
 					class="hover:scale-110 transition-scale"
 					@click="showUseTipModal = true"
-					:aria-label="$t('default.descript')"
+					:aria-label="$t('default.readme')"
 				>
 					<SvgIcon
 						name="question-circle"
