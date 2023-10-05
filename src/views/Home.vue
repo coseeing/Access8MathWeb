@@ -79,6 +79,12 @@
 						class="cursor-pointer"
 					/>
 				</button>
+				<button class="home-btn" @click="downloadClick">
+					{{ $t("default.downloadAddon") }}
+				</button>
+				<button class="home-btn" @click="moreClick">
+					{{ $t("default.moreResource") }}
+				</button>
 			</div>
 			<template v-if="selecteds['HTML_document_display'] === 'markdown'">
 				<div
@@ -394,6 +400,35 @@ const exportClick = () => {
 	const link = document.createElement("a");
 	link.href = url;
 	link.setAttribute("download", "export.txt");
+	document.body.appendChild(link);
+	link.click();
+};
+const downloadClick = () => {
+	fetch("https://www.nvaccess.org/addonStore/en/all/latest.json", {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+		},
+	})
+		.then((response) => response.json())
+		.then((data) => {
+			// Handle the response data
+			const result = data.filter((item) => item["addonId"] === "Access8Math");
+			const link = document.createElement("a");
+			link.href = result[0]["URL"];
+			link.setAttribute("download", "export.txt");
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch((error) => {
+			// Handle errors
+			console.error("Fetch Error:", error);
+		});
+};
+const moreClick = () => {
+	const link = document.createElement("a");
+	link.href = "https://accessibility.twvip.org/Access8Math/";
+	link.setAttribute("target", "blank");
 	document.body.appendChild(link);
 	link.click();
 };
