@@ -4,13 +4,15 @@
 	>
 		<div class="header">Access8Math</div>
 		<LanguageSwitchButton />
+		<AboutMenuButton />
 	</header>
 </template>
 
 <script>
+import AboutMenuButton from "../components/AboutMenuButton.vue";
 import LanguageSwitchButton from "../components/LanguageSwitchButton.vue";
 export default {
 	name: "AppHeader",
-	components: { LanguageSwitchButton },
+	components: { AboutMenuButton, LanguageSwitchButton },
 };
 </script>

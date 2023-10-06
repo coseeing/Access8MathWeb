@@ -79,12 +79,6 @@
 						class="cursor-pointer"
 					/>
 				</button>
-				<button class="home-btn" @click="downloadClick">
-					{{ $t("default.downloadAddon") }}
-				</button>
-				<button class="home-btn" @click="moreClick">
-					{{ $t("default.moreResource") }}
-				</button>
 			</div>
 			<template v-if="selecteds['HTML_document_display'] === 'markdown'">
 				<div
@@ -109,7 +103,7 @@
 			<template v-slot:body>
 				<div class="mt-m2">
 					<div
-						v-for="(tip, k) in useTip[$i18n.locale]"
+						v-for="(tip, k) in useTip[locale]"
 						:key="k"
 						class="py-p5 px-m2 text-left text-lg"
 					>
@@ -131,7 +125,7 @@
 			<template v-slot:body>
 				<div class="mt-m2">
 					<div
-						v-for="(setting, id) in settings[$i18n.locale]"
+						v-for="(setting, id) in settings[locale]"
 						:key="id"
 						class="py-2 px-m2 text-left text-lg"
 					>
@@ -182,7 +176,9 @@ import { EditorState, EditorSelection } from "@codemirror/state";
 import { markdown } from "@codemirror/lang-markdown";
 import { autocompletion } from "@codemirror/autocomplete";
 import latexs from "../utils/latexs";
+import { useI18n } from "vue-i18n";
 
+const { locale } = useI18n();
 const basic = false;
 const selecteds = ref({
 	HTML_document_display: "markdown",
@@ -402,35 +398,7 @@ const exportClick = () => {
 	link.setAttribute("download", "export.txt");
 	document.body.appendChild(link);
 	link.click();
-};
-const downloadClick = () => {
-	fetch("https://www.nvaccess.org/addonStore/en/all/latest.json", {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-		},
-	})
-		.then((response) => response.json())
-		.then((data) => {
-			// Handle the response data
-			const result = data.filter((item) => item["addonId"] === "Access8Math");
-			const link = document.createElement("a");
-			link.href = result[0]["URL"];
-			link.setAttribute("download", "export.txt");
-			document.body.appendChild(link);
-			link.click();
-		})
-		.catch((error) => {
-			// Handle errors
-			console.error("Fetch Error:", error);
-		});
-};
-const moreClick = () => {
-	const link = document.createElement("a");
-	link.href = "https://accessibility.twvip.org/Access8Math/";
-	link.setAttribute("target", "blank");
-	document.body.appendChild(link);
-	link.click();
+	document.body.removeChild(link);
 };
 onUpdated(() => {
 	if (selectionStart.value >= 0 && selectionEnd.value >= 0) {
