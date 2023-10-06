@@ -178,7 +178,8 @@ import { autocompletion } from "@codemirror/autocomplete";
 import latexs from "../utils/latexs";
 import { useI18n } from "vue-i18n";
 
-const { locale } = useI18n();
+const { language } = useI18n();
+const locale = language ? language : process.env.VUE_APP_I18N_FALLBACK_LOCALE;
 const basic = false;
 const selecteds = ref({
 	HTML_document_display: "markdown",
