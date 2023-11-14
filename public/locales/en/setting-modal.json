@@ -1,0 +1,19 @@
+{
+  "htmlDocumentDisplay": {
+    "name": "HTML Document Display",
+    "markdown": "Markdown",
+    "text": "text"
+  },
+  "htmlMathDisplay": {
+    "name": "HTML Math Display",
+    "block": "block",
+    "inline": "inline"
+  },
+  "latexDelimiter": {
+    "name": "LaTeX delimiter",
+    "bracket": "bracket",
+    "dollar": "dollar"
+  },
+  "submit": "Submit",
+  "title": "Setting"
+}

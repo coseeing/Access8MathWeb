@@ -1,23 +1,36 @@
 module.exports = {
-	root: true,
-	env: {
-		node: true,
-	},
-	extends: ["plugin:vue/vue3-essential", "eslint:recommended", "@vue/prettier"],
-	parserOptions: {
-		parser: "@babel/eslint-parser",
-	},
-	rules: {
-		"vue/multi-word-component-names": 0,
-		"no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-		"no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-		"prettier/prettier": [
-			"error",
-			{
-				useTabs: true,
-				tabWidth: 2,
-				endOfLine: "auto",
-			},
-		],
-	},
+  env: {
+    browser: true,
+    es2021: true,
+    node: true,
+  },
+  extends: [
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
+    'eslint:recommended',
+    'prettier',
+  ],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+  },
+  plugins: ['react'],
+  rules: {
+    'react/jsx-filename-extension': [0],
+    'react/prop-types': [0],
+    'no-unused-vars': [1],
+  },
+  settings: {
+    'import/resolver': {
+      'eslint-import-resolver-custom-alias': {
+        alias: {
+          '@': './src',
+        },
+        extensions: ['.js', '.jsx'],
+      },
+    },
+  },
 };

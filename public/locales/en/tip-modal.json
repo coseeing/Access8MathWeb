@@ -1,0 +1,18 @@
+{
+  "title": "Instruction",
+  "tips": [
+    {
+      "title": "Layout of the interface",
+      "content": "The left side of the interface is the editing surface for users to input mixed contents of text and math contents in Latex, while the right side of the interface will show the converted contents from the left instantly in MathML."
+    },
+    {
+      "title": "Quick input of math content in Latex",
+      "content": "Users can input desired math content in Latex to the current location of the cursor quickly by selecting its express icon above the editing interface, the cursor will also automatically moved to the appropriate point for the users to input desired content."
+    },
+    {
+      "title": "Differentiation of the text and math contents",
+      "content": "Users can separate text and math contents using the codes that marks the start and end of Latex, which the start code is \\( and the end code is \\), the content input in the space in between the start and end code will be the math content in Latex while the content input outside will be the text content."
+    }
+  ],
+  "cancelLabel": "Understand"
+}

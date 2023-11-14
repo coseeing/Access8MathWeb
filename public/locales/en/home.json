@@ -1,0 +1,14 @@
+{
+  "editContent": "Edit Content",
+  "mark": "mark",
+  "import": "import",
+  "export": "export",
+  "descript": "descript",
+  "preview": "Preview",
+  "language": "EN",
+  "changeLanguage": "Change language",
+  "languageChanged": "Change to English",
+  "setting": "Setting",
+  "bracket2dollar": "{} to $",
+  "dollar2bracket": "$ to {}"
+}

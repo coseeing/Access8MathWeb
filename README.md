@@ -1,4 +1,4 @@
-# access8mathweb
+# Access8mathweb
 
 ## Prerequisites
 
@@ -6,24 +6,31 @@
 - NPM >= 9
 
 ## Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Development
+
 ```
-npm run serve
+npm runs start
 ```
 
-### Compiles and minifies for production
+### Build for Production
+
 ```
 npm run build
 ```
 
-### Lints and fixes files
+### Lint
+
 ```
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Test
+
+```
+npm run test
+```
