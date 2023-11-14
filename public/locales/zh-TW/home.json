@@ -1,0 +1,14 @@
+{
+  "editContent": "編輯區",
+  "mark": "標記",
+  "import": "匯入",
+  "export": "匯出",
+  "bracket2dollar": "括號轉錢號",
+  "dollar2bracket": "錢號轉括號",
+  "descript": "說明",
+  "preview": "預覽",
+  "language": "TC",
+  "changeLanguage": "語言切換",
+  "languageChanged": "已切換為繁體中文",
+  "setting": "設定"
+}
