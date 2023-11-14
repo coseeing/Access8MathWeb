@@ -24,4 +24,4 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build
-          cname: access8math-stg.wendellatman.com
+          cname: ${{ vars.STAGING_CNAME }}
