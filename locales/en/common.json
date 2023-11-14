@@ -1,0 +1,7 @@
+{
+  "changeLocale": "Switch the Locale",
+  "locale": {
+    "en": "English",
+    "zh-TW": "Taiwanese Mandarin"
+  }
+}
