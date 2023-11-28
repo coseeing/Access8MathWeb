@@ -203,11 +203,17 @@ export default function Home() {
   }, []);
 
   const importAction = useCallback(
-    async (e) => {
-      const file = e.target.files[0];
-      const newData = await getFileDataAsText(file);
-      setData(newData);
-      createView(newData);
+    async (event) => {
+      const file = event.target.files[0];
+
+      try {
+        const newData = await getFileDataAsText(file);
+        setData(newData);
+        createView(newData);
+      } catch (error) {
+        // TODO: implement global alert or notification to handle the error
+        console.error(error);
+      }
     },
     [createView],
   );
