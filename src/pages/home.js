@@ -17,11 +17,12 @@ import { markdown } from '@codemirror/lang-markdown';
 import { autocompletion } from '@codemirror/autocomplete';
 
 import { useTranslation } from '@/lib/i18n';
-import { marked as markedFactory } from '@/lib/content-processor/markdown-process.js';
+import { marked as markedFactory } from '@/lib/content-processor/markdown-process';
 import { textmath2laObj as textmath2laObjFactory } from '@/lib/content-processor/math-process';
-import asciimath2mmlFactory from '@/lib/content-processor/am2mml.js';
-import latex2mmlFactory from '@/lib/content-processor/tex2mml.js';
-import mml2svg from '@/lib/content-processor/mml2svg.js';
+import asciimath2mmlFactory from '@/lib/content-processor/am2mml';
+import latex2mmlFactory from '@/lib/content-processor/tex2mml';
+import mml2svg from '@/lib/content-processor/mml2svg';
+import { getFileDataAsText } from '@/lib/file';
 
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
@@ -29,6 +30,8 @@ import TipModal from '@/components/home/tip-modal';
 import SettingModal from '@/components/home/setting-modal';
 import { ReactComponent as QuestionCircleComponent } from '@/components/svg/question-circle.svg';
 import { ReactComponent as SettingComponent } from '@/components/svg/settings.svg';
+
+const importAcceptedExtension = ['.txt', '.md'];
 
 // TODO: mvoe the helpers to somewhere appropriate
 import { myCompletions, bdconvert } from './helpers';
@@ -199,9 +202,15 @@ export default function Home() {
     view.focus();
   }, []);
 
-  const importAction = useCallback(() => {
-    // Import action logic here
-  }, []);
+  const importAction = useCallback(
+    async (e) => {
+      const file = e.target.files[0];
+      const newData = await getFileDataAsText(file);
+      setData(newData);
+      createView(newData);
+    },
+    [createView],
+  );
 
   const t = useTranslation('home');
 
@@ -266,6 +275,7 @@ export default function Home() {
           />
           <input
             ref={importFile}
+            accept={importAcceptedExtension.join(', ')}
             type="file"
             className="hidden"
             onChange={importAction}
