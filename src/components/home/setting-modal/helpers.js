@@ -5,7 +5,6 @@ export const useForm = ({ config, isOpen }) => {
 
   useEffect(() => {
     if (isOpen) {
-      console.log('reset the config');
       setLocalConfig(config);
     }
   }, [config, isOpen]);

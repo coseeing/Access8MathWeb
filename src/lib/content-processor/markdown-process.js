@@ -1,5 +1,4 @@
 const marked = require('marked');
-console.log('marked', marked);
 
 const latex2mmlFactory = require('./tex2mml');
 const asciimath2mmlFactory = require('./am2mml');
