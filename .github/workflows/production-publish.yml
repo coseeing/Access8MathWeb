@@ -7,11 +7,15 @@ on:
 env:
   version: ${{ github.ref_name }}
   build_folder: './build'
+  s3_bucket: 'access8math-web'
+  environment: production
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,18 +29,12 @@ jobs:
       - name: Generate version.txt
         run: echo "$version" > "${build_folder}/version.txt"
 
-      - name: list
-        run: ls -al $build_folder
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_GITHUB_ACTION_ROLE }}
+          aws-region: ap-northeast-1
 
-      - name: cat the version.txt
-        run: cat "${build_folder}/version.txt"
-
-      # - name: Upload to S3
-      #   uses: jakejarvis/s3-sync-action@master
-      #   with:
-      #     args: --acl public-read --follow-symlinks --delete
-      #   env:
-      #     AWS_S3_BUCKET: <YOUR_S3_BUCKET>
-      #     AWS_REGION: <YOUR_AWS_REGION>
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - name: upload build folder
+        run: |
+          aws s3 sync "$build_folder" "s3://${s3_bucket}/${environment}/${version}/"
