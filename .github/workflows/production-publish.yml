@@ -1,9 +1,9 @@
 name: Production Publish
 
 on:
-  push:
-    tags:
-      - '*'
+  release:
+    types: [published]
+
 env:
   version: ${{ github.ref_name }}
   build_folder: './build'
