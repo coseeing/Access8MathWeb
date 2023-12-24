@@ -5,7 +5,8 @@ on:
     tags:
       - '*'
 env:
-  VERSION: ${{ github.ref_name }}
+  version: ${{ github.ref_name }}
+  build_folder: './build'
 
 jobs:
   build-and-deploy:
@@ -22,13 +23,13 @@ jobs:
       #   run: npm run build
 
       - name: Generate version.txt
-        run: echo "$VERSION" > version.txt
+        run: echo "$version" > "${build_folder}/version.txt"
 
       - name: list
-        run: ls -al
+        run: ls -al $build_folder
 
       - name: cat the version.txt
-        run: cat version.txt
+        run: cat "${build_folder}/version.txt"
 
       # - name: Upload to S3
       #   uses: jakejarvis/s3-sync-action@master
