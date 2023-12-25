@@ -1,3 +1,5 @@
+import { saveAs as libSaveAs } from 'file-saver';
+
 export function getFileDataAsText(file) {
   return new Promise(function (resolve, reject) {
     const reader = new FileReader();
@@ -22,3 +24,7 @@ export function getFileDataAsText(file) {
     };
   });
 }
+
+export const saveAs = (source) => {
+  libSaveAs(source);
+};
