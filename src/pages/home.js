@@ -22,7 +22,7 @@ import { textmath2laObj as textmath2laObjFactory } from '@/lib/content-processor
 import asciimath2mmlFactory from '@/lib/content-processor/am2mml';
 import latex2mmlFactory from '@/lib/content-processor/tex2mml';
 import mml2svg from '@/lib/content-processor/mml2svg';
-import { getFileDataAsText, saveAs } from '@/lib/file';
+import { getFileDataAsText, saveAsTemplateZip } from '@/lib/file';
 
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
@@ -170,9 +170,7 @@ export default function Home() {
   }, []);
 
   const exportClick = useCallback(() => {
-    const output = data;
-    const source = new Blob([output]);
-    saveAs(source);
+    saveAsTemplateZip(data);
   }, [data]);
 
   const insertLatex = useCallback(({ latex, offset }) => {

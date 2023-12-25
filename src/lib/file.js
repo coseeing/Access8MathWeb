@@ -1,4 +1,4 @@
-import { saveAs as libSaveAs } from 'file-saver';
+import { saveAs } from 'file-saver';
 
 export function getFileDataAsText(file) {
   return new Promise(function (resolve, reject) {
@@ -25,6 +25,8 @@ export function getFileDataAsText(file) {
   });
 }
 
-export const saveAs = (source) => {
-  libSaveAs(source);
+export const saveAsTemplateZip = (source) => {
+  const blob = new Blob([source]);
+
+  saveAs(blob);
 };
