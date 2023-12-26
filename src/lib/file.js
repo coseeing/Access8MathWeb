@@ -1,6 +1,8 @@
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 
+import i18n from '@/lib/i18n';
+
 export function getFileDataAsText(file) {
   return new Promise(function (resolve, reject) {
     const reader = new FileReader();
@@ -26,15 +28,23 @@ export function getFileDataAsText(file) {
   });
 }
 
-export const saveAsTemplateZip = (source) => {
-  const blob = new Blob([source]);
+export const saveContentAsOutput = (source, configInput = {}) => {
+  const config = {
+    title: i18n.t('export.defaultTitle'),
+    ...configInput,
+  };
+
+  const sourceblob = new Blob([source]);
+  const configBlob = new Blob([JSON.stringify(config)], {
+    type: 'application/json',
+  });
 
   fetch('./template.zip')
     .then((response) => response.blob())
     .then((zipData) => {
       JSZip.loadAsync(zipData).then((zip) => {
-        // update to proper folder name
-        zip.file('build/source.txt', blob);
+        zip.file('build/source.txt', sourceblob);
+        zip.file('build/content-config.json', configBlob);
 
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
           saveAs(newZipData, 'output.zip');
