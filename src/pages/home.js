@@ -22,7 +22,7 @@ import { textmath2laObj as textmath2laObjFactory } from '@/lib/content-processor
 import asciimath2mmlFactory from '@/lib/content-processor/am2mml';
 import latex2mmlFactory from '@/lib/content-processor/tex2mml';
 import mml2svg from '@/lib/content-processor/mml2svg';
-import { getFileDataAsText } from '@/lib/file';
+import { getFileDataAsText, saveContentAsOutput } from '@/lib/file';
 
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
@@ -37,6 +37,8 @@ const importAcceptedExtension = ['.txt', '.md'];
 import { myCompletions, bdconvert } from './helpers';
 
 export default function Home() {
+  const t = useTranslation('home');
+
   const [data, setData] = useState('');
   const [showTipModal, setShowTipModal] = useState(false);
   const [showSettingModal, setShowSettingModal] = useState(false);
@@ -170,14 +172,13 @@ export default function Home() {
   }, []);
 
   const exportClick = useCallback(() => {
-    const output = data;
-    const url = window.URL.createObjectURL(new Blob([output]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', 'export.txt');
-    document.body.appendChild(link);
-    link.click();
-  }, [data]);
+    saveContentAsOutput(data, {
+      title: t('defaultOutputTitle'),
+      latextDelimiter: displayConfig.latexDelimiter,
+      display: displayConfig.htmlMathDisplay,
+      documentDisplay: displayConfig.htmlDocumentDisplay,
+    });
+  }, [data, displayConfig, t]);
 
   const insertLatex = useCallback(({ latex, offset }) => {
     const view = codemirrorView.current;
@@ -217,8 +218,6 @@ export default function Home() {
     },
     [createView],
   );
-
-  const t = useTranslation('home');
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
