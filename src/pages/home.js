@@ -174,7 +174,7 @@ export default function Home() {
   const exportClick = useCallback(() => {
     saveContentAsOutput(data, {
       title: t('defaultOutputTitle'),
-      latextDelimiter: displayConfig.latexDelimiter,
+      latexDelimiter: displayConfig.latexDelimiter,
       display: displayConfig.htmlMathDisplay,
       documentDisplay: displayConfig.htmlDocumentDisplay,
     });
