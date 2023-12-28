@@ -10,5 +10,6 @@
   "languageChanged": "Change to English",
   "setting": "Setting",
   "bracket2dollar": "{} to $",
-  "dollar2bracket": "$ to {}"
+  "dollar2bracket": "$ to {}",
+  "defaultOutputTitle": "Output"
 }
