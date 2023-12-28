@@ -28,23 +28,31 @@ export function getFileDataAsText(file) {
   });
 }
 
+const jsTemplate = (variableKey) => (raw) => `window.${variableKey}=\`${raw}\``;
+
+const genSourceJs = jsTemplate('sourceText');
+const genConfigJs = jsTemplate('content-config');
+
 export const saveContentAsOutput = (source, configInput = {}) => {
   const config = {
     title: i18n.t('export.defaultTitle'),
     ...configInput,
   };
 
-  const sourceblob = new Blob([source]);
-  const configBlob = new Blob([JSON.stringify(config)], {
-    type: 'application/json',
+  const configBlob = new Blob([genConfigJs(JSON.stringify(config))], {
+    type: 'text/javascript',
   });
 
-  fetch('./template.zip')
+  const sourceBlob = new Blob([genSourceJs(source)], {
+    type: 'text/javascript',
+  });
+
+  fetch('./access8math-web-template.zip')
     .then((response) => response.blob())
     .then((zipData) => {
       JSZip.loadAsync(zipData).then((zip) => {
-        zip.file('build/source.txt', sourceblob);
-        zip.file('build/content-config.json', configBlob);
+        zip.file('build/sourceText.js', sourceBlob);
+        zip.file('build/content-config.js', configBlob);
 
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
           saveAs(newZipData, 'output.zip');
