@@ -37,6 +37,8 @@ const importAcceptedExtension = ['.txt', '.md'];
 import { myCompletions, bdconvert } from './helpers';
 
 export default function Home() {
+  const t = useTranslation('home');
+
   const [data, setData] = useState('');
   const [showTipModal, setShowTipModal] = useState(false);
   const [showSettingModal, setShowSettingModal] = useState(false);
@@ -171,11 +173,12 @@ export default function Home() {
 
   const exportClick = useCallback(() => {
     saveContentAsOutput(data, {
+      title: t('defaultOutputTitle'),
       latextDelimiter: displayConfig.latexDelimiter,
       display: displayConfig.htmlMathDisplay,
       documentDisplay: displayConfig.htmlDocumentDisplay,
     });
-  }, [data, displayConfig]);
+  }, [data, displayConfig, t]);
 
   const insertLatex = useCallback(({ latex, offset }) => {
     const view = codemirrorView.current;
@@ -215,8 +218,6 @@ export default function Home() {
     },
     [createView],
   );
-
-  const t = useTranslation('home');
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
