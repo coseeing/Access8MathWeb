@@ -305,20 +305,21 @@ export default function Home() {
             <SettingComponent />
           </button>
         </div>
-        {displayConfig.htmlDocumentDisplay === 'markdown' ? (
-          <div
-            className="right-side-input-textarea border-2 overflow-scroll p-4 flex-1 rounded-lg"
-            dangerouslySetInnerHTML={{ __html: contentmd }}
-          />
-        ) : (
-          <div className="right-side-input-textarea border-2 overflow-scroll p-4 flex-1 rounded-lg">
-            {content.map((line, key) => (
-              <span key={key}>
-                <span dangerouslySetInnerHTML={{ __html: line }} />
-              </span>
-            ))}
+        <div className="right-side-input-textarea border-2 overflow-scroll p-4 flex-1 rounded-lg">
+          <div data-remove-styles>
+            {displayConfig.htmlDocumentDisplay === 'markdown' ? (
+              <div dangerouslySetInnerHTML={{ __html: contentmd }} />
+            ) : (
+              <div>
+                {content.map((line, key) => (
+                  <span key={key}>
+                    <span dangerouslySetInnerHTML={{ __html: line }} />
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
       <TipModal isOpen={showTipModal} onClose={() => setShowTipModal(false)} />
       <SettingModal
