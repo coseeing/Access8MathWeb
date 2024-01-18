@@ -4,8 +4,27 @@
 
 [data-remove-styles] ol,
 [data-remove-styles] ul,
-[data-remove-styles] menu {
+[data-remove-styles] menu,
+[data-remove-styles] svg {
   all: revert;
+}
+
+[data-remove-styles] ul {
+  list-style-type: disc;
+}
+
+[data-remove-styles] table {
+  border: 1px solid black;
+}
+
+[data-remove-styles] table tr {
+  border: inherit;
+}
+
+[data-remove-styles] table td,
+[data-remove-styles] table th {
+  padding: 8px;
+  border: 1px solid black;
 }
 
 .sr-only {

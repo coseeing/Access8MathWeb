@@ -113,6 +113,7 @@ const markedFactory =
       },
     };
     marked.use({ renderer });
+    marked.use({ mangle: false, headerIds: false });
 
     return marked.parse(raw);
   };
