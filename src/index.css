@@ -2,7 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-[data-remove-styles] * {
+[data-remove-styles] ol,
+[data-remove-styles] ul,
+[data-remove-styles] menu {
   all: revert;
 }
 
