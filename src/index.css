@@ -27,6 +27,10 @@
   border: 1px solid black;
 }
 
+[data-remove-styles] p {
+  margin: 8px 0;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
