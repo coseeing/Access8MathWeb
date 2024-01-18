@@ -305,7 +305,7 @@ export default function Home() {
             <SettingComponent />
           </button>
         </div>
-        <div className="right-side-input-textarea border-2 overflow-scroll p-4 flex-1 rounded-lg">
+        <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
           <div data-remove-styles>
             {displayConfig.htmlDocumentDisplay === 'markdown' ? (
               <div dangerouslySetInnerHTML={{ __html: contentmd }} />
