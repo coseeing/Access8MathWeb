@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.6a3a5bf0.css",
+    "main.css": "/static/css/main.82eb2164.css",
     "main.js": "/static/js/main.e98a906f.js",
     "static/js/27.769e565b.chunk.js": "/static/js/27.769e565b.chunk.js",
     "static/media/simultaneous-equations.svg": "/static/media/simultaneous-equations.0c5dda1d605213f657a2f147a1975cae.svg",
@@ -143,7 +143,7 @@
     "static/media/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": "/static/media/.1feff74faaf0efc6a044"
   },
   "entrypoints": [
-    "static/css/main.6a3a5bf0.css",
+    "static/css/main.82eb2164.css",
     "static/js/main.e98a906f.js"
   ]
 }
