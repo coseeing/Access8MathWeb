@@ -44,8 +44,8 @@ export const saveContentAsOutput = (source, configInput = {}) => {
     .then((response) => response.blob())
     .then((zipData) => {
       JSZip.loadAsync(zipData).then((zip) => {
-        zip.file('build/content-config.js', configBlob);
-        zip.file(`build/${config.title}.txt`, rawFileBlob);
+        zip.file('content-config.js', configBlob);
+        zip.file(`${config.title}.txt`, rawFileBlob);
 
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
           saveAs(newZipData, 'output.zip');
