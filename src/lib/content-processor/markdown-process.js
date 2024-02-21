@@ -97,7 +97,6 @@ const markedFactory =
         } else {
           mathMl = latex2mml(token.math);
         }
-        // return `${this.parser.parseInline(token.text)}@${token.math}@`;
         return `${this.parser.parseInline(
           token.text,
         )}<span class="sr-only">${mathMl}</span><span aria-hidden="true">${mml2svg(
@@ -105,15 +104,18 @@ const markedFactory =
         )}</span>`;
       },
     };
-    marked.use({ extensions: [math] });
-
     const renderer = {
       text(text) {
         return text.replace(/\n/g, '<br />');
       },
     };
-    marked.use({ renderer });
-    marked.use({ mangle: false, headerIds: false });
+
+    marked.use({
+      extensions: [math],
+      renderer,
+      mangle: false,
+      headerIds: false,
+    });
 
     return marked.parse(raw);
   };
