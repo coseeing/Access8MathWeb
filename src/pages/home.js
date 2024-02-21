@@ -50,7 +50,6 @@ export default function Home() {
   });
 
   const codemirrorView = useRef(null);
-  const inputArea = useRef(null);
   const importFile = useRef(null);
 
   const content = useMemo(() => {
