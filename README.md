@@ -2,7 +2,7 @@
 
 ## Sites
 
-- Production: https://accessibility.twvip.org/Access8Math/
+- Production: https://access8mathweb.coseeing.org/
 - Staging: https://access8math-stg.coseeing.org
 
 ## Prerequisites
