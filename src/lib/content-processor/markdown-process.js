@@ -63,10 +63,6 @@ const markedFactory = ({ latex_delimiter, asciimath_delimiter, display }) => {
       return result ? result.index : 0;
     }, // Hint to Marked.js to stop and check for a match
     tokenizer(src) {
-      /*const reTexMath = new RegExp(
-					`((.|\n)*?)(${latex_restring}|${asciimath_restring})`,
-					"g"
-				);*/
       const match = reTexMath.exec(src);
       if (match) {
         const math = match[3] || match[4];
