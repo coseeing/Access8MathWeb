@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/static/css/main.82eb2164.css",
-    "main.js": "/static/js/main.225a6d1f.js",
-    "static/js/27.769e565b.chunk.js": "/static/js/27.769e565b.chunk.js",
+    "main.js": "/static/js/main.db0cbed7.js",
+    "static/js/27.b2ac052f.chunk.js": "/static/js/27.b2ac052f.chunk.js",
     "static/media/simultaneous-equations.svg": "/static/media/simultaneous-equations.0c5dda1d605213f657a2f147a1975cae.svg",
     "static/media/determinant3X3.svg": "/static/media/determinant3X3.ce228768ea0c515845640c548fda9c36.svg",
     "static/media/matrix3X3.svg": "/static/media/matrix3X3.58ce71e30b013e76d2cf6cb0121d74db.svg",
@@ -144,6 +144,6 @@
   },
   "entrypoints": [
     "static/css/main.82eb2164.css",
-    "static/js/main.225a6d1f.js"
+    "static/js/main.db0cbed7.js"
   ]
 }
