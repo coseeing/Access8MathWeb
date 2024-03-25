@@ -50,7 +50,6 @@ export default function Home() {
   });
 
   const codemirrorView = useRef(null);
-  const inputArea = useRef(null);
   const importFile = useRef(null);
 
   const content = useMemo(() => {
@@ -84,13 +83,17 @@ export default function Home() {
     });
   }, [data, displayConfig]);
 
-  const contentmd = useMemo(() => {
+  const markedFunc = useMemo(() => {
     return markedFactory({
       latex_delimiter: displayConfig.latexDelimiter,
       asciimath_delimiter: 'graveaccent',
       display: displayConfig.htmlMathDisplay,
-    })(data);
-  }, [data, displayConfig]);
+    });
+  }, [displayConfig]);
+
+  const contentmd = useMemo(() => {
+    return markedFunc(data);
+  }, [data, markedFunc]);
 
   const createView = useCallback((content = '') => {
     if (codemirrorView.current) {
