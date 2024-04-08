@@ -1,8 +1,6 @@
-import { textmath2laObj as textmath2laObjFactory } from '@/lib/content-processor/math-process';
+import { textmath2laObj as textmath2laObjFactory } from './math-process';
 
-import mathTabList from '@/lib/tabs/math/index';
-
-export const bdconvert = (mode) => (data) => {
+const latexDelimiterConvertor = (mode) => (data) => {
   return data
     .split('\n')
     .map((line) => {
@@ -12,10 +10,13 @@ export const bdconvert = (mode) => (data) => {
       } else if (mode === 'd2b') {
         latexDelimiter = 'dollar';
       }
-      return textmath2laObjFactory({
+
+      const textMathParser = textmath2laObjFactory({
         latexDelimiter,
         asciimathDelimiter: 'graveaccent',
-      })(line).reduce((a, b) => {
+      });
+
+      return textMathParser(line).reduce((a, b) => {
         let result;
         if (b.type === 'latex-content') {
           if (mode === 'b2d') {
@@ -38,22 +39,4 @@ export const bdconvert = (mode) => (data) => {
     }, '');
 };
 
-const allMathSubTabs = mathTabList.reduce((acc, mathTab) => {
-  return acc.concat(mathTab.subTabs || []);
-}, []);
-
-export const myCompletions = (context) => {
-  let word = context.matchBefore(new RegExp('\\\\\\w*'));
-  if (!word || (word.from == word.to && !context.explicit)) return null;
-  const options = allMathSubTabs.map((item) => {
-    return {
-      label: item.latex,
-      type: 'text',
-      apply: item.latex,
-    };
-  });
-  return {
-    from: word.from,
-    options,
-  };
-};
+export default latexDelimiterConvertor;
