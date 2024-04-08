@@ -60,7 +60,7 @@ const {
 const visitor = new SerializedMmlVisitor();
 const toMathML = (node) => visitor.visitTree(node, html);
 
-module.exports =
+const texToMMLFactory =
   ({ htmlMathDisplay }) =>
   (mstring) => {
     return toMathML(
@@ -70,3 +70,5 @@ module.exports =
       }),
     );
   };
+
+module.exports = texToMMLFactory;

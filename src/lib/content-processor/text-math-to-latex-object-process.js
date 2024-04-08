@@ -29,7 +29,7 @@ const AsciiMath_delimiter_dict = {
   },
 };
 
-const textmath2laObj =
+const textMathToLatexObjectFactory =
   ({ latexDelimiter, asciimathDelimiter }) =>
   (input) => {
     const LaTeX_delimiter = LaTeX_delimiter_dict[latexDelimiter];
@@ -91,6 +91,4 @@ const textmath2laObj =
     return datas;
   };
 
-module.exports = {
-  textmath2laObj,
-};
+module.exports = textMathToLatexObjectFactory;

@@ -50,7 +50,7 @@ const {
 const visitor = new SerializedMmlVisitor();
 const toMathML = (node) => visitor.visitTree(node, html);
 
-module.exports =
+const asciiMathToMMLFactory =
   ({ htmlMathDisplay }) =>
   (mstring) => {
     return toMathML(
@@ -60,3 +60,5 @@ module.exports =
       }),
     );
   };
+
+module.exports = asciiMathToMMLFactory;

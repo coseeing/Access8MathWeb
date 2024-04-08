@@ -1,4 +1,4 @@
-import { textmath2laObj as textmath2laObjFactory } from './math-process';
+const textMathToLatexObjectFactory = require('./text-math-to-latex-object-process');
 
 const latexDelimiterConvertor = (mode) => (data) => {
   return data
@@ -11,7 +11,7 @@ const latexDelimiterConvertor = (mode) => (data) => {
         latexDelimiter = 'dollar';
       }
 
-      const textMathParser = textmath2laObjFactory({
+      const textMathParser = textMathToLatexObjectFactory({
         latexDelimiter,
         asciimathDelimiter: 'graveaccent',
       });
@@ -39,4 +39,4 @@ const latexDelimiterConvertor = (mode) => (data) => {
     }, '');
 };
 
-export default latexDelimiterConvertor;
+module.exports = latexDelimiterConvertor;
