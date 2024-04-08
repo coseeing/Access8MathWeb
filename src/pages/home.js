@@ -20,9 +20,11 @@ import { getFileDataAsText, saveContentAsOutput } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
 // TODO: port to shared libs
-import markedProcessorFactory from '@/lib/content-processor/markdown-process';
-import textProcessorFactory from '@/lib/content-processor/text-process';
-import latexDelimiterConvertor from '@/lib/content-processor/latext-delimiter-convertor';
+import {
+  latexDelimiterConvertor,
+  textProcessorFactory,
+  markedProcessorFactory,
+} from '@coseeing/access8math-web-lib';
 
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
