@@ -19,6 +19,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Authenticate with github package registry
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
