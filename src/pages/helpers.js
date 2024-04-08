@@ -6,15 +6,15 @@ export const bdconvert = (mode) => (data) => {
   return data
     .split('\n')
     .map((line) => {
-      let latex_delimiter = 'dollar';
+      let latexDelimiter = 'dollar';
       if (mode === 'b2d') {
-        latex_delimiter = 'bracket';
+        latexDelimiter = 'bracket';
       } else if (mode === 'd2b') {
-        latex_delimiter = 'dollar';
+        latexDelimiter = 'dollar';
       }
       return textmath2laObjFactory({
-        latex_delimiter,
-        asciimath_delimiter: 'graveaccent',
+        latexDelimiter,
+        asciimathDelimiter: 'graveaccent',
       })(line).reduce((a, b) => {
         let result;
         if (b.type === 'latex-content') {

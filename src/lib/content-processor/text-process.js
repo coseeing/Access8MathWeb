@@ -4,20 +4,21 @@ import latex2mmlFactory from './tex2mml';
 import mml2svg from './mml2svg';
 
 const textProcessorFactory =
-  ({ latexDelimiter, htmlMathDisplay }) =>
+  ({ latexDelimiter, htmlMathDisplay, asciimathDelimiter }) =>
   (rawTxt) => {
+    const textMathParser = textmath2laObjFactory({
+      latexDelimiter: latexDelimiter,
+      asciimathDelimiter: asciimathDelimiter,
+    });
     return rawTxt.split('\n').map((line) => {
-      return textmath2laObjFactory({
-        latex_delimiter: latexDelimiter,
-        asciimath_delimiter: 'graveaccent',
-      })(line).reduce((a, b) => {
+      return textMathParser(line).reduce((a, b) => {
         let result;
         if (b.type === 'latex-content') {
           result = `<div class="sr-only">${latex2mmlFactory({
-            display: htmlMathDisplay,
+            htmlMathDisplay,
           })(b.data)}</div><div aria-hidden="true">${mml2svg(
             latex2mmlFactory({
-              display: htmlMathDisplay,
+              htmlMathDisplay,
             })(b.data),
           )}</div>`;
         } else if (b.type === 'asciimath-content') {
@@ -25,7 +26,7 @@ const textProcessorFactory =
             display: htmlMathDisplay,
           })(b.data)}</div><div aria-hidden="true">${mml2svg(
             asciimath2mmlFactory({
-              display: htmlMathDisplay,
+              htmlMathDisplay,
             })(b.data),
           )}</div>`;
         } else {

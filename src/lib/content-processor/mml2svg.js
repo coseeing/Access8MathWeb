@@ -24,24 +24,24 @@
 //
 //  Load the packages needed for MathJax
 //
-const { mathjax } = require("mathjax-full/js/mathjax.js");
-const { MathML } = require("mathjax-full/js/input/mathml.js");
-const { SVG } = require("mathjax-full/js/output/svg.js");
-const { liteAdaptor } = require("mathjax-full/js/adaptors/liteAdaptor.js");
-const { RegisterHTMLHandler } = require("mathjax-full/js/handlers/html.js");
+const { mathjax } = require('mathjax-full/js/mathjax.js');
+const { MathML } = require('mathjax-full/js/input/mathml.js');
+const { SVG } = require('mathjax-full/js/output/svg.js');
+const { liteAdaptor } = require('mathjax-full/js/adaptors/liteAdaptor.js');
+const { RegisterHTMLHandler } = require('mathjax-full/js/handlers/html.js');
 const {
-	AssistiveMmlHandler,
-} = require("mathjax-full/js/a11y/assistive-mml.js");
+  AssistiveMmlHandler,
+} = require('mathjax-full/js/a11y/assistive-mml.js');
 
 const argv = {
-	_: [],
-	em: 16,
-	ex: 8,
-	width: 1280,
-	fontCache: true,
-	"font-cache": true,
-	assistiveMml: false,
-	"assistive-mml": false,
+  _: [],
+  em: 16,
+  ex: 8,
+  width: 1280,
+  fontCache: true,
+  'font-cache': true,
+  assistiveMml: false,
+  'assistive-mml': false,
 };
 
 //
@@ -55,27 +55,27 @@ if (argv.assistiveMml) AssistiveMmlHandler(handler);
 //  Create input and output jax and a document using them on the content from the HTML file
 //
 const mml = new MathML();
-const svg = new SVG({ fontCache: argv.fontCache ? "local" : "none" });
-const html = mathjax.document("", { InputJax: mml, OutputJax: svg });
+const svg = new SVG({ fontCache: argv.fontCache ? 'local' : 'none' });
+const html = mathjax.document('', { InputJax: mml, OutputJax: svg });
 
 module.exports = (mstring) => {
-	//
-	//  Typeset the math from the command line
-	//
-	const node = html.convert(mstring || "", {
-		display: !argv.inline,
-		em: argv.em,
-		ex: argv.ex,
-		containerWidth: argv.width,
-	});
+  //
+  //  Typeset the math from the command line
+  //
+  const node = html.convert(mstring || '', {
+    display: !argv.inline,
+    em: argv.em,
+    ex: argv.ex,
+    containerWidth: argv.width,
+  });
 
-	//
-	//  If the --css option was specified, output the CSS,
-	//  Otherwise, typeset the math and output the HTML
-	//
-	if (argv.css) {
-		return adaptor.textContent(svg.styleSheet(html));
-	} else {
-		return adaptor.outerHTML(node);
-	}
+  //
+  //  If the --css option was specified, output the CSS,
+  //  Otherwise, typeset the math and output the HTML
+  //
+  if (argv.css) {
+    return adaptor.textContent(svg.styleSheet(html));
+  } else {
+    return adaptor.outerHTML(node);
+  }
 };

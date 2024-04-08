@@ -52,6 +52,7 @@ export default function Home() {
   const content = useMemo(() => {
     const processor = textProcessorFactory({
       latexDelimiter: displayConfig.latexDelimiter,
+      asciimathDelimiter: 'graveaccent',
       htmlMathDisplay: displayConfig.htmlMathDisplay,
     });
     return processor(data);
