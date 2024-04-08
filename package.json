@@ -5,6 +5,7 @@
   "homepage": "https://access8math.wendellatman.com",
   "dependencies": {
     "@codemirror/lang-markdown": "^6.0.5",
+    "@coseeing/access8math-web-lib": "^0.1.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "@testing-library/jest-dom": "^5.17.0",
