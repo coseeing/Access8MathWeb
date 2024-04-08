@@ -19,7 +19,6 @@ import { useTranslation } from '@/lib/i18n';
 import { getFileDataAsText, saveContentAsOutput } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
-// TODO: port to shared libs
 import {
   latexDelimiterConvertor,
   textProcessorFactory,
