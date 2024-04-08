@@ -1,7 +1,7 @@
-import { textmath2laObj as textmath2laObjFactory } from '@/lib/content-processor/math-process';
-import asciimath2mmlFactory from '@/lib/content-processor/am2mml';
-import latex2mmlFactory from '@/lib/content-processor/tex2mml';
-import mml2svg from '@/lib/content-processor/mml2svg';
+import { textmath2laObj as textmath2laObjFactory } from './math-process';
+import asciimath2mmlFactory from './am2mml';
+import latex2mmlFactory from './tex2mml';
+import mml2svg from './mml2svg';
 
 const textProcessorFactory =
   ({ latexDelimiter, htmlMathDisplay }) =>
