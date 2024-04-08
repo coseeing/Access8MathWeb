@@ -35,12 +35,16 @@ const AsciiMath_delimiter_dict = {
   },
 };
 
-const markedFactory = ({ latex_delimiter, asciimath_delimiter, display }) => {
-  const asciimath2mml = asciimath2mmlFactory({ display });
-  const latex2mml = latex2mmlFactory({ display });
+const markedProcessorFactory = ({
+  latexDelimiter,
+  asciimathDelimiter,
+  htmlMathDisplay,
+}) => {
+  const asciimath2mml = asciimath2mmlFactory({ display: htmlMathDisplay });
+  const latex2mml = latex2mmlFactory({ display: htmlMathDisplay });
 
-  const LaTeX_delimiter = LaTeX_delimiter_dict[latex_delimiter];
-  const AsciiMath_delimiter = AsciiMath_delimiter_dict[asciimath_delimiter];
+  const LaTeX_delimiter = LaTeX_delimiter_dict[latexDelimiter];
+  const AsciiMath_delimiter = AsciiMath_delimiter_dict[asciimathDelimiter];
 
   const latex_restring = `(?<=[^\\\\]?)${LaTeX_delimiter.start}(.*?[^\\\\])?${LaTeX_delimiter.end}`;
   const asciimath_restring = `(?<=[^\\\\]?)${AsciiMath_delimiter.start}(.*?[^\\\\])?${AsciiMath_delimiter.end}`;
@@ -117,6 +121,5 @@ const markedFactory = ({ latex_delimiter, asciimath_delimiter, display }) => {
     return marked.parse(raw);
   };
 };
-module.exports = {
-  marked: markedFactory,
-};
+
+export default markedProcessorFactory;

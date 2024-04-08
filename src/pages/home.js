@@ -17,11 +17,8 @@ import { markdown } from '@codemirror/lang-markdown';
 import { autocompletion } from '@codemirror/autocomplete';
 
 import { useTranslation } from '@/lib/i18n';
-import { marked as markedFactory } from '@/lib/content-processor/markdown-process';
-import { textmath2laObj as textmath2laObjFactory } from '@/lib/content-processor/math-process';
-import asciimath2mmlFactory from '@/lib/content-processor/am2mml';
-import latex2mmlFactory from '@/lib/content-processor/tex2mml';
-import mml2svg from '@/lib/content-processor/mml2svg';
+import markedProcessorFactory from '@/lib/content-processor/markdown-process';
+import textProcessorFactory from '@/lib/content-processor/text-process';
 import { getFileDataAsText, saveContentAsOutput } from '@/lib/file';
 
 import Button from '@/components/core/button';
@@ -53,41 +50,18 @@ export default function Home() {
   const importFile = useRef(null);
 
   const content = useMemo(() => {
-    return data.split('\n').map((line) => {
-      return textmath2laObjFactory({
-        latex_delimiter: displayConfig.latexDelimiter,
-        asciimath_delimiter: 'graveaccent',
-      })(line).reduce((a, b) => {
-        let result;
-        if (b.type === 'latex-content') {
-          result = `<div class="sr-only">${latex2mmlFactory({
-            display: displayConfig.htmlMathDisplay,
-          })(b.data)}</div><div aria-hidden="true">${mml2svg(
-            latex2mmlFactory({
-              display: displayConfig.htmlMathDisplay,
-            })(b.data),
-          )}</div>`;
-        } else if (b.type === 'asciimath-content') {
-          result = `<div class="sr-only">${asciimath2mmlFactory({
-            display: displayConfig.htmlMathDisplay,
-          })(b.data)}</div><div aria-hidden="true">${mml2svg(
-            asciimath2mmlFactory({
-              display: displayConfig.htmlMathDisplay,
-            })(b.data),
-          )}</div>`;
-        } else {
-          result = `${b.data}`;
-        }
-        return a + result;
-      }, '');
+    const processor = textProcessorFactory({
+      latexDelimiter: displayConfig.latexDelimiter,
+      htmlMathDisplay: displayConfig.htmlMathDisplay,
     });
+    return processor(data);
   }, [data, displayConfig]);
 
   const markedFunc = useMemo(() => {
-    return markedFactory({
-      latex_delimiter: displayConfig.latexDelimiter,
-      asciimath_delimiter: 'graveaccent',
-      display: displayConfig.htmlMathDisplay,
+    return markedProcessorFactory({
+      latexDelimiter: displayConfig.latexDelimiter,
+      asciimathDelimiter: 'graveaccent',
+      htmlMathDisplay: displayConfig.htmlMathDisplay,
     });
   }, [displayConfig]);
 
