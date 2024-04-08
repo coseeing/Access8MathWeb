@@ -1,23 +1,25 @@
-import { textmath2laObj as textmath2laObjFactory } from './math-process';
-import asciimath2mmlFactory from './am2mml';
-import latex2mmlFactory from './tex2mml';
-import mml2svg from './mml2svg';
+const textMathToLatexObjectFactory = require('./text-math-to-latex-object-process');
+const asciimath2mmlFactory = require('./ascii-math-to-mml');
+const latex2mmlFactory = require('./tex-to-mml');
+const mml2svg = require('./mml-to-svg');
 
 const textProcessorFactory =
-  ({ latexDelimiter, htmlMathDisplay }) =>
+  ({ latexDelimiter, htmlMathDisplay, asciimathDelimiter }) =>
   (rawTxt) => {
+    const textMathParser = textMathToLatexObjectFactory({
+      latexDelimiter: latexDelimiter,
+      asciimathDelimiter: asciimathDelimiter,
+    });
+
     return rawTxt.split('\n').map((line) => {
-      return textmath2laObjFactory({
-        latex_delimiter: latexDelimiter,
-        asciimath_delimiter: 'graveaccent',
-      })(line).reduce((a, b) => {
+      return textMathParser(line).reduce((a, b) => {
         let result;
         if (b.type === 'latex-content') {
           result = `<div class="sr-only">${latex2mmlFactory({
-            display: htmlMathDisplay,
+            htmlMathDisplay,
           })(b.data)}</div><div aria-hidden="true">${mml2svg(
             latex2mmlFactory({
-              display: htmlMathDisplay,
+              htmlMathDisplay,
             })(b.data),
           )}</div>`;
         } else if (b.type === 'asciimath-content') {
@@ -25,7 +27,7 @@ const textProcessorFactory =
             display: htmlMathDisplay,
           })(b.data)}</div><div aria-hidden="true">${mml2svg(
             asciimath2mmlFactory({
-              display: htmlMathDisplay,
+              htmlMathDisplay,
             })(b.data),
           )}</div>`;
         } else {
@@ -36,4 +38,4 @@ const textProcessorFactory =
     });
   };
 
-export default textProcessorFactory;
+module.exports = textProcessorFactory;

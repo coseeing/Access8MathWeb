@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 // only for migration period
 
 'use client';
@@ -17,9 +16,13 @@ import { markdown } from '@codemirror/lang-markdown';
 import { autocompletion } from '@codemirror/autocomplete';
 
 import { useTranslation } from '@/lib/i18n';
+import { getFileDataAsText, saveContentAsOutput } from '@/lib/file';
+import autoCompletions from '@/lib/editor-auto-completion';
+
+// TODO: port to shared libs
 import markedProcessorFactory from '@/lib/content-processor/markdown-process';
 import textProcessorFactory from '@/lib/content-processor/text-process';
-import { getFileDataAsText, saveContentAsOutput } from '@/lib/file';
+import latexDelimiterConvertor from '@/lib/content-processor/latext-delimiter-convertor';
 
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
@@ -29,9 +32,6 @@ import { ReactComponent as QuestionCircleComponent } from '@/components/svg/ques
 import { ReactComponent as SettingComponent } from '@/components/svg/settings.svg';
 
 const importAcceptedExtension = ['.txt', '.md'];
-
-// TODO: mvoe the helpers to somewhere appropriate
-import { myCompletions, bdconvert } from './helpers';
 
 export default function Home() {
   const t = useTranslation('home');
@@ -52,6 +52,7 @@ export default function Home() {
   const content = useMemo(() => {
     const processor = textProcessorFactory({
       latexDelimiter: displayConfig.latexDelimiter,
+      asciimathDelimiter: 'graveaccent',
       htmlMathDisplay: displayConfig.htmlMathDisplay,
     });
     return processor(data);
@@ -88,7 +89,7 @@ export default function Home() {
         extensions: [
           basicSetup,
           autocompletion({
-            override: [myCompletions],
+            override: [autoCompletions],
           }),
           markdown(),
           EditorView.updateListener.of((update) => {
@@ -138,7 +139,7 @@ export default function Home() {
 
   const laTeXSepConvert = useCallback(
     (mode) => {
-      const value = bdconvert(mode)(data);
+      const value = latexDelimiterConvertor(mode)(data);
       createView(value);
     },
     [data, createView],

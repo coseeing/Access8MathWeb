@@ -1,8 +1,8 @@
 const marked = require('marked');
 
-const latex2mmlFactory = require('./tex2mml');
-const asciimath2mmlFactory = require('./am2mml');
-const mml2svg = require('./mml2svg');
+const latex2mmlFactory = require('./tex-to-mml');
+const asciimath2mmlFactory = require('./ascii-math-to-mml');
+const mml2svg = require('./mml-to-svg');
 
 const LaTeX_delimiter_dict = {
   latex: {
@@ -40,8 +40,8 @@ const markedProcessorFactory = ({
   asciimathDelimiter,
   htmlMathDisplay,
 }) => {
-  const asciimath2mml = asciimath2mmlFactory({ display: htmlMathDisplay });
-  const latex2mml = latex2mmlFactory({ display: htmlMathDisplay });
+  const asciimath2mml = asciimath2mmlFactory({ htmlMathDisplay });
+  const latex2mml = latex2mmlFactory({ htmlMathDisplay });
 
   const LaTeX_delimiter = LaTeX_delimiter_dict[latexDelimiter];
   const AsciiMath_delimiter = AsciiMath_delimiter_dict[asciimathDelimiter];
@@ -122,4 +122,4 @@ const markedProcessorFactory = ({
   };
 };
 
-export default markedProcessorFactory;
+module.exports = markedProcessorFactory;

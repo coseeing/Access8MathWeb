@@ -24,14 +24,14 @@
 //
 //  Load the packages needed for MathJax
 //
-const { TeX } = require("mathjax-full/js/input/tex.js");
+const { TeX } = require('mathjax-full/js/input/tex.js');
 const {
-	HTMLDocument,
-} = require("mathjax-full/js/handlers/html/HTMLDocument.js");
-const { liteAdaptor } = require("mathjax-full/js/adaptors/liteAdaptor.js");
-const { STATE } = require("mathjax-full/js/core/MathItem.js");
+  HTMLDocument,
+} = require('mathjax-full/js/handlers/html/HTMLDocument.js');
+const { liteAdaptor } = require('mathjax-full/js/adaptors/liteAdaptor.js');
+const { STATE } = require('mathjax-full/js/core/MathItem.js');
 
-const { AllPackages } = require("mathjax-full/js/input/tex/AllPackages.js");
+const { AllPackages } = require('mathjax-full/js/input/tex/AllPackages.js');
 
 //
 //  Busproofs requires an output jax, which we aren't using
@@ -43,30 +43,32 @@ const { AllPackages } = require("mathjax-full/js/input/tex/AllPackages.js");
 //
 // const tex = new TeX({packages: argv.packages.split(/\s*,\s*/)});
 const tex = new TeX({
-	packages: AllPackages.filter((name) => name !== "bussproofs").sort(),
+  packages: AllPackages.filter((name) => name !== 'bussproofs').sort(),
 });
 
 //
 //  Create an HTML document using a LiteDocument and the input jax
 //
-const html = new HTMLDocument("", liteAdaptor(), { InputJax: tex });
+const html = new HTMLDocument('', liteAdaptor(), { InputJax: tex });
 
 //
 //  Create a MathML serializer
 //
 const {
-	SerializedMmlVisitor,
-} = require("mathjax-full/js/core/MmlTree/SerializedMmlVisitor.js");
+  SerializedMmlVisitor,
+} = require('mathjax-full/js/core/MmlTree/SerializedMmlVisitor.js');
 const visitor = new SerializedMmlVisitor();
 const toMathML = (node) => visitor.visitTree(node, html);
 
-module.exports =
-	({ display }) =>
-	(mstring) => {
-		return toMathML(
-			html.convert(mstring || "", {
-				display: display === "block",
-				end: STATE.CONVERT,
-			})
-		);
-	};
+const texToMMLFactory =
+  ({ htmlMathDisplay }) =>
+  (mstring) => {
+    return toMathML(
+      html.convert(mstring || '', {
+        display: htmlMathDisplay === 'block',
+        end: STATE.CONVERT,
+      }),
+    );
+  };
+
+module.exports = texToMMLFactory;
