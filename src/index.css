@@ -45,3 +45,31 @@
 math {
   text-align: left;
 }
+
+@layer base {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h6,
+  h6 {
+    @apply mb-2;
+  }
+
+  h1 {
+    @apply text-3xl;
+  }
+
+  h2 {
+    @apply text-2xl;
+  }
+
+  h3 {
+    @apply text-xl;
+  }
+
+  h4 {
+    @apply text-lg;
+  }
+}
