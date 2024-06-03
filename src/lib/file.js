@@ -61,3 +61,18 @@ export const saveContentAsWebsite = (source, configInput = {}) => {
       });
     });
 };
+
+export const saveContentAsOriginalFile = (source, config = {}) => {
+  const configBlob = new Blob([JSON.stringify(config, null, 2)], {
+    type: 'application/json',
+  });
+  const markdownBlob = new Blob([source], { type: 'text/markdown' });
+
+  const zip = new JSZip();
+  zip.file('config.json', configBlob);
+  zip.file('content.md', markdownBlob);
+  zip.generateAsync({ type: 'blob' }).then(function (newZipData) {
+    // saveAs(newZipData, 'export.a8mw');
+    saveAs(newZipData, 'export.zip');
+  });
+};

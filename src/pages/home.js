@@ -16,7 +16,11 @@ import { markdown } from '@codemirror/lang-markdown';
 import { autocompletion } from '@codemirror/autocomplete';
 
 import { useTranslation } from '@/lib/i18n';
-import { getFileDataAsText, saveContentAsWebsite } from '@/lib/file';
+import {
+  getFileDataAsText,
+  saveContentAsWebsite,
+  saveContentAsOriginalFile,
+} from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
 import {
@@ -151,7 +155,7 @@ export default function Home() {
   }, []);
 
   const exportClick = useCallback(() => {
-    saveContentAsWebsite(data, {
+    saveContentAsOriginalFile(data, {
       title: t('defaultOutputTitle'),
       latexDelimiter: displayConfig.latexDelimiter,
       display: displayConfig.htmlMathDisplay,
