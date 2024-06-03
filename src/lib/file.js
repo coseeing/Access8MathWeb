@@ -28,7 +28,7 @@ export function getFileDataAsText(file) {
 
 const genConfigJs = (raw) => `window.contentConfig = ${raw}`;
 
-export const saveContentAsOutput = (source, configInput = {}) => {
+export const saveContentAsWebsite = (source, configInput = {}) => {
   const config = {
     title: '',
     ...configInput,
