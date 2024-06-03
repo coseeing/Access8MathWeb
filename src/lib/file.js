@@ -56,7 +56,7 @@ export const saveContentAsWebsite = (source, configInput = {}) => {
         zip.file('Access8Math.json', access8mathJsonBlob);
 
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-          saveAs(newZipData, 'output.zip');
+          saveAs(newZipData, 'website.zip');
         });
       });
     });
@@ -72,7 +72,6 @@ export const saveContentAsOriginalFile = (source, config = {}) => {
   zip.file('config.json', configBlob);
   zip.file('content.md', markdownBlob);
   zip.generateAsync({ type: 'blob' }).then(function (newZipData) {
-    // saveAs(newZipData, 'export.a8mw');
-    saveAs(newZipData, 'export.zip');
+    saveAs(newZipData, 'export.a8mw');
   });
 };

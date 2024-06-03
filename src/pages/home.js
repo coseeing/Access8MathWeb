@@ -154,6 +154,15 @@ export default function Home() {
     importFile.current.click();
   }, []);
 
+  const exportWebsiteClick = useCallback(() => {
+    saveContentAsWebsite(data, {
+      title: t('defaultOutputTitle'),
+      latexDelimiter: displayConfig.latexDelimiter,
+      display: displayConfig.htmlMathDisplay,
+      documentDisplay: displayConfig.htmlDocumentDisplay,
+    });
+  }, [data, displayConfig, t]);
+
   const exportClick = useCallback(() => {
     saveContentAsOriginalFile(data, {
       title: t('defaultOutputTitle'),
@@ -253,6 +262,14 @@ export default function Home() {
             onClick={exportClick}
           >
             {t('export')}
+          </Button>
+          <Button
+            variant="primary"
+            className="md:ml-2 ml-1"
+            size="sm"
+            onClick={exportWebsiteClick}
+          >
+            {t('exportWebsite')}
           </Button>
         </div>
         <EditIconsTab insertLatex={insertLatex} />
