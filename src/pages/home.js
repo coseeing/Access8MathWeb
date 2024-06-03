@@ -18,6 +18,7 @@ import { autocompletion } from '@codemirror/autocomplete';
 import { useTranslation } from '@/lib/i18n';
 import {
   getFileDataAsText,
+  parseA8MWFile,
   saveContentAsWebsite,
   saveContentAsOriginalFile,
 } from '@/lib/file';
@@ -36,7 +37,8 @@ import SettingModal from '@/components/home/setting-modal';
 import { ReactComponent as QuestionCircleComponent } from '@/components/svg/question-circle.svg';
 import { ReactComponent as SettingComponent } from '@/components/svg/settings.svg';
 
-const importAcceptedExtension = ['.txt', '.md'];
+const importTextAcceptedExtension = ['.txt', '.md'];
+const importAcceptedExtension = ['.a8mw'];
 
 export default function Home() {
   const t = useTranslation('home');
@@ -53,6 +55,7 @@ export default function Home() {
 
   const codemirrorView = useRef(null);
   const importFile = useRef(null);
+  const importTextFile = useRef(null);
 
   const content = useMemo(() => {
     const processor = textProcessorFactory({
@@ -150,6 +153,10 @@ export default function Home() {
     [data, createView],
   );
 
+  const importTextClick = useCallback(() => {
+    importTextFile.current.click();
+  }, []);
+
   const importClick = useCallback(() => {
     importFile.current.click();
   }, []);
@@ -195,7 +202,7 @@ export default function Home() {
     view.focus();
   }, []);
 
-  const importAction = useCallback(
+  const importTextAction = useCallback(
     async (event) => {
       const file = event.target.files[0];
 
@@ -210,6 +217,17 @@ export default function Home() {
     },
     [createView],
   );
+
+  const importAction = useCallback(async (event) => {
+    const file = event.target.files[0];
+
+    try {
+      const contents = await parseA8MWFile(file);
+    } catch (error) {
+      // TODO: implement global alert or notification to handle the error
+      console.error(error);
+    }
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
@@ -259,6 +277,14 @@ export default function Home() {
             variant="primary"
             className="md:ml-2 ml-1"
             size="sm"
+            onClick={importTextClick}
+          >
+            {t('importText')}
+          </Button>
+          <Button
+            variant="primary"
+            className="md:ml-2 ml-1"
+            size="sm"
             onClick={exportClick}
           >
             {t('export')}
@@ -277,6 +303,13 @@ export default function Home() {
           <div
             id="codemirror"
             className="left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
+          />
+          <input
+            ref={importTextFile}
+            accept={importTextAcceptedExtension.join(', ')}
+            type="file"
+            className="hidden"
+            onChange={importTextAction}
           />
           <input
             ref={importFile}

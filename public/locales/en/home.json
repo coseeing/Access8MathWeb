@@ -1,8 +1,9 @@
 {
   "editContent": "Edit Content",
   "mark": "mark",
-  "import": "import",
-  "export": "export",
+  "importText": "Import Text",
+  "import": "Import",
+  "export": "Export",
   "exportWebsite": "Export Website",
   "descript": "descript",
   "preview": "Preview",
