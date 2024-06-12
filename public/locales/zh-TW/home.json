@@ -1,8 +1,10 @@
 {
   "editContent": "編輯區",
   "mark": "標記",
+  "importText": "匯入純文字",
   "import": "匯入",
   "export": "匯出",
+  "exportWebsite": "匯出網站",
   "bracket2dollar": "括號轉錢號",
   "dollar2bracket": "錢號轉括號",
   "descript": "說明",

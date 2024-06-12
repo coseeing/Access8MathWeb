@@ -78,8 +78,8 @@ SettingModal.propTypes = {
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
   displayConfig: PropTypes.shape({
-    htmlDocumentDisplay: PropTypes.string,
-    htmlMathDisplay: PropTypes.string,
+    documentDisplay: PropTypes.string,
+    display: PropTypes.string,
     latexDelimiter: PropTypes.string,
   }),
 };

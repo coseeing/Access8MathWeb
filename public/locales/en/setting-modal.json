@@ -1,10 +1,10 @@
 {
-  "htmlDocumentDisplay": {
+  "documentDisplay": {
     "name": "HTML Document Display",
     "markdown": "Markdown",
     "text": "text"
   },
-  "htmlMathDisplay": {
+  "display": {
     "name": "HTML Math Display",
     "block": "block",
     "inline": "inline"

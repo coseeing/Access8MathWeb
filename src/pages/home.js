@@ -16,7 +16,12 @@ import { markdown } from '@codemirror/lang-markdown';
 import { autocompletion } from '@codemirror/autocomplete';
 
 import { useTranslation } from '@/lib/i18n';
-import { getFileDataAsText, saveContentAsOutput } from '@/lib/file';
+import {
+  getFileDataAsText,
+  parseA8MWFile,
+  saveContentAsWebsite,
+  saveContentAsOriginalFile,
+} from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
 import {
@@ -25,6 +30,7 @@ import {
   markedProcessorFactory,
 } from '@coseeing/access8math-web-lib';
 
+import { asConfigData } from '@/lib/config/data';
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import TipModal from '@/components/home/tip-modal';
@@ -32,7 +38,8 @@ import SettingModal from '@/components/home/setting-modal';
 import { ReactComponent as QuestionCircleComponent } from '@/components/svg/question-circle.svg';
 import { ReactComponent as SettingComponent } from '@/components/svg/settings.svg';
 
-const importAcceptedExtension = ['.txt', '.md'];
+const importTextAcceptedExtension = ['.txt', '.md'];
+const importAcceptedExtension = ['.a8mw'];
 
 export default function Home() {
   const t = useTranslation('home');
@@ -41,14 +48,17 @@ export default function Home() {
   const [showTipModal, setShowTipModal] = useState(false);
   const [showSettingModal, setShowSettingModal] = useState(false);
 
-  const [displayConfig, setDisplayConfig] = useState({
-    htmlDocumentDisplay: 'markdown',
-    htmlMathDisplay: 'block',
-    latexDelimiter: 'bracket',
-  });
+  const [displayConfig, setDisplayConfig] = useState(
+    asConfigData({ title: t('defaultOutputTitle') }),
+  );
+
+  const saveDisplayConfig = useCallback((config) => {
+    setDisplayConfig(asConfigData(config));
+  }, []);
 
   const codemirrorView = useRef(null);
   const importFile = useRef(null);
+  const importTextFile = useRef(null);
 
   const content = useMemo(() => {
     const processor = textProcessorFactory({
@@ -146,18 +156,21 @@ export default function Home() {
     [data, createView],
   );
 
+  const importTextClick = useCallback(() => {
+    importTextFile.current.click();
+  }, []);
+
   const importClick = useCallback(() => {
     importFile.current.click();
   }, []);
 
+  const exportWebsiteClick = useCallback(() => {
+    saveContentAsWebsite(data, asConfigData(displayConfig));
+  }, [data, displayConfig]);
+
   const exportClick = useCallback(() => {
-    saveContentAsOutput(data, {
-      title: t('defaultOutputTitle'),
-      latexDelimiter: displayConfig.latexDelimiter,
-      display: displayConfig.htmlMathDisplay,
-      documentDisplay: displayConfig.htmlDocumentDisplay,
-    });
-  }, [data, displayConfig, t]);
+    saveContentAsOriginalFile(data, asConfigData(displayConfig));
+  }, [data, displayConfig]);
 
   const insertLatex = useCallback(({ latex, offset }) => {
     const view = codemirrorView.current;
@@ -182,20 +195,44 @@ export default function Home() {
     view.focus();
   }, []);
 
-  const importAction = useCallback(
+  const importSource = useCallback(
+    (text, config = displayConfig) => {
+      setData(text);
+      saveDisplayConfig(config);
+      createView(text);
+    },
+    [displayConfig, createView, saveDisplayConfig],
+  );
+
+  const importTextAction = useCallback(
     async (event) => {
       const file = event.target.files[0];
 
       try {
         const newData = await getFileDataAsText(file);
-        setData(newData);
-        createView(newData);
+
+        importSource(newData);
       } catch (error) {
         // TODO: implement global alert or notification to handle the error
         console.error(error);
       }
     },
-    [createView],
+    [importSource],
+  );
+
+  const importAction = useCallback(
+    async (event) => {
+      const file = event.target.files[0];
+
+      try {
+        const { config, text } = await parseA8MWFile(file);
+        importSource(text, config);
+      } catch (error) {
+        // TODO: implement global alert or notification to handle the error
+        console.error(error);
+      }
+    },
+    [importSource],
   );
 
   return (
@@ -246,9 +283,25 @@ export default function Home() {
             variant="primary"
             className="md:ml-2 ml-1"
             size="sm"
+            onClick={importTextClick}
+          >
+            {t('importText')}
+          </Button>
+          <Button
+            variant="primary"
+            className="md:ml-2 ml-1"
+            size="sm"
             onClick={exportClick}
           >
             {t('export')}
+          </Button>
+          <Button
+            variant="primary"
+            className="md:ml-2 ml-1"
+            size="sm"
+            onClick={exportWebsiteClick}
+          >
+            {t('exportWebsite')}
           </Button>
         </div>
         <EditIconsTab insertLatex={insertLatex} />
@@ -256,6 +309,13 @@ export default function Home() {
           <div
             id="codemirror"
             className="left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
+          />
+          <input
+            ref={importTextFile}
+            accept={importTextAcceptedExtension.join(', ')}
+            type="file"
+            className="hidden"
+            onChange={importTextAction}
           />
           <input
             ref={importFile}
@@ -286,7 +346,7 @@ export default function Home() {
         </div>
         <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
           <div data-remove-styles>
-            {displayConfig.htmlDocumentDisplay === 'markdown' ? (
+            {displayConfig.documentDisplay === 'markdown' ? (
               <div dangerouslySetInnerHTML={{ __html: contentmd }} />
             ) : (
               <div>
@@ -304,7 +364,7 @@ export default function Home() {
       <SettingModal
         isOpen={showSettingModal}
         onClose={() => setShowSettingModal(false)}
-        onSubmit={setDisplayConfig}
+        onSubmit={saveDisplayConfig}
         displayConfig={displayConfig}
       />
     </div>

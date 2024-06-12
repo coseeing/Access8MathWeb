@@ -1,8 +1,13 @@
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 
-export function getFileDataAsText(file) {
-  return new Promise(function (resolve, reject) {
+import { asConfigData } from '@/lib/config/data';
+
+const CONFIG_JSON_FILE_NAME = 'config.json';
+const MARKDOWN_FILE_NAME = 'content.md';
+
+export const getFileDataAsText = (file) => {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     if (!(file instanceof Blob)) {
@@ -24,15 +29,53 @@ export function getFileDataAsText(file) {
       console.log('onabort', e);
     };
   });
-}
+};
+
+export const parseA8MWFile = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    if (!(file instanceof Blob)) {
+      reject(new Error('The input is not a Blob.'));
+    }
+
+    reader.readAsArrayBuffer(file);
+
+    reader.onload = (e) => {
+      const zip = new JSZip();
+      zip
+        .loadAsync(e.target.result)
+        .then((contents) => {
+          return Promise.all([
+            contents.files[MARKDOWN_FILE_NAME].async('text'),
+            contents.files[CONFIG_JSON_FILE_NAME].async('text'),
+          ]);
+        })
+        .then(([text, config]) => {
+          resolve({
+            text,
+            config: asConfigData(JSON.parse(config)),
+          });
+        });
+    };
+
+    reader.onerror = (e) => {
+      console.error(e);
+      reject(e);
+    };
+
+    reader.onabort = (e) => {
+      console.log('onabort', e);
+    };
+  });
+};
 
 const genConfigJs = (raw) => `window.contentConfig = ${raw}`;
 
-export const saveContentAsOutput = (source, configInput = {}) => {
+export const saveContentAsWebsite = (sourceText, configInput = {}) => {
   const config = {
-    title: '',
     ...configInput,
-    sourceText: source,
+    sourceText,
   };
 
   const rawFileName = `${config.title}.txt`;
@@ -40,7 +83,7 @@ export const saveContentAsOutput = (source, configInput = {}) => {
   const configBlob = new Blob([genConfigJs(JSON.stringify(config))], {
     type: 'text/javascript',
   });
-  const rawFileBlob = new Blob([source], { type: 'text/plain' });
+  const rawFileBlob = new Blob([sourceText], { type: 'text/plain' });
 
   const access8mathConfig = { entry: rawFileName };
   const access8mathJsonBlob = new Blob([JSON.stringify(access8mathConfig)], {
@@ -56,8 +99,22 @@ export const saveContentAsOutput = (source, configInput = {}) => {
         zip.file('Access8Math.json', access8mathJsonBlob);
 
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-          saveAs(newZipData, 'output.zip');
+          saveAs(newZipData, 'website.zip');
         });
       });
     });
+};
+
+export const saveContentAsOriginalFile = (sourceText, config = {}) => {
+  const configBlob = new Blob([JSON.stringify(config, null, 2)], {
+    type: 'application/json',
+  });
+  const markdownBlob = new Blob([sourceText], { type: 'text/markdown' });
+
+  const zip = new JSZip();
+  zip.file(CONFIG_JSON_FILE_NAME, configBlob);
+  zip.file(MARKDOWN_FILE_NAME, markdownBlob);
+  zip.generateAsync({ type: 'blob' }).then((newZipData) => {
+    saveAs(newZipData, 'export.a8mw');
+  });
 };

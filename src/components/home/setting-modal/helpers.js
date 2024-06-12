@@ -20,30 +20,30 @@ export const useOptionGroup = (t) => {
   return useMemo(() => {
     return [
       {
-        configName: 'htmlDocumentDisplay',
-        configLabel: t('htmlDocumentDisplay.name'),
+        configName: 'documentDisplay',
+        configLabel: t('documentDisplay.name'),
         options: [
           {
             value: 'markdown',
-            label: t('htmlDocumentDisplay.markdown'),
+            label: t('documentDisplay.markdown'),
           },
           {
             value: 'text',
-            label: t('htmlDocumentDisplay.text'),
+            label: t('documentDisplay.text'),
           },
         ],
       },
       {
-        configName: 'htmlMathDisplay',
-        configLabel: t('htmlMathDisplay.name'),
+        configName: 'display',
+        configLabel: t('display.name'),
         options: [
           {
             value: 'block',
-            label: t('htmlMathDisplay.block'),
+            label: t('display.block'),
           },
           {
             value: 'inline',
-            label: t('htmlMathDisplay.inline'),
+            label: t('display.inline'),
           },
         ],
       },
