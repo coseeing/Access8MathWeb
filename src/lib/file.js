@@ -51,9 +51,9 @@ export const parseA8MWFile = (file) => {
             contents.files[CONFIG_JSON_FILE_NAME].async('text'),
           ]);
         })
-        .then(([markdown, config]) => {
+        .then(([text, config]) => {
           resolve({
-            markdown,
+            text,
             config: asConfigData(JSON.parse(config)),
           });
         });

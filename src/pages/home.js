@@ -195,33 +195,45 @@ export default function Home() {
     view.focus();
   }, []);
 
+  const importSource = useCallback(
+    (text, config = displayConfig) => {
+      setData(text);
+      saveDisplayConfig(config);
+      createView(text);
+    },
+    [displayConfig, createView, saveDisplayConfig],
+  );
+
   const importTextAction = useCallback(
     async (event) => {
       const file = event.target.files[0];
 
       try {
         const newData = await getFileDataAsText(file);
-        setData(newData);
-        createView(newData);
+
+        importSource(newData);
       } catch (error) {
         // TODO: implement global alert or notification to handle the error
         console.error(error);
       }
     },
-    [createView],
+    [importSource],
   );
 
-  const importAction = useCallback(async (event) => {
-    const file = event.target.files[0];
+  const importAction = useCallback(
+    async (event) => {
+      const file = event.target.files[0];
 
-    try {
-      const { config, markdown } = await parseA8MWFile(file);
-      console.log({ config, markdown });
-    } catch (error) {
-      // TODO: implement global alert or notification to handle the error
-      console.error(error);
-    }
-  }, []);
+      try {
+        const { config, text } = await parseA8MWFile(file);
+        importSource(text, config);
+      } catch (error) {
+        // TODO: implement global alert or notification to handle the error
+        console.error(error);
+      }
+    },
+    [importSource],
+  );
 
   return (
     <div className="w-full h-full flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
