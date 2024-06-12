@@ -1,10 +1,10 @@
 {
-  "htmlDocumentDisplay": {
+  "documentDisplay": {
     "name": "文件顯示",
     "markdown": "Markdown",
     "text": "文字"
   },
-  "htmlMathDisplay": {
+  "display": {
     "name": "數學顯示",
     "block": "塊級",
     "inline": "行間"
