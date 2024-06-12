@@ -222,7 +222,8 @@ export default function Home() {
     const file = event.target.files[0];
 
     try {
-      const contents = await parseA8MWFile(file);
+      const { config, markdown } = await parseA8MWFile(file);
+      console.log({ config, markdown });
     } catch (error) {
       // TODO: implement global alert or notification to handle the error
       console.error(error);

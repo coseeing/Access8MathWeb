@@ -1,11 +1,13 @@
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 
+import { asConfigData } from '@/lib/config/data';
+
 const CONFIG_JSON_FILE_NAME = 'config.json';
 const MARKDOWN_FILE_NAME = 'content.md';
 
-export function getFileDataAsText(file) {
-  return new Promise(function (resolve, reject) {
+export const getFileDataAsText = (file) => {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     if (!(file instanceof Blob)) {
@@ -27,10 +29,10 @@ export function getFileDataAsText(file) {
       console.log('onabort', e);
     };
   });
-}
+};
 
-export function parseA8MWFile(file) {
-  return new Promise(function (resolve, reject) {
+export const parseA8MWFile = (file) => {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
     if (!(file instanceof Blob)) {
@@ -41,17 +43,20 @@ export function parseA8MWFile(file) {
 
     reader.onload = (e) => {
       const zip = new JSZip();
-      zip.loadAsync(e.target.result).then((contents) => {
-        console.log(
-          'parseA8MWFile config.json',
-          contents.files[CONFIG_JSON_FILE_NAME],
-        );
-        console.log(
-          'parseA8MWFile markdown',
-          contents.files[MARKDOWN_FILE_NAME],
-        );
-        resolve(contents);
-      });
+      zip
+        .loadAsync(e.target.result)
+        .then((contents) => {
+          return Promise.all([
+            contents.files[MARKDOWN_FILE_NAME].async('text'),
+            contents.files[CONFIG_JSON_FILE_NAME].async('text'),
+          ]);
+        })
+        .then(([markdown, config]) => {
+          resolve({
+            markdown,
+            config: asConfigData(JSON.parse(config)),
+          });
+        });
     };
 
     reader.onerror = (e) => {
@@ -63,7 +68,7 @@ export function parseA8MWFile(file) {
       console.log('onabort', e);
     };
   });
-}
+};
 
 const genConfigJs = (raw) => `window.contentConfig = ${raw}`;
 
@@ -110,7 +115,7 @@ export const saveContentAsOriginalFile = (source, config = {}) => {
   const zip = new JSZip();
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(MARKDOWN_FILE_NAME, markdownBlob);
-  zip.generateAsync({ type: 'blob' }).then(function (newZipData) {
+  zip.generateAsync({ type: 'blob' }).then((newZipData) => {
     saveAs(newZipData, 'export.a8mw');
   });
 };
