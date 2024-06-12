@@ -72,11 +72,10 @@ export const parseA8MWFile = (file) => {
 
 const genConfigJs = (raw) => `window.contentConfig = ${raw}`;
 
-export const saveContentAsWebsite = (source, configInput = {}) => {
+export const saveContentAsWebsite = (sourceText, configInput = {}) => {
   const config = {
-    title: '',
     ...configInput,
-    sourceText: source,
+    sourceText,
   };
 
   const rawFileName = `${config.title}.txt`;
@@ -84,7 +83,7 @@ export const saveContentAsWebsite = (source, configInput = {}) => {
   const configBlob = new Blob([genConfigJs(JSON.stringify(config))], {
     type: 'text/javascript',
   });
-  const rawFileBlob = new Blob([source], { type: 'text/plain' });
+  const rawFileBlob = new Blob([sourceText], { type: 'text/plain' });
 
   const access8mathConfig = { entry: rawFileName };
   const access8mathJsonBlob = new Blob([JSON.stringify(access8mathConfig)], {
@@ -106,11 +105,11 @@ export const saveContentAsWebsite = (source, configInput = {}) => {
     });
 };
 
-export const saveContentAsOriginalFile = (source, config = {}) => {
+export const saveContentAsOriginalFile = (sourceText, config = {}) => {
   const configBlob = new Blob([JSON.stringify(config, null, 2)], {
     type: 'application/json',
   });
-  const markdownBlob = new Blob([source], { type: 'text/markdown' });
+  const markdownBlob = new Blob([sourceText], { type: 'text/markdown' });
 
   const zip = new JSZip();
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);

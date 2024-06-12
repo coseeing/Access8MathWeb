@@ -30,6 +30,7 @@ import {
   markedProcessorFactory,
 } from '@coseeing/access8math-web-lib';
 
+import { asConfigData } from '@/lib/config/data';
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import TipModal from '@/components/home/tip-modal';
@@ -47,11 +48,13 @@ export default function Home() {
   const [showTipModal, setShowTipModal] = useState(false);
   const [showSettingModal, setShowSettingModal] = useState(false);
 
-  const [displayConfig, setDisplayConfig] = useState({
-    htmlDocumentDisplay: 'markdown',
-    htmlMathDisplay: 'block',
-    latexDelimiter: 'bracket',
-  });
+  const [displayConfig, setDisplayConfig] = useState(
+    asConfigData({ title: t('defaultOutputTitle') }),
+  );
+
+  const saveDisplayConfig = useCallback((config) => {
+    setDisplayConfig(asConfigData(config));
+  }, []);
 
   const codemirrorView = useRef(null);
   const importFile = useRef(null);
@@ -162,22 +165,12 @@ export default function Home() {
   }, []);
 
   const exportWebsiteClick = useCallback(() => {
-    saveContentAsWebsite(data, {
-      title: t('defaultOutputTitle'),
-      latexDelimiter: displayConfig.latexDelimiter,
-      display: displayConfig.htmlMathDisplay,
-      documentDisplay: displayConfig.htmlDocumentDisplay,
-    });
-  }, [data, displayConfig, t]);
+    saveContentAsWebsite(data, asConfigData(displayConfig));
+  }, [data, displayConfig]);
 
   const exportClick = useCallback(() => {
-    saveContentAsOriginalFile(data, {
-      title: t('defaultOutputTitle'),
-      latexDelimiter: displayConfig.latexDelimiter,
-      display: displayConfig.htmlMathDisplay,
-      documentDisplay: displayConfig.htmlDocumentDisplay,
-    });
-  }, [data, displayConfig, t]);
+    saveContentAsOriginalFile(data, asConfigData(displayConfig));
+  }, [data, displayConfig]);
 
   const insertLatex = useCallback(({ latex, offset }) => {
     const view = codemirrorView.current;
@@ -341,7 +334,7 @@ export default function Home() {
         </div>
         <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
           <div data-remove-styles>
-            {displayConfig.htmlDocumentDisplay === 'markdown' ? (
+            {displayConfig.documentDisplay === 'markdown' ? (
               <div dangerouslySetInnerHTML={{ __html: contentmd }} />
             ) : (
               <div>
@@ -359,7 +352,7 @@ export default function Home() {
       <SettingModal
         isOpen={showSettingModal}
         onClose={() => setShowSettingModal(false)}
-        onSubmit={setDisplayConfig}
+        onSubmit={saveDisplayConfig}
         displayConfig={displayConfig}
       />
     </div>
