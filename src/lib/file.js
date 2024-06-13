@@ -6,6 +6,8 @@ import { asConfigData } from '@/lib/config/data';
 const CONFIG_JSON_FILE_NAME = 'config.json';
 const MARKDOWN_FILE_NAME = 'content.md';
 
+export const ORIGINAL_FILE_EXTENSION = 'a8m';
+
 export const getFileDataAsText = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -115,6 +117,6 @@ export const saveContentAsOriginalFile = (sourceText, config = {}) => {
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(MARKDOWN_FILE_NAME, markdownBlob);
   zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-    saveAs(newZipData, 'export.a8mw');
+    saveAs(newZipData, `export.${ORIGINAL_FILE_EXTENSION}`);
   });
 };
