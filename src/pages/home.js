@@ -21,6 +21,7 @@ import {
   parseA8MWFile,
   saveContentAsWebsite,
   saveContentAsOriginalFile,
+  ORIGINAL_FILE_EXTENSION,
 } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
@@ -39,7 +40,7 @@ import { ReactComponent as QuestionCircleComponent } from '@/components/svg/ques
 import { ReactComponent as SettingComponent } from '@/components/svg/settings.svg';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
-const importAcceptedExtension = ['.a8mw'];
+const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
 
 export default function Home() {
   const t = useTranslation('home');
