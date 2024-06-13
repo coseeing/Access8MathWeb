@@ -278,7 +278,7 @@ export default function Home() {
             size="sm"
             onClick={importClick}
           >
-            {t('import')}
+            {t('importA8m')}
           </Button>
           <Button
             variant="primary"
@@ -294,7 +294,7 @@ export default function Home() {
             size="sm"
             onClick={exportClick}
           >
-            {t('export')}
+            {t('exportA8m')}
           </Button>
           <Button
             variant="primary"
