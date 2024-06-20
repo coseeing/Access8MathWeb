@@ -80,16 +80,8 @@ export const saveContentAsWebsite = (sourceText, configInput = {}) => {
     sourceText,
   };
 
-  const rawFileName = `${config.title}.txt`;
-
   const configBlob = new Blob([genConfigJs(JSON.stringify(config))], {
     type: 'text/javascript',
-  });
-  const rawFileBlob = new Blob([sourceText], { type: 'text/plain' });
-
-  const access8mathConfig = { entry: rawFileName };
-  const access8mathJsonBlob = new Blob([JSON.stringify(access8mathConfig)], {
-    type: 'application/json',
   });
 
   fetch('./access8math-web-template.zip')
@@ -97,8 +89,6 @@ export const saveContentAsWebsite = (sourceText, configInput = {}) => {
     .then((zipData) => {
       JSZip.loadAsync(zipData).then((zip) => {
         zip.file('content-config.js', configBlob);
-        zip.file(rawFileName, rawFileBlob);
-        zip.file('Access8Math.json', access8mathJsonBlob);
 
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
           saveAs(newZipData, `${config.title}.zip`);
