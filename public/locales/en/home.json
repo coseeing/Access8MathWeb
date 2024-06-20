@@ -6,6 +6,7 @@
   "importA8m": "Import a8m",
   "export": "Export",
   "exportA8m": "Export a8m",
+  "exportDocument": "Export Document",
   "exportWebsite": "Export Website",
   "descript": "descript",
   "preview": "Preview",
@@ -14,6 +15,5 @@
   "languageChanged": "Change to English",
   "setting": "Setting",
   "bracket2dollar": "{} to $",
-  "dollar2bracket": "$ to {}",
-  "defaultOutputTitle": "Access8Math"
+  "dollar2bracket": "$ to {}"
 }
