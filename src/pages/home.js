@@ -300,7 +300,7 @@ export default function Home() {
             size="sm"
             onClick={exportWebsiteClick}
           >
-            {t('exportDocument')}
+            {t('exportHTML')}
           </Button>
         </div>
         <EditIconsTab insertLatex={insertLatex} />
