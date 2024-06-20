@@ -6,6 +6,7 @@
   "importA8m": "匯入 a8m",
   "export": "匯出",
   "exportA8m": "匯出 a8m",
+  "exportHTML": "匯出 HTML",
   "exportWebsite": "匯出網站",
   "bracket2dollar": "括號轉錢號",
   "dollar2bracket": "錢號轉括號",
@@ -14,6 +15,5 @@
   "language": "TC",
   "changeLanguage": "語言切換",
   "languageChanged": "已切換為繁體中文",
-  "setting": "設定",
-  "defaultOutputTitle": "Access8Math"
+  "setting": "設定"
 }

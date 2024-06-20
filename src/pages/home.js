@@ -49,9 +49,7 @@ export default function Home() {
   const [showTipModal, setShowTipModal] = useState(false);
   const [showSettingModal, setShowSettingModal] = useState(false);
 
-  const [displayConfig, setDisplayConfig] = useState(
-    asConfigData({ title: t('defaultOutputTitle') }),
-  );
+  const [displayConfig, setDisplayConfig] = useState(asConfigData());
 
   const saveDisplayConfig = useCallback((config) => {
     setDisplayConfig(asConfigData(config));
@@ -302,7 +300,7 @@ export default function Home() {
             size="sm"
             onClick={exportWebsiteClick}
           >
-            {t('exportWebsite')}
+            {t('exportHTML')}
           </Button>
         </div>
         <EditIconsTab insertLatex={insertLatex} />

@@ -3,7 +3,7 @@ import JSZip from 'jszip';
 
 import { asConfigData } from '@/lib/config/data';
 
-const CONFIG_JSON_FILE_NAME = 'config.json';
+const CONFIG_JSON_FILE_NAME = 'Access8Math.json';
 const MARKDOWN_FILE_NAME = 'content.md';
 
 export const ORIGINAL_FILE_EXTENSION = 'a8m';
@@ -80,16 +80,8 @@ export const saveContentAsWebsite = (sourceText, configInput = {}) => {
     sourceText,
   };
 
-  const rawFileName = `${config.title}.txt`;
-
   const configBlob = new Blob([genConfigJs(JSON.stringify(config))], {
     type: 'text/javascript',
-  });
-  const rawFileBlob = new Blob([sourceText], { type: 'text/plain' });
-
-  const access8mathConfig = { entry: rawFileName };
-  const access8mathJsonBlob = new Blob([JSON.stringify(access8mathConfig)], {
-    type: 'application/json',
   });
 
   fetch('./access8math-web-template.zip')
@@ -97,11 +89,9 @@ export const saveContentAsWebsite = (sourceText, configInput = {}) => {
     .then((zipData) => {
       JSZip.loadAsync(zipData).then((zip) => {
         zip.file('content-config.js', configBlob);
-        zip.file(rawFileName, rawFileBlob);
-        zip.file('Access8Math.json', access8mathJsonBlob);
 
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-          saveAs(newZipData, 'website.zip');
+          saveAs(newZipData, `${config.title}.zip`);
         });
       });
     });
@@ -117,6 +107,6 @@ export const saveContentAsOriginalFile = (sourceText, config = {}) => {
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(MARKDOWN_FILE_NAME, markdownBlob);
   zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-    saveAs(newZipData, `export.${ORIGINAL_FILE_EXTENSION}`);
+    saveAs(newZipData, `${config.title}.${ORIGINAL_FILE_EXTENSION}`);
   });
 };
