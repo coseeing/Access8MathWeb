@@ -239,9 +239,7 @@ export default function Home() {
       {/* Left side input panel */}
       <div className="md:w-1/2 bg-bg1 md:p-8 p-4 flex flex-col">
         <div className="flex justify-between">
-          <p role="heading" aria-level="1" className="text-2xl md:text-3xl">
-            {t('editContent')}
-          </p>
+          <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
           <button
             className="hover:scale-110 transition-scale ml-2"
             onClick={() => setShowTipModal(true)}
@@ -329,13 +327,7 @@ export default function Home() {
       {/* Right side output panel */}
       <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
         <div className="flex mb-4 w-100 justify-between">
-          <p
-            role="heading"
-            aria-level="1"
-            className="text-2xl md:text-3xl w-100"
-          >
-            {t('preview')}
-          </p>
+          <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
           <button
             onClick={() => setShowSettingModal(true)}
             aria-label={t('setting')}
