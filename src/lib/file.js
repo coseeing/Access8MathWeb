@@ -4,7 +4,6 @@ import JSZip from 'jszip';
 import { asConfigData } from '@/lib/config/data';
 
 const CONFIG_JSON_FILE_NAME = 'Access8Math.json';
-const MARKDOWN_FILE_NAME = 'content.md';
 
 export const ORIGINAL_FILE_EXTENSION = 'a8m';
 
@@ -47,17 +46,16 @@ export const parseA8MWFile = (file) => {
       const zip = new JSZip();
       zip
         .loadAsync(e.target.result)
-        .then((contents) => {
-          return Promise.all([
-            contents.files[MARKDOWN_FILE_NAME].async('text'),
-            contents.files[CONFIG_JSON_FILE_NAME].async('text'),
-          ]);
-        })
-        .then(([text, config]) => {
+        .then(parseConfigFile)
+        .then(extractEntryData)
+        .then(({ text, config }) => {
           resolve({
             text,
-            config: asConfigData(JSON.parse(config)),
+            config: asConfigData(config),
           });
+        })
+        .catch((e) => {
+          reject(e);
         });
     };
 
@@ -70,6 +68,37 @@ export const parseA8MWFile = (file) => {
       console.log('onabort', e);
     };
   });
+};
+
+const parseConfigFile = (zipContents) => {
+  const configFilename = CONFIG_JSON_FILE_NAME;
+
+  if (!(configFilename in zipContents.files)) {
+    throw new Error(`Config file ${configFilename} is missing in archive.`);
+  }
+
+  return zipContents.files[configFilename].async('text').then((configText) => {
+    const config = JSON.parse(configText);
+
+    return { config, contents: zipContents };
+  });
+};
+
+const extractEntryData = ({ config, contents }) => {
+  if (!config.entry) {
+    throw new Error('No "entry" field specified in config.');
+  }
+
+  const entryFilename = config.entry;
+  if (!(entryFilename in contents.files)) {
+    throw new Error(`Entry file ${entryFilename} is missing in archive.`);
+  }
+
+  return contents.files[entryFilename].async('text').then((entryText) => ({
+    text: entryText,
+    config,
+    contents,
+  }));
 };
 
 const genConfigJs = (raw) => `window.contentConfig = ${raw}`;
@@ -97,7 +126,8 @@ export const saveContentAsWebsite = (sourceText, configInput = {}) => {
     });
 };
 
-export const saveContentAsOriginalFile = (sourceText, config = {}) => {
+export const saveContentAsOriginalFile = (sourceText, config) => {
+  const { entry } = config;
   const configBlob = new Blob([JSON.stringify(config, null, 2)], {
     type: 'application/json',
   });
@@ -105,7 +135,7 @@ export const saveContentAsOriginalFile = (sourceText, config = {}) => {
 
   const zip = new JSZip();
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
-  zip.file(MARKDOWN_FILE_NAME, markdownBlob);
+  zip.file(entry, markdownBlob);
   zip.generateAsync({ type: 'blob' }).then((newZipData) => {
     saveAs(newZipData, `${config.title}.${ORIGINAL_FILE_EXTENSION}`);
   });
