@@ -97,6 +97,7 @@ const extractEntryData = ({ config, contents }) => {
   return contents.files[entryFilename].async('text').then((entryText) => ({
     text: entryText,
     config,
+    contents,
   }));
 };
 
