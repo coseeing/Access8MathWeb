@@ -34,17 +34,18 @@ const ABOUT_ITEMS = [
     id: 'tutorialDownload',
     href: 'https://drive.google.com/drive/folders/1fVrQjhHEypOGr3lVcqBsmk0f_u_FD1IP',
   },
+  { id: 'developmentJourney', href: 'https://medium.com/p/ba30170c52ea' },
   { id: 'caseSharing', href: 'https://medium.com/p/cbf266d6f9b6' },
   {
     id: 'audiovisualReport',
     href: 'https://www.youtube.com/watch?v=11JjNgEJdrM',
   },
   {
-    id: 'ntnuNews',
+    id: 'professionalPartnership',
     href: 'https://pr.ntnu.edu.tw/ntnunews/index.php?mode=data&id=21099',
   },
   {
-    id: 'developmentRepository',
+    id: 'sourceCode',
     href: 'https://github.com/tsengwoody/Access8Math',
   },
 ];
