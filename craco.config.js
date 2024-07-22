@@ -23,4 +23,15 @@ module.exports = {
       '@': path.resolve(__dirname, 'src/'),
     },
   },
+  babel: {
+    presets: ['@babel/preset-react'],
+  },
+  jest: {
+    configure: {
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+      },
+      testEnvironment: 'jsdom',
+    },
+  },
 };

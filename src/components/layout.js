@@ -8,7 +8,7 @@ import Header from './header';
 const Layout = () => {
   return (
     <LocaleContextProvider>
-      <div>
+      <div data-testid="layout">
         <Header />
 
         <main className="pt-20 md:h-screen w-screen ">
