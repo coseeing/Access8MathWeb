@@ -2,13 +2,7 @@
 
 'use client';
 
-import React, {
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-  useEffect,
-} from 'react';
+import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { basicSetup } from 'codemirror';
 import { EditorView } from '@codemirror/view';
 import { EditorState, EditorSelection } from '@codemirror/state';
@@ -25,18 +19,12 @@ import {
 } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
-import {
-  latexDelimiterConvertor,
-  textProcessorFactory,
-  markedProcessorFactory,
-} from '@coseeing/access8math-web-lib';
+import { latexDelimiterConvertor, textProcessorFactory, markedProcessorFactory } from '@coseeing/access8math-web-lib';
 
 import { asConfigData } from '@/lib/config/data';
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
-import TipModal from '@/components/home/tip-modal';
 import SettingModal from '@/components/home/setting-modal';
-import { ReactComponent as QuestionCircleComponent } from '@/components/svg/question-circle.svg';
 import { ReactComponent as SettingComponent } from '@/components/svg/settings.svg';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
@@ -44,11 +32,8 @@ const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
 
 export default function Home() {
   const t = useTranslation('home');
-
   const [data, setData] = useState('');
-  const [showTipModal, setShowTipModal] = useState(false);
   const [showSettingModal, setShowSettingModal] = useState(false);
-
   const [displayConfig, setDisplayConfig] = useState(asConfigData());
 
   const saveDisplayConfig = useCallback((config) => {
@@ -118,6 +103,7 @@ export default function Home() {
   }, [createView]);
 
   const insertMark = useCallback(() => {
+    console.log(displayConfig);
     let LaTeX_delimiter_start = '\\(';
     let LaTeX_delimiter_end = '\\)';
     if (displayConfig.latexDelimiter === 'bracket') {
@@ -134,15 +120,18 @@ export default function Home() {
       view.state.changeByRange((range) => {
         return {
           changes: [
-            { from: range.from, insert: LaTeX_delimiter_start },
-            { from: range.to, insert: LaTeX_delimiter_end },
+            {
+              from: range.from,
+              insert: LaTeX_delimiter_start,
+            },
+            {
+              from: range.to,
+              insert: LaTeX_delimiter_end,
+            },
           ],
-          range: EditorSelection.range(
-            range.from + startOffset,
-            range.to + endOffset,
-          ),
+          range: EditorSelection.range(range.from + startOffset, range.to + endOffset),
         };
-      }),
+      })
     );
     view.focus();
   }, [displayConfig]);
@@ -152,7 +141,7 @@ export default function Home() {
       const value = latexDelimiterConvertor(mode)(data);
       createView(value);
     },
-    [data, createView],
+    [data, createView]
   );
 
   const importTextClick = useCallback(() => {
@@ -185,11 +174,8 @@ export default function Home() {
             insert: latex.slice(latex.length + offset, latex.length),
           },
         ],
-        range: EditorSelection.range(
-          range.from + latex.length + offset,
-          range.from + latex.length + offset,
-        ),
-      })),
+        range: EditorSelection.range(range.from + latex.length + offset, range.from + latex.length + offset),
+      }))
     );
     view.focus();
   }, []);
@@ -200,7 +186,7 @@ export default function Home() {
       saveDisplayConfig(config);
       createView(text);
     },
-    [displayConfig, createView, saveDisplayConfig],
+    [displayConfig, createView, saveDisplayConfig]
   );
 
   const importTextAction = useCallback(
@@ -216,7 +202,7 @@ export default function Home() {
         console.error(error);
       }
     },
-    [importSource],
+    [importSource]
   );
 
   const importAction = useCallback(
@@ -231,133 +217,169 @@ export default function Home() {
         console.error(error);
       }
     },
-    [importSource],
+    [importSource]
   );
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
-      {/* Left side input panel */}
-      <div className="md:w-1/2 bg-bg1 md:p-8 p-4 flex flex-col">
-        <div className="flex justify-between">
-          <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
-          <button
-            className="hover:scale-110 transition-scale ml-2"
-            onClick={() => setShowTipModal(true)}
-            aria-label={t('descript')}
-          >
-            <QuestionCircleComponent />
-          </button>
-        </div>
-        <div className="flex justify-end mb-4 mt-4 md:mt-m1">
-          <Button variant="primary" className="ml-2" onClick={insertMark}>
-            {t('mark')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={() => laTeXSepConvert('d2b')}
-          >
-            {t('dollar2bracket')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={() => laTeXSepConvert('b2d')}
-          >
-            {t('bracket2dollar')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={importClick}
-          >
-            {t('importA8m')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={importTextClick}
-          >
-            {t('importText')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={exportClick}
-          >
-            {t('exportA8m')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={exportWebsiteClick}
-          >
-            {t('exportHTML')}
-          </Button>
-        </div>
-        <EditIconsTab insertLatex={insertLatex} />
-        <div className="flex flex-1">
-          <div
-            id="codemirror"
-            className="left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
-          />
-          <input
-            ref={importTextFile}
-            accept={importTextAcceptedExtension.join(', ')}
-            type="file"
-            className="hidden"
-            onChange={importTextAction}
-          />
-          <input
-            ref={importFile}
-            accept={importAcceptedExtension.join(', ')}
-            type="file"
-            className="hidden"
-            onChange={importAction}
-          />
-        </div>
-      </div>
-
-      {/* Right side output panel */}
-      <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
-        <div className="flex mb-4 w-100 justify-between">
-          <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
-          <button
-            onClick={() => setShowSettingModal(true)}
-            aria-label={t('setting')}
-          >
-            <SettingComponent />
-          </button>
-        </div>
-        <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
-          <div data-remove-styles>
-            {displayConfig.documentDisplay === 'markdown' ? (
-              <div dangerouslySetInnerHTML={{ __html: contentmd }} />
-            ) : (
-              <div>
-                {content.map((line, key) => (
-                  <span key={key}>
-                    <span dangerouslySetInnerHTML={{ __html: line }} />
-                  </span>
-                ))}
-              </div>
-            )}
+    <div className="w-full h-full">
+      {/* Top file setting panel */}
+      <div className="flex flex-col md:flex-row justify-between px-8 md:px-20 py-4 ">
+        <div className="flex justify-start md:w-1/3">
+          <div className="content-center mr-3">{t('latexDelimiter.name')}</div>
+          <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
+            <button
+              className={`py-2 px-4 rounded-md ${
+                displayConfig.latexDelimiter === 'dollar' ? 'bg-themeBlue text-white' : 'bg-white text-themeBlue'
+              }`}
+              onClick={() =>
+                setDisplayConfig({
+                  ...displayConfig,
+                  latexDelimiter: 'dollar',
+                })
+              }
+              aria-label={t('latexDelimiter.dollar')}
+            >
+              $
+            </button>
+            <button
+              className={`py-2 px-3 rounded-md ${
+                displayConfig.latexDelimiter === 'bracket' ? 'bg-themeBlue text-white' : 'bg-white text-themeBlue'
+              }`}
+              onClick={() =>
+                setDisplayConfig({
+                  ...displayConfig,
+                  latexDelimiter: 'bracket',
+                })
+              }
+              aria-label={t('latexDelimiter.bracket')}
+            >
+              \(\)
+            </button>
           </div>
         </div>
+        <div className="flex justify-center md:w-1/3">
+          <div className="flex flex-col items-center w-full">
+            <div className="relative w-full max-w-lg">
+              <div className="relative w-full max-w-lg">
+                <input
+                  value={displayConfig.title}
+                  type="text"
+                  style={{
+                    outline: 'none',
+                  }}
+                  className="text-center text-2xl text-themeBlue font-bold border-b-2 border-themeBlue p-2 placeholder-opacity-100 w-full"
+                  placeholder={t('pleaseInputTitle')}
+                  onChange={(e) => {
+                    setDisplayConfig({
+                      ...displayConfig,
+                      title: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-end md:w-1/3">
+          {/* <button className="rounded-full border bg-white border-themeBlue text-themeBlue px-7 py-1">
+            {t('import')}
+          </button>
+          <button className="rounded-full border bg-white border-themeBlue text-themeBlue px-7 py-1 ml-3">
+            {t('export')}
+          </button> */}
+        </div>
       </div>
-      <TipModal isOpen={showTipModal} onClose={() => setShowTipModal(false)} />
-      <SettingModal
-        isOpen={showSettingModal}
-        onClose={() => setShowSettingModal(false)}
-        onSubmit={saveDisplayConfig}
-        displayConfig={displayConfig}
-      />
+      <div className=" flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
+        {/* Left side input panel */}
+        <div className="md:w-1/2 bg-bg1 md:p-8 p-4 flex flex-col">
+          <div className="flex justify-between">
+            <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
+          </div>
+          <div className="flex justify-end mb-4 mt-4 md:mt-m1">
+            <Button variant="primary" className="ml-2" onClick={insertMark}>
+              {t('mark')}
+            </Button>
+            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={() => laTeXSepConvert('d2b')}>
+              {t('dollar2bracket')}
+            </Button>
+            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={() => laTeXSepConvert('b2d')}>
+              {t('bracket2dollar')}
+            </Button>
+            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={importClick}>
+              {t('importA8m')}
+            </Button>
+            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={importTextClick}>
+              {t('importText')}
+            </Button>
+            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={exportClick}>
+              {t('exportA8m')}
+            </Button>
+            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={exportWebsiteClick}>
+              {t('exportHTML')}
+            </Button>
+          </div>
+          <EditIconsTab insertLatex={insertLatex} />
+          <div className="flex flex-1">
+            <div
+              id="codemirror"
+              className="left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
+            />
+            <input
+              ref={importTextFile}
+              accept={importTextAcceptedExtension.join(', ')}
+              type="file"
+              className="hidden"
+              onChange={importTextAction}
+            />
+            <input
+              ref={importFile}
+              accept={importAcceptedExtension.join(', ')}
+              type="file"
+              className="hidden"
+              onChange={importAction}
+            />
+          </div>
+        </div>
+
+        {/* Right side output panel */}
+        <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
+          <div className="flex mb-4 w-100 justify-between">
+            <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
+            <button onClick={() => setShowSettingModal(true)} aria-label={t('setting')}>
+              <SettingComponent />
+            </button>
+          </div>
+          <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
+            <div data-remove-styles>
+              {displayConfig.documentDisplay === 'markdown' ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: contentmd,
+                  }}
+                />
+              ) : (
+                <div>
+                  {content.map((line, key) => (
+                    <span key={key}>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: line,
+                        }}
+                      />
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <SettingModal
+          isOpen={showSettingModal}
+          onClose={() => setShowSettingModal(false)}
+          onSubmit={saveDisplayConfig}
+          displayConfig={displayConfig}
+        />
+      </div>
     </div>
   );
 }

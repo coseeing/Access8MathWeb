@@ -15,5 +15,11 @@
   "languageChanged": "Change to English",
   "setting": "Setting",
   "bracket2dollar": "{} to $",
-  "dollar2bracket": "$ to {}"
+  "dollar2bracket": "$ to {}",
+  "pleaseInputTitle": "Please input file title",
+  "latexDelimiter": {
+    "name": "LaTeX 分隔符",
+    "bracket": "括號",
+    "dollar": "錢號"
+  }
 }
