@@ -21,7 +21,7 @@ const LanguageMenu = () => {
       {({ open }) => (
         <>
           <Menu.Button
-            className="flex items-center md:text-xl text-base font-semibold leading-8 text-gray-900"
+            className="flex items-center md:text-md text-base font-semibold leading-8 text-gray-900"
             aria-label={t('changeLocale')}
           >
             <LanguageIcon

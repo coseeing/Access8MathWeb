@@ -15,5 +15,6 @@
   "language": "TC",
   "changeLanguage": "語言切換",
   "languageChanged": "已切換為繁體中文",
-  "setting": "設定"
+  "setting": "設定",
+  "pleaseInputTitle": "請輸入文件標題"
 }
