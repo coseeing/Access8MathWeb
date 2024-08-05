@@ -103,7 +103,6 @@ export default function Home() {
   }, [createView]);
 
   const insertMark = useCallback(() => {
-    console.log(displayConfig);
     let LaTeX_delimiter_start = '\\(';
     let LaTeX_delimiter_end = '\\)';
     if (displayConfig.latexDelimiter === 'bracket') {
@@ -229,7 +228,7 @@ export default function Home() {
           <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
             <button
               className={`py-2 px-4 rounded-md ${
-                displayConfig.latexDelimiter === 'dollar' ? 'bg-themeBlue text-white' : 'bg-white text-themeBlue'
+                displayConfig.latexDelimiter === 'dollar' ? 'bg-cyan text-white' : 'bg-white text-cyan'
               }`}
               onClick={() =>
                 setDisplayConfig({
@@ -238,12 +237,13 @@ export default function Home() {
                 })
               }
               aria-label={t('latexDelimiter.dollar')}
+              aria-pressed={displayConfig.latexDelimiter === 'dollar'}
             >
               $
             </button>
             <button
               className={`py-2 px-3 rounded-md ${
-                displayConfig.latexDelimiter === 'bracket' ? 'bg-themeBlue text-white' : 'bg-white text-themeBlue'
+                displayConfig.latexDelimiter === 'bracket' ? 'bg-cyan text-white' : 'bg-white text-cyan'
               }`}
               onClick={() =>
                 setDisplayConfig({
@@ -252,6 +252,7 @@ export default function Home() {
                 })
               }
               aria-label={t('latexDelimiter.bracket')}
+              aria-pressed={displayConfig.latexDelimiter === 'bracket'}
             >
               \(\)
             </button>
@@ -267,8 +268,9 @@ export default function Home() {
                   style={{
                     outline: 'none',
                   }}
-                  className="text-center text-2xl text-themeBlue font-bold border-b-2 border-themeBlue p-2 placeholder-opacity-100 w-full"
+                  className="text-center text-2xl text-cyan font-bold border-b-2 border-cyan p-2 placeholder-opacity-100 w-full"
                   placeholder={t('pleaseInputTitle')}
+                  aria-label={t('pleaseInputTitle')}
                   onChange={(e) => {
                     setDisplayConfig({
                       ...displayConfig,
@@ -281,10 +283,10 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-end md:w-1/3">
-          {/* <button className="rounded-full border bg-white border-themeBlue text-themeBlue px-7 py-1">
+          {/* <button className="rounded-full border bg-white border-cyan text-cyan px-7 py-1">
             {t('import')}
           </button>
-          <button className="rounded-full border bg-white border-themeBlue text-themeBlue px-7 py-1 ml-3">
+          <button className="rounded-full border bg-white border-cyan text-cyan px-7 py-1 ml-3">
             {t('export')}
           </button> */}
         </div>

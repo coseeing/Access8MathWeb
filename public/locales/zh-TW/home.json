@@ -16,5 +16,10 @@
   "changeLanguage": "語言切換",
   "languageChanged": "已切換為繁體中文",
   "setting": "設定",
-  "pleaseInputTitle": "請輸入文件標題"
+  "pleaseInputTitle": "請輸入文件標題",
+  "latexDelimiter": {
+    "name": "LaTeX 分隔符",
+    "bracket": "括號",
+    "dollar": "錢號"
+  }
 }
