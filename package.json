@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "craco start",
-    "start:desktop": "craco start && electron-forge start",
+    "start:desktop": "electron-forge start",
     "build": "GENERATE_SOURCEMAP=false craco build",
     "test": "craco test",
     "eject": "craco eject",
