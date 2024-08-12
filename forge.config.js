@@ -9,7 +9,10 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        authors: 'Coseeing',
+        description: 'access-8-math-web'
+      },
     },
     {
       name: '@electron-forge/maker-zip',
