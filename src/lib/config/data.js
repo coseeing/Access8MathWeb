@@ -6,6 +6,7 @@ const DEFAULT_DATA = {
   display: 'block',
   latexDelimiter: 'bracket',
   entry: 'content.md',
+  exportType: 'zip',
 };
 
 const KEYS = Object.keys(DEFAULT_DATA);

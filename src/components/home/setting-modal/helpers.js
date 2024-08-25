@@ -16,23 +16,10 @@ export const useForm = ({ config, isOpen }) => {
   return { localConfig, updateLocalConfig };
 };
 
+// TODO: add change layout color
 export const useOptionGroup = (t) => {
   return useMemo(() => {
     return [
-      {
-        configName: 'documentDisplay',
-        configLabel: t('documentDisplay.name'),
-        options: [
-          {
-            value: 'markdown',
-            label: t('documentDisplay.markdown'),
-          },
-          {
-            value: 'text',
-            label: t('documentDisplay.text'),
-          },
-        ],
-      },
       {
         configName: 'display',
         configLabel: t('display.name'),
@@ -61,6 +48,25 @@ export const useOptionGroup = (t) => {
           },
         ],
       },
+      {
+        configName: 'exportType',
+        configLabel: t('exportType.name'),
+        options: [
+          {
+            value: 'zip',
+            label: t('exportType.zip'),
+          },
+          {
+            value: 'text',
+            label: t('exportType.text'),
+          },
+          // TODO: add pdf export
+          // {
+          //   value: 'pdf',
+          //   label: t('exportType.pdf'),
+          // }
+        ],
+      }
     ];
   }, [t]);
 };

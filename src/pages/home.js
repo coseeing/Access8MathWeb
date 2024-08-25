@@ -42,7 +42,6 @@ export default function Home() {
 
   const codemirrorView = useRef(null);
   const importFile = useRef(null);
-  const importTextFile = useRef(null);
 
   const content = useMemo(() => {
     const processor = textProcessorFactory({
@@ -143,21 +142,9 @@ export default function Home() {
     [data, createView]
   );
 
-  const importTextClick = useCallback(() => {
-    importTextFile.current.click();
-  }, []);
-
   const importClick = useCallback(() => {
     importFile.current.click();
   }, []);
-
-  const exportWebsiteClick = useCallback(() => {
-    saveContentAsWebsite(data, asConfigData(displayConfig));
-  }, [data, displayConfig]);
-
-  const exportClick = useCallback(() => {
-    saveContentAsOriginalFile(data, asConfigData(displayConfig));
-  }, [data, displayConfig]);
 
   const insertLatex = useCallback(({ latex, offset }) => {
     const view = codemirrorView.current;
@@ -188,14 +175,23 @@ export default function Home() {
     [displayConfig, createView, saveDisplayConfig]
   );
 
-  const importTextAction = useCallback(
+  const importFileAction = useCallback(
     async (event) => {
       const file = event.target.files[0];
-
+      if (!file) {
+        console.log('file not found');
+        return;
+      }
+      const fileName = file.name;
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
       try {
-        const newData = await getFileDataAsText(file);
-
-        importSource(newData);
+        if (importAcceptedExtension.includes(fileExtension)) {
+          const { config, text } = await parseA8MWFile(file);
+          importSource(text, config);
+        } else if (importTextAcceptedExtension.includes(fileExtension)) {
+          const newData = await getFileDataAsText(file);
+          importSource(newData);
+        }
       } catch (error) {
         // TODO: implement global alert or notification to handle the error
         console.error(error);
@@ -204,20 +200,13 @@ export default function Home() {
     [importSource]
   );
 
-  const importAction = useCallback(
-    async (event) => {
-      const file = event.target.files[0];
-
-      try {
-        const { config, text } = await parseA8MWFile(file);
-        importSource(text, config);
-      } catch (error) {
-        // TODO: implement global alert or notification to handle the error
-        console.error(error);
-      }
-    },
-    [importSource]
-  );
+  const exportFileAction = useCallback((updatedConfig) => {
+    if (updatedConfig.exportType === 'zip') {
+      saveContentAsWebsite(data, asConfigData(updatedConfig));
+    } else if (updatedConfig.exportType === 'text') {
+      saveContentAsOriginalFile(data, asConfigData(updatedConfig));
+    }
+  }, [data]);
 
   return (
     <div className="w-full h-full">
@@ -229,7 +218,7 @@ export default function Home() {
             <button
               className={`py-2 px-4 rounded-md ${
                 displayConfig.latexDelimiter === 'dollar' ? 'bg-cyan text-white' : 'bg-white text-cyan'
-              }`}
+              } `}
               onClick={() =>
                 setDisplayConfig({
                   ...displayConfig,
@@ -283,12 +272,10 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-end md:w-1/3">
-          {/* <button className="rounded-full border bg-white border-cyan text-cyan px-7 py-1">
+          <button className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1" onClick={importClick}>
             {t('import')}
           </button>
-          <button className="rounded-full border bg-white border-cyan text-cyan px-7 py-1 ml-3">
-            {t('export')}
-          </button> */}
+          <button className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3" onClick={()=> setShowSettingModal(true)}>{t('export')}</button>
         </div>
       </div>
       <div className=" flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
@@ -307,18 +294,6 @@ export default function Home() {
             <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={() => laTeXSepConvert('b2d')}>
               {t('bracket2dollar')}
             </Button>
-            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={importClick}>
-              {t('importA8m')}
-            </Button>
-            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={importTextClick}>
-              {t('importText')}
-            </Button>
-            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={exportClick}>
-              {t('exportA8m')}
-            </Button>
-            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={exportWebsiteClick}>
-              {t('exportHTML')}
-            </Button>
           </div>
           <EditIconsTab insertLatex={insertLatex} />
           <div className="flex flex-1">
@@ -327,18 +302,11 @@ export default function Home() {
               className="left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
             />
             <input
-              ref={importTextFile}
-              accept={importTextAcceptedExtension.join(', ')}
-              type="file"
-              className="hidden"
-              onChange={importTextAction}
-            />
-            <input
               ref={importFile}
-              accept={importAcceptedExtension.join(', ')}
+              accept={[...importTextAcceptedExtension, ...importAcceptedExtension].join(', ')}
               type="file"
               className="hidden"
-              onChange={importAction}
+              onChange={importFileAction}
             />
           </div>
         </div>
@@ -347,9 +315,9 @@ export default function Home() {
         <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
           <div className="flex mb-4 w-100 justify-between">
             <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
-            <button onClick={() => setShowSettingModal(true)} aria-label={t('setting')}>
+            {/* <button onClick={() => setShowSettingModal(true)} aria-label={t('setting')}>
               <SettingComponent />
-            </button>
+            </button> */}
           </div>
           <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
             <div data-remove-styles>
@@ -378,7 +346,8 @@ export default function Home() {
         <SettingModal
           isOpen={showSettingModal}
           onClose={() => setShowSettingModal(false)}
-          onSubmit={saveDisplayConfig}
+          onSave={saveDisplayConfig}
+          onSubmit={exportFileAction}
           displayConfig={displayConfig}
         />
       </div>

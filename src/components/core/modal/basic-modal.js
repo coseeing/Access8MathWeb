@@ -27,15 +27,15 @@ const BsicModal = ({
           {/* background layer */}
           <div className="fixed inset-0 bg-black/60" />
           <Dialog.Panel className="max-w-xl flex-col bg-white shadow-xl rounded-2xl p-8 z-10">
-            <Dialog.Title as="h3" className="text-2xl mb-8">
-              {title}
+            <Dialog.Title as="h3" className="text-center text-2xl font-bold mb-6">
+              <span className="border-b-4 border-cyan pb-4 mb-8">{title}</span>
             </Dialog.Title>
             <div className="mb-8">{children}</div>
             <div className="flex justify-center">
               {hasCancel && (
                 <Button
                   size="l"
-                  className="mr-2"
+                  className="mr-2 w-full"
                   variant="secondary"
                   onClick={onCancel}
                 >
@@ -43,7 +43,7 @@ const BsicModal = ({
                 </Button>
               )}
               {hasConfirm && (
-                <Button size="l" onClick={onConfirm}>
+                <Button size="l" onClick={onConfirm} className="w-full bg-cyan">
                   {confirmLabel}
                 </Button>
               )}

@@ -6,7 +6,7 @@ import BasicModal from '@/components/core/modal/basic-modal';
 
 import { useOptionGroup, useForm } from './helpers';
 
-const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig }) => {
+const SettingModal = ({ isOpen, onClose, onSave, onSubmit, displayConfig }) => {
   const t = useTranslation('setting-modal');
 
   const optionGroup = useOptionGroup(t);
@@ -17,52 +17,46 @@ const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig }) => {
   });
 
   const onConfirm = useCallback(() => {
+    onSave(localConfig);
     onSubmit(localConfig);
     onClose();
-  }, [onSubmit, onClose, localConfig]);
+  }, [onSubmit, onClose, onSave, localConfig]);
 
   return (
     <BasicModal
       title={t('title')}
       isOpen={isOpen}
-      hasCancel={false}
+      hasCancel={true}
       onClose={onClose}
+      onCancel={onClose}
       onConfirm={onConfirm}
+      cancelLabel={t('cancel')}
       confirmLabel={t('submit')}
     >
       <div className="md:w-[30rem] w-[15rem]">
         <form>
           {optionGroup.map(({ configName, configLabel, options }) => {
             return (
-              <div key={configName} className="mb-4">
-                <label className="text-base font-semibold text-gray-900">
-                  {configLabel}
+              <div key={configName} className="grid grid-cols-12 items-center gap-4 p-3">
+                <label className="col-span-4 text-lg font-semibold text-gray-900">
+                  {configLabel}：
                 </label>
-                <fieldset className="mt-2">
+                <fieldset className="col-span-8">
                   <legend className="sr-only">{configLabel}</legend>
-                  <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                  <select
+                    className="block w-full text-md bg-cyanLight border-gray-300 rounded-md focus:outline-none focus:ring-indigo-600 sm:text-sm p-3"
+                    value={localConfig[configName]}
+                    onChange={(e) => {
+                      updateLocalConfig(configName, e.target.value);
+                    }}
+                    aria-label={configLabel}
+                  >
                     {options.map(({ value, label }) => (
-                      <div key={value} className="flex items-center">
-                        <input
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                          id={value}
-                          type="radio"
-                          value={value}
-                          name={value}
-                          checked={localConfig[configName] === value}
-                          onChange={() => {
-                            updateLocalConfig(configName, value);
-                          }}
-                        />
-                        <label
-                          className="ml-3 block text-sm font-medium leading-6 text-gray-900"
-                          htmlFor={value}
-                        >
-                          {label}
-                        </label>
-                      </div>
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
                     ))}
-                  </div>
+                  </select>
                 </fieldset>
               </div>
             );
