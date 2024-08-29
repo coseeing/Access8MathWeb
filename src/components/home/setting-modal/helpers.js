@@ -47,25 +47,6 @@ export const useOptionGroup = (t) => {
             label: t('latexDelimiter.dollar'),
           },
         ],
-      },
-      {
-        configName: 'exportType',
-        configLabel: t('exportType.name'),
-        options: [
-          {
-            value: 'zip',
-            label: t('exportType.zip'),
-          },
-          {
-            value: 'text',
-            label: t('exportType.text'),
-          },
-          // TODO: add pdf export
-          // {
-          //   value: 'pdf',
-          //   label: t('exportType.pdf'),
-          // }
-        ],
       }
     ];
   }, [t]);

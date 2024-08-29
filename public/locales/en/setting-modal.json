@@ -17,10 +17,5 @@
   "cancel": "Cancel",
   "submit": "Export File",
   "title": "Setting",
-  "exportType": {
-    "name": "Export type",
-    "zip": "zip",
-    "text": "text",
-    "pdf": "pdf"
-  }
+  "exportType": "Export Type"
 }

@@ -6,7 +6,7 @@ import BasicModal from '@/components/core/modal/basic-modal';
 
 import { useOptionGroup, useForm } from './helpers';
 
-const SettingModal = ({ isOpen, onClose, onSave, onSubmit, displayConfig }) => {
+const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig, exportType, setExportType }) => {
   const t = useTranslation('setting-modal');
 
   const optionGroup = useOptionGroup(t);
@@ -17,10 +17,9 @@ const SettingModal = ({ isOpen, onClose, onSave, onSubmit, displayConfig }) => {
   });
 
   const onConfirm = useCallback(() => {
-    onSave(localConfig);
-    onSubmit(localConfig);
+    onSubmit(localConfig, exportType);
     onClose();
-  }, [onSubmit, onClose, onSave, localConfig]);
+  }, [onSubmit, onClose, localConfig, exportType]);
 
   return (
     <BasicModal
@@ -61,6 +60,25 @@ const SettingModal = ({ isOpen, onClose, onSave, onSubmit, displayConfig }) => {
               </div>
             );
           })}
+          <div className="grid grid-cols-12 items-center gap-4 p-3">
+            <label className="col-span-4 text-lg font-semibold text-gray-900">
+              {t('exportType')}：
+            </label>
+            <fieldset className="col-span-8">
+              <legend className="sr-only">{t('exportType')}</legend>
+              <select
+                className="block w-full text-md bg-cyanLight border-gray-300 rounded-md focus:outline-none focus:ring-indigo-600 sm:text-sm p-3"
+                value={exportType}
+                onChange={(e) => {
+                  setExportType(e.target.value);
+                }}
+                aria-label={t('exportType')}
+              >
+                <option value="zip">{t('zip')}</option>
+                <option value="text">{t('text')}</option>
+              </select>
+            </fieldset>
+          </div>
         </form>
       </div>
     </BasicModal>
@@ -75,6 +93,7 @@ SettingModal.propTypes = {
     documentDisplay: PropTypes.string,
     display: PropTypes.string,
     latexDelimiter: PropTypes.string,
+    exportType: PropTypes.string,
   }),
 };
 

@@ -25,16 +25,21 @@ import { asConfigData } from '@/lib/config/data';
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
-import { ReactComponent as SettingComponent } from '@/components/svg/settings.svg';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
+
+const ExportType = {
+  ZIP: 'zip',
+  TEXT: 'text',
+};
 
 export default function Home() {
   const t = useTranslation('home');
   const [data, setData] = useState('');
   const [showSettingModal, setShowSettingModal] = useState(false);
   const [displayConfig, setDisplayConfig] = useState(asConfigData());
+  const [exportType, setExportType] = useState(ExportType.ZIP);
 
   const saveDisplayConfig = useCallback((config) => {
     setDisplayConfig(asConfigData(config));
@@ -187,10 +192,12 @@ export default function Home() {
       try {
         if (importAcceptedExtension.includes(fileExtension)) {
           const { config, text } = await parseA8MWFile(file);
-          importSource(text, config);
-        } else if (importTextAcceptedExtension.includes(fileExtension)) {
+          return importSource(text, config);
+        }
+        
+        if (importTextAcceptedExtension.includes(fileExtension)) {
           const newData = await getFileDataAsText(file);
-          importSource(newData);
+          return importSource(newData);
         }
       } catch (error) {
         // TODO: implement global alert or notification to handle the error
@@ -200,13 +207,19 @@ export default function Home() {
     [importSource]
   );
 
-  const exportFileAction = useCallback((updatedConfig) => {
-    if (updatedConfig.exportType === 'zip') {
-      saveContentAsWebsite(data, asConfigData(updatedConfig));
-    } else if (updatedConfig.exportType === 'text') {
-      saveContentAsOriginalFile(data, asConfigData(updatedConfig));
+  const exportFileAction = useCallback((updatedConfig, exportType) => {
+    saveDisplayConfig(updatedConfig);
+    switch (exportType) {
+      case ExportType.ZIP:
+        saveContentAsWebsite(data, asConfigData(updatedConfig));
+        break;
+      case ExportType.TEXT:
+        saveContentAsOriginalFile(data, asConfigData(updatedConfig));
+        break;
+      default:
+        console.error('Unsupported export type');
     }
-  }, [data]);
+  }, [data, saveDisplayConfig]);
 
   return (
     <div className="w-full h-full">
@@ -346,9 +359,10 @@ export default function Home() {
         <SettingModal
           isOpen={showSettingModal}
           onClose={() => setShowSettingModal(false)}
-          onSave={saveDisplayConfig}
           onSubmit={exportFileAction}
           displayConfig={displayConfig}
+          exportType={exportType}
+          setExportType={setExportType}
         />
       </div>
     </div>

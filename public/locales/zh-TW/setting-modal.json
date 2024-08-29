@@ -17,10 +17,5 @@
   "submit": "送出",
   "title": "匯出檔案",
   "cancel": "取消",
-  "exportType": {
-    "name": "輸出格式",
-    "zip": "zip",
-    "text": "txt",
-    "pdf": "pdf"
-  }
+  "exportType": "輸出格式"
 }
