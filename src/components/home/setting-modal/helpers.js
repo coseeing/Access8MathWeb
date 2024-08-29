@@ -47,7 +47,7 @@ export const useOptionGroup = (t) => {
             label: t('latexDelimiter.dollar'),
           },
         ],
-      }
+      },
     ];
   }, [t]);
 };

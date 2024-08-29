@@ -71,10 +71,7 @@ const NativeMenu = () => {
             aria-label={t('more')}
           >
             <span>{t('more')}</span>
-            <ChevronDownIcon
-              className="h-5 w-5 flex-none text-gray-400 ml-1"
-              aria-hidden="true"
-            />
+            <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400 ml-1" aria-hidden="true" />
           </Menu.Button>
           {open && <div className="fixed z-10 inset-0 bg-black opacity-30" />}
           <Transition

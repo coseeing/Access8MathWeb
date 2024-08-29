@@ -21,9 +21,7 @@ const TipModal = ({ isOpen, onClose }) => {
       <div>
         {tips.map(({ title, content }, index) => (
           <div key={index} className="mb-4 text-left text-lg">
-            <h4 className="text-base font-semibold leading-6 text-gray-900 mb-1">
-              {title}
-            </h4>
+            <h4 className="text-base font-semibold leading-6 text-gray-900 mb-1">{title}</h4>
             <p className="text-base">{content}</p>
           </div>
         ))}

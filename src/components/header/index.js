@@ -8,8 +8,7 @@ import { useTranslation } from '@/lib/i18n';
 
 const Header = () => {
   const t = useTranslation('home');
-  const [showTipModal, setShowTipModal] =
-    useState(false);
+  const [showTipModal, setShowTipModal] = useState(false);
 
   return (
     <header className="px-8 md:px-20 fixed h-20 flex justify-between items-center bg-white text-md md:text-2xl font-bold inset-x-0 z-10">
@@ -29,10 +28,7 @@ const Header = () => {
         </div>
         <Menu />
       </div>
-      <TipModal
-        isOpen={showTipModal}
-        onClose={() => setShowTipModal(false)}
-      />
+      <TipModal isOpen={showTipModal} onClose={() => setShowTipModal(false)} />
     </header>
   );
 };

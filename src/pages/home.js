@@ -19,7 +19,11 @@ import {
 } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
-import { latexDelimiterConvertor, textProcessorFactory, markedProcessorFactory } from '@coseeing/access8math-web-lib';
+import {
+  latexDelimiterConvertor,
+  textProcessorFactory,
+  markedProcessorFactory,
+} from '@coseeing/access8math-web-lib';
 
 import { asConfigData } from '@/lib/config/data';
 import Button from '@/components/core/button';
@@ -165,7 +169,10 @@ export default function Home() {
             insert: latex.slice(latex.length + offset, latex.length),
           },
         ],
-        range: EditorSelection.range(range.from + latex.length + offset, range.from + latex.length + offset),
+        range: EditorSelection.range(
+          range.from + latex.length + offset,
+          range.from + latex.length + offset
+        ),
       }))
     );
     view.focus();
@@ -194,7 +201,7 @@ export default function Home() {
           const { config, text } = await parseA8MWFile(file);
           return importSource(text, config);
         }
-        
+
         if (importTextAcceptedExtension.includes(fileExtension)) {
           const newData = await getFileDataAsText(file);
           return importSource(newData);
@@ -207,19 +214,22 @@ export default function Home() {
     [importSource]
   );
 
-  const exportFileAction = useCallback((updatedConfig, exportType) => {
-    saveDisplayConfig(updatedConfig);
-    switch (exportType) {
-      case ExportType.ZIP:
-        saveContentAsWebsite(data, asConfigData(updatedConfig));
-        break;
-      case ExportType.TEXT:
-        saveContentAsOriginalFile(data, asConfigData(updatedConfig));
-        break;
-      default:
-        console.error('Unsupported export type');
-    }
-  }, [data, saveDisplayConfig]);
+  const exportFileAction = useCallback(
+    (updatedConfig, exportType) => {
+      saveDisplayConfig(updatedConfig);
+      switch (exportType) {
+        case ExportType.ZIP:
+          saveContentAsWebsite(data, asConfigData(updatedConfig));
+          break;
+        case ExportType.TEXT:
+          saveContentAsOriginalFile(data, asConfigData(updatedConfig));
+          break;
+        default:
+          console.error('Unsupported export type');
+      }
+    },
+    [data, saveDisplayConfig]
+  );
 
   return (
     <div className="w-full h-full">
@@ -230,7 +240,9 @@ export default function Home() {
           <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
             <button
               className={`py-2 px-4 rounded-md ${
-                displayConfig.latexDelimiter === 'dollar' ? 'bg-cyan text-white' : 'bg-white text-cyan'
+                displayConfig.latexDelimiter === 'dollar'
+                  ? 'bg-cyan text-white'
+                  : 'bg-white text-cyan'
               } `}
               onClick={() =>
                 setDisplayConfig({
@@ -245,7 +257,9 @@ export default function Home() {
             </button>
             <button
               className={`py-2 px-3 rounded-md ${
-                displayConfig.latexDelimiter === 'bracket' ? 'bg-cyan text-white' : 'bg-white text-cyan'
+                displayConfig.latexDelimiter === 'bracket'
+                  ? 'bg-cyan text-white'
+                  : 'bg-white text-cyan'
               }`}
               onClick={() =>
                 setDisplayConfig({
@@ -285,10 +299,18 @@ export default function Home() {
           </div>
         </div>
         <div className="flex justify-end md:w-1/3">
-          <button className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1" onClick={importClick}>
+          <button
+            className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1"
+            onClick={importClick}
+          >
             {t('import')}
           </button>
-          <button className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3" onClick={()=> setShowSettingModal(true)}>{t('export')}</button>
+          <button
+            className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3"
+            onClick={() => setShowSettingModal(true)}
+          >
+            {t('export')}
+          </button>
         </div>
       </div>
       <div className=" flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
@@ -301,10 +323,20 @@ export default function Home() {
             <Button variant="primary" className="ml-2" onClick={insertMark}>
               {t('mark')}
             </Button>
-            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={() => laTeXSepConvert('d2b')}>
+            <Button
+              variant="primary"
+              className="md:ml-2 ml-1"
+              size="sm"
+              onClick={() => laTeXSepConvert('d2b')}
+            >
               {t('dollar2bracket')}
             </Button>
-            <Button variant="primary" className="md:ml-2 ml-1" size="sm" onClick={() => laTeXSepConvert('b2d')}>
+            <Button
+              variant="primary"
+              className="md:ml-2 ml-1"
+              size="sm"
+              onClick={() => laTeXSepConvert('b2d')}
+            >
               {t('bracket2dollar')}
             </Button>
           </div>

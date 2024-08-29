@@ -18,11 +18,7 @@ const BsicModal = ({
 }) => {
   return (
     <Transition.Root appear show={isOpen} as={Fragment}>
-      <Dialog
-        className="fixed z-10 inset-0 overflow-y-auto px-10"
-        open={isOpen}
-        onClose={onClose}
-      >
+      <Dialog className="fixed z-10 inset-0 overflow-y-auto px-10" open={isOpen} onClose={onClose}>
         <div className="flex items-center justify-center min-h-screen">
           {/* background layer */}
           <div className="fixed inset-0 bg-black/60" />
@@ -33,12 +29,7 @@ const BsicModal = ({
             <div className="mb-8">{children}</div>
             <div className="flex justify-center">
               {hasCancel && (
-                <Button
-                  size="l"
-                  className="mr-2 w-full"
-                  variant="secondary"
-                  onClick={onCancel}
-                >
+                <Button size="l" className="mr-2 w-full" variant="secondary" onClick={onCancel}>
                   {cancelLabel}
                 </Button>
               )}
