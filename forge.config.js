@@ -11,7 +11,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         authors: 'Coseeing',
-        description: 'access-8-math-web'
+        description: 'Access8Math Editor'
       },
     },
     {
