@@ -33,14 +33,16 @@
     "start": "craco start",
     "start:desktop": "electron-forge start",
     "build": "GENERATE_SOURCEMAP=false craco build",
-    "build:windows": "craco build",
+    "build:staticFiles": "craco build",
+    "build:executableBundle": "electron-forge package",
+    "build:distributables": "electron-forge make",
+    "build:windows": "npm run build:staticFiles && npm run build:executableBundle && npm run build:distributables",
+    "build:macOS": "npm run build && npm run build:executableBundle && npm run build:distributables",
     "test": "craco test",
     "eject": "craco eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "lint": "npx eslint",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "lint": "npx eslint"
   },
   "eslintConfig": {
     "extends": [
