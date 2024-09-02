@@ -42,7 +42,8 @@
     "eject": "craco eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "lint": "npx eslint"
+    "lint": "npx eslint",
+    "format": "npx prettier --write ."
   },
   "eslintConfig": {
     "extends": [

@@ -32,12 +32,10 @@ export const LocaleContextProvider = ({ children }) => {
         return urlSearch;
       });
     },
-    [setSearchParams],
+    [setSearchParams]
   );
 
   return (
-    <LocaleContext.Provider value={{ locale, changeLocale }}>
-      {children}
-    </LocaleContext.Provider>
+    <LocaleContext.Provider value={{ locale, changeLocale }}>{children}</LocaleContext.Provider>
   );
 };

@@ -21,13 +21,10 @@ const LanguageMenu = () => {
       {({ open }) => (
         <>
           <Menu.Button
-            className="flex items-center md:text-xl text-base font-semibold leading-8 text-gray-900"
+            className="flex items-center md:text-md text-base font-semibold leading-8 text-gray-900"
             aria-label={t('changeLocale')}
           >
-            <LanguageIcon
-              className="h-5 w-5 flex-none mr-1"
-              aria-hidden="true"
-            />
+            <LanguageIcon className="h-5 w-5 flex-none mr-1" aria-hidden="true" />
             <span>{t(`locale.${i18n.language}`)}</span>
           </Menu.Button>
           {open && <div className="fixed z-10 inset-0 bg-black opacity-30" />}

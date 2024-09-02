@@ -5,7 +5,7 @@
     "text": "文字"
   },
   "display": {
-    "name": "數學顯示",
+    "name": "版面格式",
     "block": "塊級",
     "inline": "行間"
   },
@@ -15,5 +15,7 @@
     "dollar": "錢號"
   },
   "submit": "送出",
-  "title": "設定"
+  "title": "匯出檔案",
+  "cancel": "取消",
+  "exportType": "輸出格式"
 }

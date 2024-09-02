@@ -17,16 +17,9 @@ const EditIconsTab = ({ insertLatex }) => {
 
   return (
     <div>
-      <Tab.Group
-        as="div"
-        selectedIndex={selectedMainTabIndex}
-        onChange={setSelectedMainTabIndex}
-      >
+      <Tab.Group as="div" selectedIndex={selectedMainTabIndex} onChange={setSelectedMainTabIndex}>
         <div className="flex padding_bottom mb-2">
-          <Tab.List
-            as="div"
-            className="flex-auto xl:grow-0 flex flex-wrap xl:flex-nowrap bg-white"
-          >
+          <Tab.List as="div" className="flex-auto xl:grow-0 flex flex-wrap xl:flex-nowrap bg-white">
             {mainTabList.map(({ id, mainTabIndex }) => (
               <Tab
                 as="button"
@@ -41,10 +34,7 @@ const EditIconsTab = ({ insertLatex }) => {
           </Tab.List>
         </div>
         <div>
-          <Tab.Panels
-            as="div"
-            className="bg-bg2 border border-gray-300 flex flex-wrap"
-          >
+          <Tab.Panels as="div" className="bg-bg2 border border-gray-300 flex flex-wrap">
             <Tab.Panel>
               <Tab.Group
                 as="div"
@@ -52,10 +42,7 @@ const EditIconsTab = ({ insertLatex }) => {
                 onChange={setSelectedMathTabIndex}
               >
                 <div className="flex mb-4">
-                  <Tab.List
-                    as="div"
-                    className="flex-auto flex flex-wrap xl:flex-nowrap bg-white"
-                  >
+                  <Tab.List as="div" className="flex-auto flex flex-wrap xl:flex-nowrap bg-white">
                     {mathTabList.map((tab, mathTabIndex) => (
                       <Tab
                         as="button"
@@ -80,36 +67,31 @@ const EditIconsTab = ({ insertLatex }) => {
                     ))}
                   </Tab.List>
                 </div>
-                <Tab.Panels
-                  as="div"
-                  className="bg-bg2 border border-gray-300 flex flex-wrap"
-                >
+                <Tab.Panels as="div" className="bg-bg2 border border-gray-300 flex flex-wrap">
                   {mathTabList.map((mathTab) => {
                     return (
                       <Tab.Panel key={mathTab.id}>
-                        {(mathTab?.subTabs || [])
-                          .sort(compare('order', 'asc'))
-                          .map((subTab) => (
-                            <button
-                              key={subTab.id}
-                              className="w-w5 h-w5 bg-white border group relative"
-                              aria-label={t(`latexs.${subTab.id}`)}
-                              onClick={() => insertLatex(subTab)}
+                        {(mathTab?.subTabs || []).sort(compare('order', 'asc')).map((subTab) => (
+                          <button
+                            key={subTab.id}
+                            className="w-w5 h-w5 bg-white border group relative"
+                            aria-label={t(`latexs.${subTab.id}`)}
+                            onClick={() => insertLatex(subTab)}
+                          >
+                            <subTab.Icon width={50} height={50} />
+                            <Tab
+                              as="div"
+                              className="absolute p-4 shadow-lg hidden bg-bg2 group-hover:block whitespace-nowrap z-10"
+                              style={{
+                                left: '50%',
+                                transform: 'translateX(-50%)',
+                                top: '55px',
+                              }}
                             >
-                              <subTab.Icon width={50} height={50} />
-                              <Tab
-                                as="div"
-                                className="absolute p-4 shadow-lg hidden bg-bg2 group-hover:block whitespace-nowrap z-10"
-                                style={{
-                                  left: '50%',
-                                  transform: 'translateX(-50%)',
-                                  top: '55px',
-                                }}
-                              >
-                                {t(`latexs.${subTab.id}`)}
-                              </Tab>
-                            </button>
-                          ))}
+                              {t(`latexs.${subTab.id}`)}
+                            </Tab>
+                          </button>
+                        ))}
                       </Tab.Panel>
                     );
                   })}

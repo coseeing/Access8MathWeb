@@ -44,6 +44,12 @@ npm run lint
 npm run test
 ```
 
+### Format
+
+```
+npm run format
+```
+
 ### Demo Content
 
 ```

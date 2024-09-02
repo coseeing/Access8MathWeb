@@ -2,13 +2,7 @@
 
 'use client';
 
-import React, {
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-  useEffect,
-} from 'react';
+import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { basicSetup } from 'codemirror';
 import { EditorView } from '@codemirror/view';
 import { EditorState, EditorSelection } from '@codemirror/state';
@@ -34,22 +28,22 @@ import {
 import { asConfigData } from '@/lib/config/data';
 import Button from '@/components/core/button';
 import EditIconsTab from '@/components/edit-icons-tab';
-import TipModal from '@/components/home/tip-modal';
 import SettingModal from '@/components/home/setting-modal';
-import { ReactComponent as QuestionCircleComponent } from '@/components/svg/question-circle.svg';
-import { ReactComponent as SettingComponent } from '@/components/svg/settings.svg';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
 
+const ExportType = {
+  ZIP: 'zip',
+  TEXT: 'text',
+};
+
 export default function Home() {
   const t = useTranslation('home');
-
   const [data, setData] = useState('');
-  const [showTipModal, setShowTipModal] = useState(false);
   const [showSettingModal, setShowSettingModal] = useState(false);
-
   const [displayConfig, setDisplayConfig] = useState(asConfigData());
+  const [exportType, setExportType] = useState(ExportType.ZIP);
 
   const saveDisplayConfig = useCallback((config) => {
     setDisplayConfig(asConfigData(config));
@@ -57,7 +51,6 @@ export default function Home() {
 
   const codemirrorView = useRef(null);
   const importFile = useRef(null);
-  const importTextFile = useRef(null);
 
   const content = useMemo(() => {
     const processor = textProcessorFactory({
@@ -134,15 +127,18 @@ export default function Home() {
       view.state.changeByRange((range) => {
         return {
           changes: [
-            { from: range.from, insert: LaTeX_delimiter_start },
-            { from: range.to, insert: LaTeX_delimiter_end },
+            {
+              from: range.from,
+              insert: LaTeX_delimiter_start,
+            },
+            {
+              from: range.to,
+              insert: LaTeX_delimiter_end,
+            },
           ],
-          range: EditorSelection.range(
-            range.from + startOffset,
-            range.to + endOffset,
-          ),
+          range: EditorSelection.range(range.from + startOffset, range.to + endOffset),
         };
-      }),
+      })
     );
     view.focus();
   }, [displayConfig]);
@@ -152,24 +148,12 @@ export default function Home() {
       const value = latexDelimiterConvertor(mode)(data);
       createView(value);
     },
-    [data, createView],
+    [data, createView]
   );
-
-  const importTextClick = useCallback(() => {
-    importTextFile.current.click();
-  }, []);
 
   const importClick = useCallback(() => {
     importFile.current.click();
   }, []);
-
-  const exportWebsiteClick = useCallback(() => {
-    saveContentAsWebsite(data, asConfigData(displayConfig));
-  }, [data, displayConfig]);
-
-  const exportClick = useCallback(() => {
-    saveContentAsOriginalFile(data, asConfigData(displayConfig));
-  }, [data, displayConfig]);
 
   const insertLatex = useCallback(({ latex, offset }) => {
     const view = codemirrorView.current;
@@ -187,9 +171,9 @@ export default function Home() {
         ],
         range: EditorSelection.range(
           range.from + latex.length + offset,
-          range.from + latex.length + offset,
+          range.from + latex.length + offset
         ),
-      })),
+      }))
     );
     view.focus();
   }, []);
@@ -200,164 +184,219 @@ export default function Home() {
       saveDisplayConfig(config);
       createView(text);
     },
-    [displayConfig, createView, saveDisplayConfig],
+    [displayConfig, createView, saveDisplayConfig]
   );
 
-  const importTextAction = useCallback(
+  const importFileAction = useCallback(
     async (event) => {
       const file = event.target.files[0];
-
+      if (!file) {
+        console.log('file not found');
+        return;
+      }
+      const fileName = file.name;
+      const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
       try {
-        const newData = await getFileDataAsText(file);
+        if (importAcceptedExtension.includes(fileExtension)) {
+          const { config, text } = await parseA8MWFile(file);
+          return importSource(text, config);
+        }
 
-        importSource(newData);
+        if (importTextAcceptedExtension.includes(fileExtension)) {
+          const newData = await getFileDataAsText(file);
+          return importSource(newData);
+        }
       } catch (error) {
         // TODO: implement global alert or notification to handle the error
         console.error(error);
       }
     },
-    [importSource],
+    [importSource]
   );
 
-  const importAction = useCallback(
-    async (event) => {
-      const file = event.target.files[0];
-
-      try {
-        const { config, text } = await parseA8MWFile(file);
-        importSource(text, config);
-      } catch (error) {
-        // TODO: implement global alert or notification to handle the error
-        console.error(error);
+  const exportFileAction = useCallback(
+    (updatedConfig, exportType) => {
+      saveDisplayConfig(updatedConfig);
+      switch (exportType) {
+        case ExportType.ZIP:
+          saveContentAsWebsite(data, asConfigData(updatedConfig));
+          break;
+        case ExportType.TEXT:
+          saveContentAsOriginalFile(data, asConfigData(updatedConfig));
+          break;
+        default:
+          console.error('Unsupported export type');
       }
     },
-    [importSource],
+    [data, saveDisplayConfig]
   );
 
   return (
-    <div className="w-full h-full flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
-      {/* Left side input panel */}
-      <div className="md:w-1/2 bg-bg1 md:p-8 p-4 flex flex-col">
-        <div className="flex justify-between">
-          <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
-          <button
-            className="hover:scale-110 transition-scale ml-2"
-            onClick={() => setShowTipModal(true)}
-            aria-label={t('descript')}
-          >
-            <QuestionCircleComponent />
-          </button>
-        </div>
-        <div className="flex justify-end mb-4 mt-4 md:mt-m1">
-          <Button variant="primary" className="ml-2" onClick={insertMark}>
-            {t('mark')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={() => laTeXSepConvert('d2b')}
-          >
-            {t('dollar2bracket')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={() => laTeXSepConvert('b2d')}
-          >
-            {t('bracket2dollar')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={importClick}
-          >
-            {t('importA8m')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={importTextClick}
-          >
-            {t('importText')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={exportClick}
-          >
-            {t('exportA8m')}
-          </Button>
-          <Button
-            variant="primary"
-            className="md:ml-2 ml-1"
-            size="sm"
-            onClick={exportWebsiteClick}
-          >
-            {t('exportHTML')}
-          </Button>
-        </div>
-        <EditIconsTab insertLatex={insertLatex} />
-        <div className="flex flex-1">
-          <div
-            id="codemirror"
-            className="left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
-          />
-          <input
-            ref={importTextFile}
-            accept={importTextAcceptedExtension.join(', ')}
-            type="file"
-            className="hidden"
-            onChange={importTextAction}
-          />
-          <input
-            ref={importFile}
-            accept={importAcceptedExtension.join(', ')}
-            type="file"
-            className="hidden"
-            onChange={importAction}
-          />
-        </div>
-      </div>
-
-      {/* Right side output panel */}
-      <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
-        <div className="flex mb-4 w-100 justify-between">
-          <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
-          <button
-            onClick={() => setShowSettingModal(true)}
-            aria-label={t('setting')}
-          >
-            <SettingComponent />
-          </button>
-        </div>
-        <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
-          <div data-remove-styles>
-            {displayConfig.documentDisplay === 'markdown' ? (
-              <div dangerouslySetInnerHTML={{ __html: contentmd }} />
-            ) : (
-              <div>
-                {content.map((line, key) => (
-                  <span key={key}>
-                    <span dangerouslySetInnerHTML={{ __html: line }} />
-                  </span>
-                ))}
-              </div>
-            )}
+    <div className="w-full h-full">
+      {/* Top file setting panel */}
+      <div className="flex flex-col md:flex-row justify-between px-8 md:px-20 py-4 ">
+        <div className="flex justify-start md:w-1/3">
+          <div className="content-center mr-3">{t('latexDelimiter.name')}</div>
+          <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
+            <button
+              className={`py-2 px-4 rounded-md ${
+                displayConfig.latexDelimiter === 'dollar'
+                  ? 'bg-cyan text-white'
+                  : 'bg-white text-cyan'
+              } `}
+              onClick={() =>
+                setDisplayConfig({
+                  ...displayConfig,
+                  latexDelimiter: 'dollar',
+                })
+              }
+              aria-label={t('latexDelimiter.dollar')}
+              aria-pressed={displayConfig.latexDelimiter === 'dollar'}
+            >
+              $
+            </button>
+            <button
+              className={`py-2 px-3 rounded-md ${
+                displayConfig.latexDelimiter === 'bracket'
+                  ? 'bg-cyan text-white'
+                  : 'bg-white text-cyan'
+              }`}
+              onClick={() =>
+                setDisplayConfig({
+                  ...displayConfig,
+                  latexDelimiter: 'bracket',
+                })
+              }
+              aria-label={t('latexDelimiter.bracket')}
+              aria-pressed={displayConfig.latexDelimiter === 'bracket'}
+            >
+              \(\)
+            </button>
           </div>
         </div>
+        <div className="flex justify-center md:w-1/3">
+          <div className="flex flex-col items-center w-full">
+            <div className="relative w-full max-w-lg">
+              <div className="relative w-full max-w-lg">
+                <input
+                  value={displayConfig.title}
+                  type="text"
+                  style={{
+                    outline: 'none',
+                  }}
+                  className="text-center text-2xl text-cyan font-bold border-b-2 border-cyan p-2 placeholder-opacity-100 w-full"
+                  placeholder={t('pleaseInputTitle')}
+                  aria-label={t('pleaseInputTitle')}
+                  onChange={(e) => {
+                    setDisplayConfig({
+                      ...displayConfig,
+                      title: e.target.value,
+                    });
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-end md:w-1/3">
+          <button
+            className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1"
+            onClick={importClick}
+          >
+            {t('import')}
+          </button>
+          <button
+            className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3"
+            onClick={() => setShowSettingModal(true)}
+          >
+            {t('export')}
+          </button>
+        </div>
       </div>
-      <TipModal isOpen={showTipModal} onClose={() => setShowTipModal(false)} />
-      <SettingModal
-        isOpen={showSettingModal}
-        onClose={() => setShowSettingModal(false)}
-        onSubmit={saveDisplayConfig}
-        displayConfig={displayConfig}
-      />
+      <div className=" flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
+        {/* Left side input panel */}
+        <div className="md:w-1/2 bg-bg1 md:p-8 p-4 flex flex-col">
+          <div className="flex justify-between">
+            <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
+          </div>
+          <div className="flex justify-end mb-4 mt-4 md:mt-m1">
+            <Button variant="primary" className="ml-2" onClick={insertMark}>
+              {t('mark')}
+            </Button>
+            <Button
+              variant="primary"
+              className="md:ml-2 ml-1"
+              size="sm"
+              onClick={() => laTeXSepConvert('d2b')}
+            >
+              {t('dollar2bracket')}
+            </Button>
+            <Button
+              variant="primary"
+              className="md:ml-2 ml-1"
+              size="sm"
+              onClick={() => laTeXSepConvert('b2d')}
+            >
+              {t('bracket2dollar')}
+            </Button>
+          </div>
+          <EditIconsTab insertLatex={insertLatex} />
+          <div className="flex flex-1">
+            <div
+              id="codemirror"
+              className="left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
+            />
+            <input
+              ref={importFile}
+              accept={[...importTextAcceptedExtension, ...importAcceptedExtension].join(', ')}
+              type="file"
+              className="hidden"
+              onChange={importFileAction}
+            />
+          </div>
+        </div>
+
+        {/* Right side output panel */}
+        <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
+          <div className="flex mb-4 w-100 justify-between">
+            <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
+            {/* <button onClick={() => setShowSettingModal(true)} aria-label={t('setting')}>
+              <SettingComponent />
+            </button> */}
+          </div>
+          <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
+            <div data-remove-styles>
+              {displayConfig.documentDisplay === 'markdown' ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: contentmd,
+                  }}
+                />
+              ) : (
+                <div>
+                  {content.map((line, key) => (
+                    <span key={key}>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: line,
+                        }}
+                      />
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+        <SettingModal
+          isOpen={showSettingModal}
+          onClose={() => setShowSettingModal(false)}
+          onSubmit={exportFileAction}
+          displayConfig={displayConfig}
+          exportType={exportType}
+          setExportType={setExportType}
+        />
+      </div>
     </div>
   );
 }

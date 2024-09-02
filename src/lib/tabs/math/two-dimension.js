@@ -6,8 +6,7 @@ import { ReactComponent as Determinant3X3 } from '@/components/svg/two-dimension
 const twoDimension = [
   {
     id: 'matrix2X2',
-    latex:
-      '\\left [ \\begin{matrix} {} &{} \\\\ {} &{} \\end{matrix} \\right ]',
+    latex: '\\left [ \\begin{matrix} {} &{} \\\\ {} &{} \\end{matrix} \\right ]',
     offset: -37,
     category: 'two_dimension',
     shortcut: -1,
@@ -26,8 +25,7 @@ const twoDimension = [
   },
   {
     id: 'determinant2X2',
-    latex:
-      '\\left | \\begin{array} {cc} {} &{} \\\\ {} &{} \\end{array} \\right |',
+    latex: '\\left | \\begin{array} {cc} {} &{} \\\\ {} &{} \\end{array} \\right |',
     offset: -36,
     category: 'two_dimension',
     shortcut: -1,

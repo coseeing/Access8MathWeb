@@ -1,11 +1,12 @@
 import { type, pick, compose, mergeRight } from 'ramda';
 
 const DEFAULT_DATA = {
-  title: 'Access8Math',
+  title: '',
   documentDisplay: 'markdown',
   display: 'block',
   latexDelimiter: 'bracket',
   entry: 'content.md',
+  exportType: 'zip',
 };
 
 const KEYS = Object.keys(DEFAULT_DATA);
