@@ -14,6 +14,8 @@
     "bracket": "bracket",
     "dollar": "dollar"
   },
-  "submit": "Submit",
-  "title": "Setting"
+  "cancel": "Cancel",
+  "submit": "Export File",
+  "title": "Setting",
+  "exportType": "Export Type"
 }

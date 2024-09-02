@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.208f7558.css",
-    "main.js": "/static/js/main.a4d804a5.js",
+    "main.css": "/static/css/main.71093049.css",
+    "main.js": "/static/js/main.877f17a6.js",
     "static/js/27.b2ac052f.chunk.js": "/static/js/27.b2ac052f.chunk.js",
     "static/media/simultaneous-equations.svg": "/static/media/simultaneous-equations.0c5dda1d605213f657a2f147a1975cae.svg",
     "static/media/determinant3X3.svg": "/static/media/determinant3X3.ce228768ea0c515845640c548fda9c36.svg",
@@ -112,7 +112,6 @@
     "static/media/arrow.svg": "/static/media/arrow.f2d503b1decfac7bd89f97505beb43ed.svg",
     "static/media/bold.svg": "/static/media/bold.d5213d5ae7e1872646a88de17a774892.svg",
     "static/media/create_link.svg": "/static/media/create_link.77278aadf574f7f4fa96116550db82e8.svg",
-    "static/media/settings.svg": "/static/media/settings.c5868bddb40bd4a07ef6c62d00598691.svg",
     "static/media/sigma-upper.svg": "/static/media/sigma-upper.6e0d4aaaccdd937ef470c30b99565ebc.svg",
     "static/media/logic.svg": "/static/media/logic.828a50a4961553d5ac2e2d8256db5378.svg",
     "static/media/cap.svg": "/static/media/cap.a08ccb25930909d9b5ac9a45d2511e94.svg",
@@ -143,7 +142,7 @@
     "static/media/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": "/static/media/.1feff74faaf0efc6a044"
   },
   "entrypoints": [
-    "static/css/main.208f7558.css",
-    "static/js/main.a4d804a5.js"
+    "static/css/main.71093049.css",
+    "static/js/main.877f17a6.js"
   ]
 }
