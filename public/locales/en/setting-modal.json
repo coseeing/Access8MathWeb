@@ -4,7 +4,7 @@
     "markdown": "Markdown",
     "text": "text"
   },
-  "display": {
+  "documentFormat": {
     "name": "HTML Math Display",
     "block": "block",
     "inline": "inline"
@@ -13,6 +13,11 @@
     "name": "LaTeX delimiter",
     "bracket": "bracket",
     "dollar": "dollar"
+  },
+  "documentColor": {
+    "name": "Color Scheme",
+    "wbbt": "Light Mode",
+    "bwwt": "Dark Mode"
   },
   "cancel": "Cancel",
   "submit": "Export File",

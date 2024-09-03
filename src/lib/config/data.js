@@ -3,10 +3,11 @@ import { type, pick, compose, mergeRight } from 'ramda';
 const DEFAULT_DATA = {
   title: '',
   documentDisplay: 'markdown',
-  display: 'block',
+  documentFormat: 'block',
   latexDelimiter: 'bracket',
   entry: 'content.md',
   exportType: 'zip',
+  documentColor: 'wbbt',
 };
 
 const KEYS = Object.keys(DEFAULT_DATA);

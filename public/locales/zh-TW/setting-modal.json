@@ -4,7 +4,7 @@
     "markdown": "Markdown",
     "text": "文字"
   },
-  "display": {
+  "documentFormat": {
     "name": "版面格式",
     "block": "塊級",
     "inline": "行間"
@@ -13,6 +13,11 @@
     "name": "LaTeX 分隔符",
     "bracket": "括號",
     "dollar": "錢號"
+  },
+  "documentColor": {
+    "name": "文件顏色",
+    "wbbt": "白底黑字",
+    "bwwt": "黑底白字"
   },
   "submit": "送出",
   "title": "匯出檔案",

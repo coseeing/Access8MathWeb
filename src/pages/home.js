@@ -27,6 +27,7 @@ import {
 
 import { asConfigData } from '@/lib/config/data';
 import Button from '@/components/core/button';
+import ToggleButton from '@/components/core/button/toggle-button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
 
@@ -238,40 +239,28 @@ export default function Home() {
         <div className="flex justify-start md:w-1/3">
           <div className="content-center mr-3">{t('latexDelimiter.name')}</div>
           <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
-            <button
-              className={`py-2 px-4 rounded-md ${
-                displayConfig.latexDelimiter === 'dollar'
-                  ? 'bg-cyan text-white'
-                  : 'bg-white text-cyan'
-              } `}
+            <ToggleButton
+              isActive={displayConfig.latexDelimiter === 'dollar'}
               onClick={() =>
                 setDisplayConfig({
                   ...displayConfig,
                   latexDelimiter: 'dollar',
                 })
               }
-              aria-label={t('latexDelimiter.dollar')}
-              aria-pressed={displayConfig.latexDelimiter === 'dollar'}
-            >
-              $
-            </button>
-            <button
-              className={`py-2 px-3 rounded-md ${
-                displayConfig.latexDelimiter === 'bracket'
-                  ? 'bg-cyan text-white'
-                  : 'bg-white text-cyan'
-              }`}
+              label="$"
+              ariaLabel={t('latexDelimiter.dollar')}
+            />
+            <ToggleButton
+              isActive={displayConfig.latexDelimiter === 'bracket'}
               onClick={() =>
                 setDisplayConfig({
                   ...displayConfig,
                   latexDelimiter: 'bracket',
                 })
               }
-              aria-label={t('latexDelimiter.bracket')}
-              aria-pressed={displayConfig.latexDelimiter === 'bracket'}
-            >
-              \(\)
-            </button>
+              label="\(\)"
+              ariaLabel={t('latexDelimiter.bracket')}
+            />
           </div>
         </div>
         <div className="flex justify-center md:w-1/3">
@@ -327,17 +316,18 @@ export default function Home() {
               variant="primary"
               className="md:ml-2 ml-1"
               size="sm"
-              onClick={() => laTeXSepConvert('d2b')}
+              onClick={() => {
+                const newMode = displayConfig.latexDelimiter === 'dollar' ? 'bracket' : 'dollar';
+                setDisplayConfig({
+                  ...displayConfig,
+                  latexDelimiter: newMode,
+                });
+                laTeXSepConvert(newMode === 'dollar' ? 'b2d' : 'd2b');
+              }}
             >
-              {t('dollar2bracket')}
-            </Button>
-            <Button
-              variant="primary"
-              className="md:ml-2 ml-1"
-              size="sm"
-              onClick={() => laTeXSepConvert('b2d')}
-            >
-              {t('bracket2dollar')}
+              {displayConfig.latexDelimiter === 'dollar'
+                ? t('dollar2bracket')
+                : t('bracket2dollar')}
             </Button>
           </div>
           <EditIconsTab insertLatex={insertLatex} />
@@ -360,11 +350,62 @@ export default function Home() {
         <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
           <div className="flex mb-4 w-100 justify-between">
             <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
-            {/* <button onClick={() => setShowSettingModal(true)} aria-label={t('setting')}>
-              <SettingComponent />
-            </button> */}
+            <div className="flex justify-end">
+              <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
+                <ToggleButton
+                  isActive={displayConfig.documentFormat === 'block'}
+                  onClick={() =>
+                    setDisplayConfig({
+                      ...displayConfig,
+                      documentFormat: 'block',
+                    })
+                  }
+                  label={t('documentFormat.block')}
+                  ariaLabel={t('documentFormat.block')}
+                />
+                <ToggleButton
+                  isActive={displayConfig.documentFormat === 'inline'}
+                  onClick={() =>
+                    setDisplayConfig({
+                      ...displayConfig,
+                      documentFormat: 'inline',
+                    })
+                  }
+                  label={t('documentFormat.inline')}
+                  ariaLabel={t('documentFormat.inline')}
+                />
+              </div>
+              <div className="bg-white border border-gray-300 rounded-md font-bold p-1 ml-4">
+                <ToggleButton
+                  isActive={displayConfig.documentColor === 'wbbt'}
+                  onClick={() =>
+                    setDisplayConfig({
+                      ...displayConfig,
+                      documentColor: 'wbbt',
+                    })
+                  }
+                  label={t('documentColor.wbbt')}
+                  ariaLabel={t('documentColor.wbbt')}
+                />
+                <ToggleButton
+                  isActive={displayConfig.documentColor === 'bwwt'}
+                  onClick={() =>
+                    setDisplayConfig({
+                      ...displayConfig,
+                      documentColor: 'bwwt',
+                    })
+                  }
+                  label={t('documentColor.bwwt')}
+                  ariaLabel={t('documentColor.bwwt')}
+                />
+              </div>
+            </div>
           </div>
-          <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
+          <div
+            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${
+              displayConfig.documentColor === 'bwwt' ? 'bg-black text-white' : ' text-black'
+            }`}
+          >
             <div data-remove-styles>
               {displayConfig.documentDisplay === 'markdown' ? (
                 <div

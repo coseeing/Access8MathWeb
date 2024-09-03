@@ -91,9 +91,10 @@ SettingModal.propTypes = {
   onSubmit: PropTypes.func,
   displayConfig: PropTypes.shape({
     documentDisplay: PropTypes.string,
-    display: PropTypes.string,
+    documentFormat: PropTypes.string,
     latexDelimiter: PropTypes.string,
     exportType: PropTypes.string,
+    documentColor: PropTypes.string,
   }),
 };
 

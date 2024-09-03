@@ -21,5 +21,15 @@
     "name": "LaTeX delimiter",
     "bracket": "bracket",
     "dollar": "dollar"
+  },
+  "documentFormat": {
+    "name": "Document Display",
+    "block": "block",
+    "inline": "inline"
+  },
+  "documentColor": {
+    "name": "Document Color",
+    "wbbt": "Light Mode",
+    "bwwt": "Dark Mode"
   }
 }

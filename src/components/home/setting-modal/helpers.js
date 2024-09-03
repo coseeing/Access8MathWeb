@@ -21,16 +21,16 @@ export const useOptionGroup = (t) => {
   return useMemo(() => {
     return [
       {
-        configName: 'display',
-        configLabel: t('display.name'),
+        configName: 'documentFormat',
+        configLabel: t('documentFormat.name'),
         options: [
           {
             value: 'block',
-            label: t('display.block'),
+            label: t('documentFormat.block'),
           },
           {
             value: 'inline',
-            label: t('display.inline'),
+            label: t('documentFormat.inline'),
           },
         ],
       },
@@ -45,6 +45,20 @@ export const useOptionGroup = (t) => {
           {
             value: 'dollar',
             label: t('latexDelimiter.dollar'),
+          },
+        ],
+      },
+      {
+        configName: 'documentColor',
+        configLabel: t('documentColor.name'),
+        options: [
+          {
+            value: 'wbbt',
+            label: t('documentColor.wbbt'),
+          },
+          {
+            value: 'bwwt',
+            label: t('documentColor.bwwt'),
           },
         ],
       },
