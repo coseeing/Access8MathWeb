@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.71093049.css",
-    "main.js": "/static/js/main.877f17a6.js",
+    "main.js": "/static/js/main.f744053d.js",
     "static/js/27.b2ac052f.chunk.js": "/static/js/27.b2ac052f.chunk.js",
     "static/media/simultaneous-equations.svg": "/static/media/simultaneous-equations.0c5dda1d605213f657a2f147a1975cae.svg",
     "static/media/determinant3X3.svg": "/static/media/determinant3X3.ce228768ea0c515845640c548fda9c36.svg",
@@ -143,6 +143,6 @@
   },
   "entrypoints": [
     "static/css/main.71093049.css",
-    "static/js/main.877f17a6.js"
+    "static/js/main.f744053d.js"
   ]
 }
