@@ -209,6 +209,8 @@ export default function Home() {
       } catch (error) {
         // TODO: implement global alert or notification to handle the error
         console.error(error);
+      } finally {
+        event.target.value = null;
       }
     },
     [importSource]
