@@ -29,8 +29,8 @@
   },
   "documentColor": {
     "name": "顏色",
-    "bwwt": "黑底白字",
-    "wbbt": "白底黑字"
+    "dark": "黑底白字",
+    "light": "白底黑字"
   },
   "documentFormat": {
     "name": "文件顯示",

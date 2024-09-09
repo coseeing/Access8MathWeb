@@ -16,8 +16,8 @@
   },
   "documentColor": {
     "name": "Color Scheme",
-    "wbbt": "Light Mode",
-    "bwwt": "Dark Mode"
+    "light": "Light Mode",
+    "dark": "Dark Mode"
   },
   "cancel": "Cancel",
   "submit": "Export File",

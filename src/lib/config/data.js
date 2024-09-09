@@ -7,7 +7,7 @@ const DEFAULT_DATA = {
   latexDelimiter: 'bracket',
   entry: 'content.md',
   exportType: 'zip',
-  documentColor: 'wbbt',
+  documentColor: 'light',
 };
 
 const KEYS = Object.keys(DEFAULT_DATA);

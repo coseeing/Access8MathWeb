@@ -29,7 +29,7 @@
   },
   "documentColor": {
     "name": "Document Color",
-    "wbbt": "Light Mode",
-    "bwwt": "Dark Mode"
+    "light": "Light Mode",
+    "dark": "Dark Mode"
   }
 }

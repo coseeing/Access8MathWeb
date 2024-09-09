@@ -16,8 +16,8 @@
   },
   "documentColor": {
     "name": "文件顏色",
-    "wbbt": "白底黑字",
-    "bwwt": "黑底白字"
+    "light": "白底黑字",
+    "dark": "黑底白字"
   },
   "submit": "送出",
   "title": "匯出檔案",

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { asConfigData } from '@/lib/config/data';
 
 export const useForm = ({ config, isOpen }) => {
   const [localConfig, setLocalConfig] = useState(config);
@@ -53,15 +54,32 @@ export const useOptionGroup = (t) => {
         configLabel: t('documentColor.name'),
         options: [
           {
-            value: 'wbbt',
-            label: t('documentColor.wbbt'),
+            value: 'light',
+            label: t('documentColor.light'),
           },
           {
-            value: 'bwwt',
-            label: t('documentColor.bwwt'),
+            value: 'dark',
+            label: t('documentColor.dark'),
           },
         ],
       },
     ];
   }, [t]);
+};
+
+
+export const useDisplayConfig = (initialConfig = asConfigData()) => {
+  const [displayConfig, setDisplayConfigState] = useState(initialConfig);
+
+  const setDisplayConfig = useCallback((newConfig) => {
+    setDisplayConfigState((prevConfig) => ({
+      ...prevConfig,
+      ...newConfig,
+    }));
+  }, []);
+
+  return {
+    displayConfig,
+    setDisplayConfig,
+  };
 };
