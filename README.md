@@ -23,9 +23,11 @@ https://docs.npmjs.com/cli/v10/commands/npm-link
 
 Let's say it is your directory structure.
 
+```
 workspace/
 ├── access8math-web-template/ <- @coseeing/access8math-web-lib
 └── Access8MathWeb/ <- you are developing application here
+```
 
 ```sh
 # you are at workspace
