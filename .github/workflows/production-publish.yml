@@ -19,13 +19,30 @@ jobs:
       packages: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Authenticate with github package registry
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
+      - name: Configure Git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
       - name: Bump npm version
         run: npm version ${{ env.version }} --no-git-tag-version
+
+      - name: Commit and push changes
+        run: |
+          git add package.json package-lock.json
+          git commit -m "Bump version to ${{ env.version }}"
+          git push origin HEAD:${{ github.ref }} --force
+
+      - name: Update release tag
+        run: |
+          git push origin :refs/tags/${{ env.version }}
+          git tag -fa ${{ env.version }} -m "Update release ${{ env.version }}"
+          git push origin ${{ env.version }}
 
       - name: Install dependencies
         run: npm install
