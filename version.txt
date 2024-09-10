@@ -1,2 +1,2 @@
-Version: 0.1.0
-Build Date: 2024-09-10T12:17:17.995Z
+Version: 1.2.0
+Build Date: 2024-09-10T12:20:17.835Z
