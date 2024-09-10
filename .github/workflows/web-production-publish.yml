@@ -1,4 +1,4 @@
-name: Production Publish
+name: Web Production Publish
 
 on:
   release:
