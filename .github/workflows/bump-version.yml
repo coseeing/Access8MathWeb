@@ -1,0 +1,40 @@
+name: Bump Release Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      new_version:
+        description: 'New version number (without v prefix)'
+        required: true
+        type: string
+
+jobs:
+  bump-version:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Bump npm version
+        run: npm version ${{ github.event.inputs.new_version }} --no-git-tag-version
+
+      - name: Commit and tag
+        run: |
+          git add package.json package-lock.json
+          git commit -m "Bump version to v${{ github.event.inputs.new_version }}"
+          git tag v${{ github.event.inputs.new_version }}
+
+      - name: Push changes
+        run: |
+          git push
+          git push --tags
