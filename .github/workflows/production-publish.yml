@@ -44,21 +44,21 @@ jobs:
           git tag -fa ${{ env.version }} -m "Update release ${{ env.version }}"
           git push origin ${{ env.version }}
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-
-      - name: Generate version.txt
-        run: echo "$version" > "${build_folder}/version.txt"
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_GITHUB_ACTION_ROLE }}
-          aws-region: ap-northeast-1
-
-      - name: upload build folder
-        run: |
-          aws s3 sync "$build_folder" "s3://${s3_bucket}/${environment}/${version}/"
+      # - name: Install dependencies
+      #   run: npm install
+      #
+      # - name: Build project
+      #   run: npm run build
+      #
+      # - name: Generate version.txt
+      #   run: echo "$version" > "${build_folder}/version.txt"
+      #
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v4
+      #   with:
+      #     role-to-assume: ${{ secrets.AWS_GITHUB_ACTION_ROLE }}
+      #     aws-region: ap-northeast-1
+      #
+      # - name: upload build folder
+      #   run: |
+      #     aws s3 sync "$build_folder" "s3://${s3_bucket}/${environment}/${version}/"
