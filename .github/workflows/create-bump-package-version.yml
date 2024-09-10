@@ -1,4 +1,4 @@
-name: Bump Release Version
+name: Create Bump Package Version PR
 
 on:
   workflow_dispatch:
@@ -12,8 +12,8 @@ jobs:
   bump-version:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: write
+      pull-requests: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,9 +32,12 @@ jobs:
         run: |
           git add package.json package-lock.json
           git commit -m "Bump version to v${{ github.event.inputs.new_version }}"
-          git tag v${{ github.event.inputs.new_version }}
 
-      - name: Push changes
-        run: |
-          git push
-          git push --tags
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'Bump version to v${{ github.event.inputs.new_version }}'
+          title: 'Bump version to v${{ github.event.inputs.new_version }}'
+          body: bump Package Version
+          branch: 'bump-version-v${{ github.event.inputs.new_version }}'
+          base: main
