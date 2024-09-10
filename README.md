@@ -1,5 +1,8 @@
 # Access8mathweb
 
+## Release
+https://github.com/coseeing/Access8MathWeb/wiki/Release-Flow
+
 ## Sites
 
 - Production: https://access8mathweb.coseeing.org/
