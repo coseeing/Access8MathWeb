@@ -9,7 +9,7 @@ on:
         type: string
 
 jobs:
-  bump-version:
+  create-bump-version-pr:
     runs-on: ubuntu-latest
     permissions:
       contents: write
