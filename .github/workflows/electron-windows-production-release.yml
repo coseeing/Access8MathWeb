@@ -1,0 +1,27 @@
+name: Electron Windows Production Release
+
+on:
+  workflow_dispatch:
+
+env:
+  version: ${{ github.ref_name }}
+  build_folder: './build'
+
+jobs:
+  build-and-deploy:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Authenticate with github package registry
+        run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+
+      - name: Generate version.txt
+        run: echo "$version" > "${public_folder}/version.txt"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build App
+        run: npm run build:windows

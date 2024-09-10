@@ -7,6 +7,7 @@ on:
 env:
   version: ${{ github.ref_name }}
   build_folder: './build'
+  public_folder: './public'
   s3_bucket: 'access8math-web'
   environment: production
 
@@ -19,19 +20,19 @@ jobs:
       packages: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Authenticate with github package registry
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+
+      - name: Generate version.txt
+        run: echo "$version" > "${public_folder}/version.txt"
 
       - name: Install dependencies
         run: npm install
 
       - name: Build project
         run: npm run build
-
-      - name: Generate version.txt
-        run: echo "$version" > "${build_folder}/version.txt"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
