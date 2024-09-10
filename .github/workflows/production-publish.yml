@@ -19,10 +19,13 @@ jobs:
       packages: read
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Authenticate with github package registry
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+
+      - name: Bump npm version
+        run: npm version ${{ env.version }} --no-git-tag-version
 
       - name: Install dependencies
         run: npm install
