@@ -30,9 +30,6 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Generate version.txt
-        run: echo "$version" > "${build_folder}/version.txt"
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
