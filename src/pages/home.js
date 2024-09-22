@@ -30,6 +30,7 @@ import Button from '@/components/core/button';
 import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
+import ConvertHintModal from '@/components/home/convert-hint-modal';
 import { useDisplayConfig } from '@/components/home/setting-modal/helpers';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
@@ -59,6 +60,7 @@ export default function Home() {
   const t = useTranslation('home');
   const [data, setData] = useState('');
   const [showSettingModal, setShowSettingModal] = useState(false);
+  const [showConvertHintModal, setShowConvertHintModal] = useState(false);
   const [exportType, setExportType] = useState(ExportType.ZIP);
 
   const { displayConfig, setDisplayConfig } = useDisplayConfig();
@@ -311,12 +313,7 @@ export default function Home() {
               className="md:ml-2 ml-1"
               size="sm"
               onClick={() => {
-                const newMode =
-                  displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
-                    ? LatexDelimiter.BRACKET
-                    : LatexDelimiter.DOLLAR;
-                setDisplayConfig({ latexDelimiter: newMode });
-                laTeXSepConvert(newMode === LatexDelimiter.DOLLAR ? 'b2d' : 'd2b');
+                setShowConvertHintModal(true);
               }}
             >
               {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
@@ -400,6 +397,15 @@ export default function Home() {
           displayConfig={displayConfig}
           exportType={exportType}
           setExportType={setExportType}
+        />
+        <ConvertHintModal
+          isOpen={showConvertHintModal}
+          onClose={() => setShowConvertHintModal(false)}
+          displayConfig={displayConfig}
+          setDisplayConfig={setDisplayConfig}
+          laTeXSepConvert={laTeXSepConvert}
+          LatexDelimiter={LatexDelimiter}
+          data={data}
         />
       </div>
     </div>
