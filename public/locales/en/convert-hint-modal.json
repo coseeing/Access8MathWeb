@@ -1,0 +1,13 @@
+{
+  "title": "Convert LaTeX Delimiters",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "bracket2dollar": "Bracket to Dollar",
+  "dollar2bracket": "Dollar to Bracket",
+  "bracket": "bracket",
+  "dollar": "dollar",
+  "content": "The LaTeX delimiter in this editor is set to {{delimiterType}}.\nThere are {{count}} instances of {{oppositeDelimiterType}} delimiters in the document.\nDo you want to convert them to {{delimiterType}}?",
+  "conversionDescription": "Delimiter Conversion Description",
+  "currentDelimiter": "Current Delimiter",
+  "newDelimiter": "New Delimiter"
+}
