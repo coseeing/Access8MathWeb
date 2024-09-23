@@ -46,6 +46,9 @@ cd ../Access8MathWeb/
 npm link @coseeing/access8math-web-lib
 ```
 
+## How to bump first-party dependencies
+https://github.com/coseeing/Access8MathWeb/wiki/Bump-first%E2%80%90party-dependencies
+
 ## Project setup
 
 ```
