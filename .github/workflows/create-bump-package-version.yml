@@ -28,7 +28,7 @@ jobs:
       - name: Bump npm version
         run: npm version ${{ github.event.inputs.new_version }} --no-git-tag-version
 
-      - name: Commit and tag
+      - name: Commit
         run: |
           git add package.json package-lock.json
           git commit -m "Bump version to v${{ github.event.inputs.new_version }}"
