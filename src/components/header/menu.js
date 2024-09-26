@@ -29,10 +29,10 @@ const addonDownloadClick = () => {
 };
 
 const ABOUT_ITEMS = [
-  { id: 'tutorialVideo', href: 'https://www.youtube.com/watch?v=E6DuuiuS6zo' },
+  { id: 'tutorialVideo', href: 'https://tinyurl.com/Access8MathCourseRecord' },
   {
     id: 'tutorialDownload',
-    href: 'https://drive.google.com/drive/folders/1fVrQjhHEypOGr3lVcqBsmk0f_u_FD1IP',
+    href: 'https://tinyurl.com/Access8MathCourseWorkspace',
   },
   { id: 'developmentJourney', href: 'https://medium.com/p/ba30170c52ea' },
   { id: 'caseSharing', href: 'https://medium.com/p/cbf266d6f9b6' },
