@@ -1,7 +1,6 @@
 name: Windows Production Publish
 
 on:
-  workflow_dispatch:
   release:
     types: [published]
 
@@ -13,7 +12,7 @@ jobs:
     runs-on: windows-latest
     permissions:
       id-token: write
-      contents: read
+      contents: write
       packages: read
     steps:
       - name: Checkout code
