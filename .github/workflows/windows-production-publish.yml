@@ -34,15 +34,20 @@ jobs:
       - name: Build project
         run: npm run build:windows
 
+      - name: Get package version
+        id: package-version
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          echo "Package version: $PACKAGE_VERSION"
+          echo "version=$PACKAGE_VERSION" >> $GITHUB_OUTPUT
+
       - name: debug
         run: |
-          ls -l ./out/
-          ls -l ./out/make/
-          ls -l ./out/make/squirrel.windows/
           ls -l ./out/make/squirrel.windows/x64/
+          ls './out/make/squirrel.windows/x64/access-8-math-web-${{steps.package-version.outputs.version}} Setup.exe'
 
       # - name: Upload Installer
       #   uses: softprops/action-gh-release@v1
       #   if: startsWith(github.ref, 'refs/tags/')
       #   with:
-      #     files: access8math-web-template.zip
+      #     files: './out/make/squirrel.windows/x64/access-8-math-web-${{steps.package-version.outputs.version}} Setup.exe'
