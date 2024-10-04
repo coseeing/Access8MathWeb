@@ -21,5 +21,20 @@
     "name": "LaTeX 分隔符",
     "bracket": "括號",
     "dollar": "錢號"
+  },
+  "documentDisplay": {
+    "name": "版面格式",
+    "block": "塊級",
+    "inline": "行間"
+  },
+  "documentColor": {
+    "name": "顏色",
+    "dark": "黑底白字",
+    "light": "白底黑字"
+  },
+  "documentFormat": {
+    "name": "文件顯示",
+    "block": "塊級",
+    "inline": "行間"
   }
 }
