@@ -67,7 +67,6 @@ export const useOptionGroup = (t) => {
   }, [t]);
 };
 
-
 export const useDisplayConfig = (initialConfig = asConfigData()) => {
   const [displayConfig, setDisplayConfigState] = useState(initialConfig);
 
