@@ -46,6 +46,39 @@ math {
   text-align: left;
 }
 
+.alert {
+  border-left: 4px solid;
+  padding: 10px 15px;
+  margin: 20px 0;
+  border-radius: 3px;
+}
+
+.alert-note {
+  background-color: #e7f5ff;
+  border-color: #3b82f6;
+}
+
+.alert-warning {
+  background-color: #fff4e5;
+  border-color: #f59e0b;
+}
+
+.alert-tip {
+  background-color: #f0fdf4;
+  border-color: #10b981;
+}
+
+.alert-important {
+  background-color: #fef2f2;
+  border-color: #ef4444;
+}
+
+.alert strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1.1em;
+}
+
 @layer base {
   h1,
   h2,
