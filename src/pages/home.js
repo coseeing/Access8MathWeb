@@ -8,6 +8,7 @@ import { EditorView } from '@codemirror/view';
 import { EditorState, EditorSelection } from '@codemirror/state';
 import { markdown } from '@codemirror/lang-markdown';
 import { autocompletion } from '@codemirror/autocomplete';
+import { asConfigData } from '@/lib/config/data';
 
 import { useTranslation } from '@/lib/i18n';
 import {
@@ -25,10 +26,11 @@ import {
   markedProcessorFactory,
 } from '@coseeing/access8math-web-lib';
 
-import { asConfigData } from '@/lib/config/data';
 import Button from '@/components/core/button';
+import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
+import { useDisplayConfig } from '@/components/home/setting-modal/helpers';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
@@ -38,16 +40,28 @@ const ExportType = {
   TEXT: 'text',
 };
 
+const LatexDelimiter = {
+  DOLLAR: 'dollar',
+  BRACKET: 'bracket',
+};
+
+const DocumentFormat = {
+  BLOCK: 'block',
+  INLINE: 'inline',
+};
+
+const DocumentColor = {
+  LIGHT: 'light',
+  DARK: 'dark',
+};
+
 export default function Home() {
   const t = useTranslation('home');
   const [data, setData] = useState('');
   const [showSettingModal, setShowSettingModal] = useState(false);
-  const [displayConfig, setDisplayConfig] = useState(asConfigData());
   const [exportType, setExportType] = useState(ExportType.ZIP);
 
-  const saveDisplayConfig = useCallback((config) => {
-    setDisplayConfig(asConfigData(config));
-  }, []);
+  const { displayConfig, setDisplayConfig } = useDisplayConfig();
 
   const codemirrorView = useRef(null);
   const importFile = useRef(null);
@@ -113,10 +127,10 @@ export default function Home() {
   const insertMark = useCallback(() => {
     let LaTeX_delimiter_start = '\\(';
     let LaTeX_delimiter_end = '\\)';
-    if (displayConfig.latexDelimiter === 'bracket') {
+    if (displayConfig.latexDelimiter === LatexDelimiter.BRACKET) {
       LaTeX_delimiter_start = '\\(';
       LaTeX_delimiter_end = '\\)';
-    } else if (displayConfig.latexDelimiter === 'dollar') {
+    } else if (displayConfig.latexDelimiter === LatexDelimiter.DOLLAR) {
       LaTeX_delimiter_start = '$';
       LaTeX_delimiter_end = '$';
     }
@@ -181,10 +195,10 @@ export default function Home() {
   const importSource = useCallback(
     (text, config = displayConfig) => {
       setData(text);
-      saveDisplayConfig(config);
+      setDisplayConfig(config);
       createView(text);
     },
-    [displayConfig, createView, saveDisplayConfig]
+    [displayConfig, createView, setDisplayConfig]
   );
 
   const importFileAction = useCallback(
@@ -218,7 +232,7 @@ export default function Home() {
 
   const exportFileAction = useCallback(
     (updatedConfig, exportType) => {
-      saveDisplayConfig(updatedConfig);
+      setDisplayConfig(updatedConfig);
       switch (exportType) {
         case ExportType.ZIP:
           saveContentAsWebsite(data, asConfigData(updatedConfig));
@@ -230,7 +244,7 @@ export default function Home() {
           console.error('Unsupported export type');
       }
     },
-    [data, saveDisplayConfig]
+    [data, setDisplayConfig]
   );
 
   return (
@@ -240,40 +254,12 @@ export default function Home() {
         <div className="flex justify-start md:w-1/3">
           <div className="content-center mr-3">{t('latexDelimiter.name')}</div>
           <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
-            <button
-              className={`py-2 px-4 rounded-md ${
-                displayConfig.latexDelimiter === 'dollar'
-                  ? 'bg-cyan text-white'
-                  : 'bg-white text-cyan'
-              } `}
-              onClick={() =>
-                setDisplayConfig({
-                  ...displayConfig,
-                  latexDelimiter: 'dollar',
-                })
-              }
-              aria-label={t('latexDelimiter.dollar')}
-              aria-pressed={displayConfig.latexDelimiter === 'dollar'}
-            >
-              $
-            </button>
-            <button
-              className={`py-2 px-3 rounded-md ${
-                displayConfig.latexDelimiter === 'bracket'
-                  ? 'bg-cyan text-white'
-                  : 'bg-white text-cyan'
-              }`}
-              onClick={() =>
-                setDisplayConfig({
-                  ...displayConfig,
-                  latexDelimiter: 'bracket',
-                })
-              }
-              aria-label={t('latexDelimiter.bracket')}
-              aria-pressed={displayConfig.latexDelimiter === 'bracket'}
-            >
-              \(\)
-            </button>
+            <ToggleButtonGroup
+              options={[LatexDelimiter.DOLLAR, LatexDelimiter.BRACKET]}
+              activeOption={displayConfig.latexDelimiter}
+              onOptionChange={(option) => setDisplayConfig({ latexDelimiter: option })}
+              labelPrefix="latexDelimiter"
+            />
           </div>
         </div>
         <div className="flex justify-center md:w-1/3">
@@ -289,12 +275,7 @@ export default function Home() {
                   className="text-center text-2xl text-cyan font-bold border-b-2 border-cyan p-2 placeholder-opacity-100 w-full"
                   placeholder={t('pleaseInputTitle')}
                   aria-label={t('pleaseInputTitle')}
-                  onChange={(e) => {
-                    setDisplayConfig({
-                      ...displayConfig,
-                      title: e.target.value,
-                    });
-                  }}
+                  onChange={(e) => setDisplayConfig({ title: e.target.value })}
                 />
               </div>
             </div>
@@ -329,17 +310,18 @@ export default function Home() {
               variant="primary"
               className="md:ml-2 ml-1"
               size="sm"
-              onClick={() => laTeXSepConvert('d2b')}
+              onClick={() => {
+                const newMode =
+                  displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
+                    ? LatexDelimiter.BRACKET
+                    : LatexDelimiter.DOLLAR;
+                setDisplayConfig({ latexDelimiter: newMode });
+                laTeXSepConvert(newMode === LatexDelimiter.DOLLAR ? 'b2d' : 'd2b');
+              }}
             >
-              {t('dollar2bracket')}
-            </Button>
-            <Button
-              variant="primary"
-              className="md:ml-2 ml-1"
-              size="sm"
-              onClick={() => laTeXSepConvert('b2d')}
-            >
-              {t('bracket2dollar')}
+              {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
+                ? t('dollar2bracket')
+                : t('bracket2dollar')}
             </Button>
           </div>
           <EditIconsTab insertLatex={insertLatex} />
@@ -362,11 +344,32 @@ export default function Home() {
         <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
           <div className="flex mb-4 w-100 justify-between">
             <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
-            {/* <button onClick={() => setShowSettingModal(true)} aria-label={t('setting')}>
-              <SettingComponent />
-            </button> */}
+            <div className="flex justify-end">
+              <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
+                <ToggleButtonGroup
+                  options={[DocumentFormat.BLOCK, DocumentFormat.INLINE]}
+                  activeOption={displayConfig.documentFormat}
+                  onOptionChange={(option) => setDisplayConfig({ documentFormat: option })}
+                  labelPrefix="documentFormat"
+                />
+              </div>
+              <div className="bg-white border border-gray-300 rounded-md font-bold p-1 ml-4">
+                <ToggleButtonGroup
+                  options={[DocumentColor.LIGHT, DocumentColor.DARK]}
+                  activeOption={displayConfig.documentColor}
+                  onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
+                  labelPrefix="documentColor"
+                />
+              </div>
+            </div>
           </div>
-          <div className="right-side-input-textarea border-2 p-4 flex-1 rounded-lg">
+          <div
+            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${
+              displayConfig.documentColor === DocumentColor.DARK
+                ? 'bg-black text-white'
+                : ' text-black'
+            }`}
+          >
             <div data-remove-styles>
               {displayConfig.documentDisplay === 'markdown' ? (
                 <div

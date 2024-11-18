@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { asConfigData } from '@/lib/config/data';
 
 export const useForm = ({ config, isOpen }) => {
   const [localConfig, setLocalConfig] = useState(config);
@@ -21,16 +22,16 @@ export const useOptionGroup = (t) => {
   return useMemo(() => {
     return [
       {
-        configName: 'display',
-        configLabel: t('display.name'),
+        configName: 'documentFormat',
+        configLabel: t('documentFormat.name'),
         options: [
           {
             value: 'block',
-            label: t('display.block'),
+            label: t('documentFormat.block'),
           },
           {
             value: 'inline',
-            label: t('display.inline'),
+            label: t('documentFormat.inline'),
           },
         ],
       },
@@ -48,6 +49,37 @@ export const useOptionGroup = (t) => {
           },
         ],
       },
+      {
+        configName: 'documentColor',
+        configLabel: t('documentColor.name'),
+        options: [
+          {
+            value: 'light',
+            label: t('documentColor.light'),
+          },
+          {
+            value: 'dark',
+            label: t('documentColor.dark'),
+          },
+        ],
+      },
     ];
   }, [t]);
+};
+
+
+export const useDisplayConfig = (initialConfig = asConfigData()) => {
+  const [displayConfig, setDisplayConfigState] = useState(initialConfig);
+
+  const setDisplayConfig = useCallback((newConfig) => {
+    setDisplayConfigState((prevConfig) => ({
+      ...prevConfig,
+      ...newConfig,
+    }));
+  }, []);
+
+  return {
+    displayConfig,
+    setDisplayConfig,
+  };
 };
