@@ -5,7 +5,7 @@
 [data-remove-styles] ol,
 [data-remove-styles] ul,
 [data-remove-styles] menu,
-[data-remove-styles] svg {
+[data-remove-styles] svg:not(.octicon) {
   all: revert;
 }
 
