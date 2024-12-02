@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { asConfigData } from '@/lib/config/data';
 
 export const useForm = ({ config, isOpen }) => {
   const [localConfig, setLocalConfig] = useState(config);
@@ -65,20 +64,4 @@ export const useOptionGroup = (t) => {
       },
     ];
   }, [t]);
-};
-
-export const useDisplayConfig = (initialConfig = asConfigData()) => {
-  const [displayConfig, setDisplayConfigState] = useState(initialConfig);
-
-  const setDisplayConfig = useCallback((newConfig) => {
-    setDisplayConfigState((prevConfig) => ({
-      ...prevConfig,
-      ...newConfig,
-    }));
-  }, []);
-
-  return {
-    displayConfig,
-    setDisplayConfig,
-  };
 };

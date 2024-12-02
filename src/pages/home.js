@@ -31,30 +31,10 @@ import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
 import ConvertHintModal from '@/components/home/convert-hint-modal';
-import { useDisplayConfig } from '@/components/home/setting-modal/helpers';
+import { useDisplayConfig, ExportType, LatexDelimiter, DocumentFormat, DocumentColor } from '@/lib/display-config';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
-
-const ExportType = {
-  ZIP: 'zip',
-  TEXT: 'text',
-};
-
-const LatexDelimiter = {
-  DOLLAR: 'dollar',
-  BRACKET: 'bracket',
-};
-
-const DocumentFormat = {
-  BLOCK: 'block',
-  INLINE: 'inline',
-};
-
-const DocumentColor = {
-  LIGHT: 'light',
-  DARK: 'dark',
-};
 
 export default function Home() {
   const t = useTranslation('home');
@@ -249,6 +229,11 @@ export default function Home() {
     [data, setDisplayConfig]
   );
 
+  const latexDelimiterOptions = [
+    { value: LatexDelimiter.DOLLAR, label: t('latexDelimiter.dollar') },
+    { value: LatexDelimiter.BRACKET, label: t('latexDelimiter.bracket') }
+  ];
+
   return (
     <div className="w-full h-full">
       {/* Top file setting panel */}
@@ -257,10 +242,9 @@ export default function Home() {
           <div className="content-center mr-3">{t('latexDelimiter.name')}</div>
           <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
             <ToggleButtonGroup
-              options={[LatexDelimiter.DOLLAR, LatexDelimiter.BRACKET]}
+              options={latexDelimiterOptions}
               activeOption={displayConfig.latexDelimiter}
               onOptionChange={(option) => setDisplayConfig({ latexDelimiter: option })}
-              labelPrefix="latexDelimiter"
             />
           </div>
         </div>
@@ -344,18 +328,22 @@ export default function Home() {
             <div className="flex justify-end">
               <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
                 <ToggleButtonGroup
-                  options={[DocumentFormat.BLOCK, DocumentFormat.INLINE]}
+                  options={[
+                    { value: DocumentFormat.BLOCK, label: t('documentFormat.block') },
+                    { value: DocumentFormat.INLINE, label: t('documentFormat.inline') }
+                  ]}
                   activeOption={displayConfig.documentFormat}
                   onOptionChange={(option) => setDisplayConfig({ documentFormat: option })}
-                  labelPrefix="documentFormat"
                 />
               </div>
               <div className="bg-white border border-gray-300 rounded-md font-bold p-1 ml-4">
                 <ToggleButtonGroup
-                  options={[DocumentColor.LIGHT, DocumentColor.DARK]}
+                  options={[
+                    { value: DocumentColor.LIGHT, label: t('documentColor.light') },
+                    { value: DocumentColor.DARK, label: t('documentColor.dark') }
+                  ]}
                   activeOption={displayConfig.documentColor}
                   onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
-                  labelPrefix="documentColor"
                 />
               </div>
             </div>
