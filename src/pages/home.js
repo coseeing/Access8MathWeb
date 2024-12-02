@@ -290,7 +290,7 @@ export default function Home() {
           </div>
           <div className="flex justify-end mb-4 mt-4 md:mt-m1">
             <Button variant="primary" className="ml-2" onClick={insertMark}>
-              {t('mark')}
+              {t('mark')} {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR ? '$' : '\\( \\)'}
             </Button>
             <Button
               variant="primary"
