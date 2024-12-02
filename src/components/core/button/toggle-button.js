@@ -1,18 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import { useTranslation } from '@/lib/i18n';
 
-
-const ToggleButton = ({ isActive = false, onClick = () => {}, label = '', ariaLabel = '' }) => {
+const ToggleButton = ({ isActive = false, onClick = () => {}, children = '', label = '' }) => {
   return (
     <button
       className={cn('py-2 px-4 rounded-md', isActive ? 'bg-cyan text-white' : 'bg-white text-cyan')}
       onClick={onClick}
-      aria-label={ariaLabel}
+      aria-label={label}
       aria-pressed={isActive}
     >
-      {label}
+      {children}
     </button>
   );
 };
@@ -20,22 +18,22 @@ const ToggleButton = ({ isActive = false, onClick = () => {}, label = '', ariaLa
 ToggleButton.propTypes = {
   isActive: PropTypes.bool,
   onClick: PropTypes.func,
+  children: PropTypes.node,
   label: PropTypes.string,
-  ariaLabel: PropTypes.string,
 };
 
-const ToggleButtonGroup = ({ options = [], activeOption = '', onOptionChange = () => {}, labelPrefix = '' }) => {
-    const t = useTranslation('home');
-    return (
+const ToggleButtonGroup = ({ options = [], activeOption = '', onOptionChange = () => {} }) => {
+  return (
     <>
-      {options.map((option) => (
+      {options.map(({ value, label }) => (
         <ToggleButton
-          key={option}
-          isActive={activeOption === option}
-          onClick={() => onOptionChange(option)}
-          label={t(`${labelPrefix}.${option}`)}
-          ariaLabel={t(`${labelPrefix}.${option}`)}
-        />
+          key={value}
+          isActive={activeOption === value}
+          onClick={() => onOptionChange(value)}
+          label={label}
+        >
+          {label}
+        </ToggleButton>
       ))}
     </>
   );
