@@ -1,5 +1,3 @@
-// only for migration period
-
 'use client';
 
 import React, { useState, useMemo, useCallback, useRef, useEffect } from 'react';
@@ -48,31 +46,48 @@ export default function Home() {
   const [showSettingModal, setShowSettingModal] = useState(false);
   const [showConvertHintModal, setShowConvertHintModal] = useState(false);
   const [exportType, setExportType] = useState(ExportType.ZIP);
+  const [imageFiles, setImageFiles] = useState({});
 
   const { displayConfig, setDisplayConfig } = useDisplayConfig();
 
   const codemirrorView = useRef(null);
   const importFile = useRef(null);
+  const imagesToExportRef = useRef({});
+
+
+  const addImageToExport = useCallback((fileID, file) => {
+    imagesToExportRef.current = {
+      ...imagesToExportRef.current,
+      [fileID]: file
+    };
+    setImageFiles(prevFiles => ({
+      ...prevFiles,
+      [fileID]: file
+    }));
+  }, []);
 
   const content = useMemo(() => {
     const processor = textProcessorFactory({
       latexDelimiter: displayConfig.latexDelimiter,
       asciimathDelimiter: 'graveaccent',
       htmlMathDisplay: displayConfig.htmlMathDisplay,
+      imageFiles
     });
     return processor(data);
-  }, [data, displayConfig]);
+  }, [data, displayConfig, imageFiles]);
 
   const markedFunc = useMemo(() => {
     return markedProcessorFactory({
       latexDelimiter: displayConfig.latexDelimiter,
       asciimathDelimiter: 'graveaccent',
       htmlMathDisplay: displayConfig.htmlMathDisplay,
+      imageFiles
     });
-  }, [displayConfig]);
+  }, [displayConfig, imageFiles]);
 
   const contentmd = useMemo(() => {
-    return markedFunc(data);
+    const result = markedFunc(data);
+    return result;
   }, [data, markedFunc]);
 
   const createView = useCallback((content = '') => {
@@ -180,14 +195,23 @@ export default function Home() {
     view.focus();
   }, []);
 
-  const importSource = useCallback(
-    (text, config = displayConfig) => {
-      setData(text);
-      setDisplayConfig(config);
-      createView(text);
-    },
-    [displayConfig, createView, setDisplayConfig]
-  );
+  const importSource = useCallback(async (text, config = {}, imagesFolder) => {
+    if (imagesFolder) {
+      const newImageFiles = {};
+      for (const [relativePath, file] of Object.entries(imagesFolder.files)) {
+        if (!relativePath.endsWith('/')) {
+          const fileName = relativePath.split('/').pop();
+          const blob = await file.async('blob');
+          newImageFiles[fileName] = blob;
+          addImageToExport(fileName, blob);
+        }
+      }
+      setImageFiles(newImageFiles);
+    }
+    
+    setDisplayConfig({ ...displayConfig, ...config });
+    createView(text);
+  }, [createView, displayConfig, setDisplayConfig, addImageToExport]);
 
   const importFileAction = useCallback(
     async (event) => {
@@ -200,8 +224,8 @@ export default function Home() {
       const fileExtension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase();
       try {
         if (importAcceptedExtension.includes(fileExtension)) {
-          const { config, text } = await parseA8MWFile(file);
-          return importSource(text, config);
+          const { config, text, imagesFolder } = await parseA8MWFile(file);
+          return importSource(text, config, imagesFolder);
         }
 
         if (importTextAcceptedExtension.includes(fileExtension)) {
@@ -223,10 +247,10 @@ export default function Home() {
       setDisplayConfig(updatedConfig);
       switch (exportType) {
         case ExportType.ZIP:
-          saveContentAsWebsite(data, asConfigData(updatedConfig));
+          saveContentAsWebsite(data, asConfigData(updatedConfig), imagesToExportRef.current);
           break;
         case ExportType.A8M:
-          saveContentAsOriginalFile(data, asConfigData(updatedConfig));
+          saveContentAsOriginalFile(data, asConfigData(updatedConfig), imagesToExportRef.current);
           break;
         default:
           console.error('Unsupported export type');
@@ -315,7 +339,7 @@ export default function Home() {
 
           <div className="flex h-[600px]">
             <div className="w-1/3 flex-shrink-0 h-full">
-              <EditIconsTab insertLatex={insertLatex} />
+             <EditIconsTab insertLatex={insertLatex} addImageToExport={addImageToExport}/>
             </div>
             <div className="w-2/3 h-full">
               <div
@@ -370,11 +394,11 @@ export default function Home() {
             <div data-remove-styles>
               {displayConfig.documentDisplay === 'markdown' ? (
                 <div
-                  dangerouslySetInnerHTML={{
-                    __html: contentmd,
-                  }}
-                />
-              ) : (
+                dangerouslySetInnerHTML={{
+                  __html: contentmd,
+                }}
+              />
+            ) : (
                 <div>
                   {content.map((line, key) => (
                     <span key={key}>
