@@ -125,6 +125,10 @@ export default function Home() {
 
   useEffect(() => {
     createView();
+    // Adjust selection after creating the view
+    if (codemirrorView.current) {
+        adjustSelection(codemirrorView.current);
+    }
   }, [createView]);
 
   const insertMark = useCallback(() => {
@@ -263,6 +267,20 @@ export default function Home() {
     { value: LatexDelimiter.DOLLAR, label: t('latexDelimiter.dollar') },
     { value: LatexDelimiter.BRACKET, label: t('latexDelimiter.bracket') },
   ];
+
+  function adjustSelection(view) {
+    const state = view.state;
+    const doc = state.doc;
+    const cursor = view.state.selection.main.head;
+
+    // Check if the cursor is outside the document
+    if (cursor > doc.length) {
+        // Set the cursor to the end of the document
+        view.dispatch({
+            selection: EditorSelection.cursor(doc.length)
+        });
+    }
+  }
 
   return (
     <div className="w-full h-full">
