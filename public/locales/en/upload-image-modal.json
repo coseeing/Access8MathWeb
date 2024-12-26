@@ -1,0 +1,15 @@
+{
+  "title": "Upload Image",
+  "dimensions": "Dimensions",
+  "fileSize": "File Size",
+  "altText": "Alt Text",
+  "altTextPlaceholder": "Enter the alt text for the image",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "chooseFile": "Choose File",
+  "imagePreview": "Image Preview",
+  "replaceImage": "Replace Image",
+  "required": "Required",
+  "altTextRequired": "Alt text is required",
+  "modalDescription": "Upload an image to add it to your document. You can replace an existing image by uploading a new one."
+}
