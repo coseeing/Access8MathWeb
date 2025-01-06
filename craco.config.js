@@ -3,6 +3,10 @@ const fs = require('fs');
 
 class VersionPlugin {
   apply(compiler) {
+    if (process.env.NODE_ENV !== 'production') {
+      return;
+    }
+
     compiler.hooks.afterEmit.tap('VersionPlugin', (compilation) => {
       const version = process.env.npm_package_version || 'unknown';
       const buildDate = new Date().toISOString();
