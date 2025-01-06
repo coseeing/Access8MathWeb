@@ -3,13 +3,16 @@ const fs = require('fs');
 
 class VersionPlugin {
   apply(compiler) {
-    compiler.hooks.afterEmit.tap('VersionPlugin', (compilation) => {
-      const version = process.env.npm_package_version || 'unknown';
-      const buildDate = new Date().toISOString();
-      const content = `Version: ${version}\nBuild Date: ${buildDate}`;
+    if (process.env.NODE_ENV === 'production') {
+      compiler.hooks.afterEmit.tap('VersionPlugin', (compilation) => {
+        const version = process.env.npm_package_version || 'unknown';
+        const buildDate = new Date().toISOString();
+        const content = `Version: ${version}\nBuild Date: ${buildDate}`;
 
-      fs.writeFileSync(path.join(compilation.outputOptions.path, 'version.txt'), content);
-    });
+        fs.writeFileSync(path.join(compilation.outputOptions.path, 'version.txt'), content);
+      });
+      return;
+    }
   }
 }
 
