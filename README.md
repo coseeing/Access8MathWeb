@@ -85,5 +85,5 @@ npm run test
 npm run format
 ```
 
-### Editor Syntax & Demo Content
-https://github.com/coseeing/Access8MathWeb/wiki/Editor-Syntax
+### Editor Custom Syntax & Demo Content
+https://github.com/coseeing/Access8MathWeb/wiki/Editor-Custom-Syntax
