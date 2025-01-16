@@ -1,5 +1,4 @@
-// src/components/image-upload-modal.js
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Dialog } from '@headlessui/react';
 import { useTranslation } from '@/lib/i18n';
@@ -15,13 +14,23 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const fileInputRef = useRef(null);
   const t = useTranslation('upload-image-modal');
 
-  const handleFileSelect = (event) => {
+  const resetImage = useCallback(() => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setImageInfo(null);
+  }, []);
+
+  const resetForm = useCallback(() => {
+    resetImage();
+    setAltText('');
+  }, [resetImage]);
+
+  const handleFileSelect = useCallback((event) => {
     const file = event.target.files[0];
     if (file) {
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
       
-      // Get image dimensions
       const img = new Image();
       img.onload = () => {
         setImageInfo({
@@ -32,40 +41,35 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
       };
       img.src = URL.createObjectURL(file);
     }
-  };
+  }, []);
 
-  const handleDrop = (event) => {
+  const handleDrop = useCallback((event) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith('image/')) {
       handleFileSelect({ target: { files: [file] } });
     }
-  };
+  }, [handleFileSelect]);
 
-  const handleDragOver = (event) => {
+  const handleDragOver = useCallback((event) => {
     event.preventDefault();
-  };
+  }, []);
 
-  const handleConfirm = () => {
+  const handleClose = useCallback(() => {
+    resetForm();
+    onClose();
+  }, [resetForm, onClose]);
+
+  const handleConfirm = useCallback(() => {
     if (selectedFile && altText.trim()) {
       onConfirm(selectedFile, altText);
       handleClose();
     }
-  };
+  }, [selectedFile, altText, onConfirm, handleClose]);
 
-  const handleClose = () => {
-    setSelectedFile(null);
-    setPreviewUrl(null);
-    setAltText('');
-    setImageInfo(null);
-    onClose();
-  };
-
-  const handleRemoveImage = () => {
-    setSelectedFile(null);
-    setPreviewUrl(null);
-    setImageInfo(null);
-  };
+  const handleRemoveImage = useCallback(() => {
+    resetImage();
+  }, [resetImage]);
 
   return (
     <Dialog 

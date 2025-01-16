@@ -51,27 +51,44 @@ export const parseA8MWFile = (file) => {
         .then(extractEntryData)
         .then(async ({ text, config, contents }) => {
           const imagesFolder = contents.folder('images');
-          const imageFiles = imagesFolder 
-            ? Object.entries(contents.files)
-                .filter(([path]) => path.startsWith('images/') && path !== 'images/')
-                .reduce((acc, [path, file]) => {
-                  acc.files[path] = file;
-                  return acc;
-                }, { files: {} })
-            : { files: {} };
-          
+          if (!imagesFolder) {
+            resolve({
+              text,
+              config: asConfigData(config),
+              imagesFolder: { files: {} }
+            });
+            return;
+          }
+
+          const imageFiles = Object.entries(contents.files)
+            .filter(([path]) => path.startsWith('images/') && path !== 'images/')
+            .reduce((acc, [path, file]) => {
+              return {
+                ...acc,
+                files: {
+                  ...acc.files,
+                  [path]: file
+                }
+              };
+            }, { files: {} });
+
           resolve({
             text,
-            config: {
-              ...asConfigData(config),
-            },
+            config: asConfigData(config),
             imagesFolder: imageFiles
           });
         })
         .catch(reject);
     };
+    
+    reader.onerror = (e) => {
+      console.error(e);
+      reject(e);
+    };
 
-    reader.onerror = reject;
+    reader.onabort = (e) => {
+      console.log('onabort', e);
+    };
   });
 };
 
@@ -145,19 +162,20 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
 
 export const saveContentAsOriginalFile = async (sourceText, config, imagesToExport) => {
   const { entry } = config;
+  const images = Object.keys(imagesToExport).reduce((acc, fileName) => {
+    const key = fileName.split('.')[0];
+    return { ...acc, [key]: fileName };
+  }, {});
+
   const configWithMapping = {
     ...config,
-    images: Object.keys(imagesToExport).reduce((acc, fileName) => {
-      const key = fileName.split('.')[0];
-      acc[key] = fileName;
-      return acc;
-    }, {})
+    images
   };
 
   const configBlob = new Blob([JSON.stringify(configWithMapping, null, 2)], {
     type: 'application/json',
   });
-  let updatedSourceText = sourceText;
+
   const zip = new JSZip();
   const imagesFolder = zip.folder('images');
 
@@ -166,7 +184,7 @@ export const saveContentAsOriginalFile = async (sourceText, config, imagesToExpo
     imagesFolder.file(fileName, imageBlob);
   }
 
-  const markdownBlob = new Blob([updatedSourceText], { type: 'text/markdown' });
+  const markdownBlob = new Blob([sourceText], { type: 'text/markdown' });
 
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(entry, markdownBlob);

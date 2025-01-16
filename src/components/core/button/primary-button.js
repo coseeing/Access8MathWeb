@@ -6,7 +6,7 @@ const PrimaryButton = ({
   size = 'md',
   className,
   children,
-  onClick,
+  onClick = () => {},
   disabled = false,
   'aria-label': ariaLabel,
   ...props
