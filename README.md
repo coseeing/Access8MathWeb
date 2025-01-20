@@ -58,7 +58,7 @@ npm install
 ### Development
 
 ```
-npm runs start
+npm run start
 ```
 
 ### Build for Production

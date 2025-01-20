@@ -1,6 +1,6 @@
 <svg width="53" height="53" viewBox="0 0 53 53" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g filter="url(#filter0_d)">
-<rect width="52" height="52" fill="white"/>
+<rect width="52" height="52" fill="none"/>
 <g clip-path="url(#clip0)">
 <path d="M7.66134 52.9985H7.63025C7.50587 52.9985 7.41259 52.7463 7.3504 52.2419V25.9758L7.36595 -0.290321C7.4696 -0.758717 7.56806 -0.992912 7.66134 -0.992912C7.79608 -0.992912 7.89973 -0.722687 7.97228 -0.182232V52.2419C7.88937 52.7463 7.79608 52.9985 7.69244 52.9985H7.66134Z" fill="black"/>
 </g>
@@ -22,10 +22,10 @@
 <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
 </filter>
 <clipPath id="clip0">
-<rect width="4.32207" height="35.9995" fill="white" transform="matrix(1 0 0 -1 5.5 43.9995)"/>
+<rect width="4.32207" height="35.9995" fill="none" transform="matrix(1 0 0 -1 5.5 43.9995)"/>
 </clipPath>
 <clipPath id="clip1">
-<rect width="4.32207" height="35.9995" fill="white" transform="matrix(1 0 0 -1 41.678 43.9995)"/>
+<rect width="4.32207" height="35.9995" fill="none" transform="matrix(1 0 0 -1 41.678 43.9995)"/>
 </clipPath>
 </defs>
 </svg>

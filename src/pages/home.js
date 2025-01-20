@@ -31,7 +31,13 @@ import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
 import ConvertHintModal from '@/components/home/convert-hint-modal';
-import { useDisplayConfig, ExportType, LatexDelimiter, DocumentFormat, DocumentColor } from '@/lib/display-config';
+import {
+  useDisplayConfig,
+  ExportType,
+  LatexDelimiter,
+  DocumentFormat,
+  DocumentColor,
+} from '@/lib/display-config';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
@@ -231,7 +237,7 @@ export default function Home() {
 
   const latexDelimiterOptions = [
     { value: LatexDelimiter.DOLLAR, label: t('latexDelimiter.dollar') },
-    { value: LatexDelimiter.BRACKET, label: t('latexDelimiter.bracket') }
+    { value: LatexDelimiter.BRACKET, label: t('latexDelimiter.bracket') },
   ];
 
   return (
@@ -282,47 +288,53 @@ export default function Home() {
           </button>
         </div>
       </div>
-      <div className=" flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
+      <div className="flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
         {/* Left side input panel */}
-        <div className="md:w-1/2 bg-bg1 md:p-8 p-4 flex flex-col">
+        <div className="md:w-3/5 bg-cyanLight md:p-8 p-4 flex flex-col">
           <div className="flex justify-between">
             <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
+            <div className="flex justify-end mb-4 mt-4 md:mt-m1">
+              <Button variant="primary" className="ml-2" onClick={insertMark}>
+                {t('mark')}{' '}
+                {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR ? '$' : '\\( \\)'}
+              </Button>
+              <Button
+                variant="primary"
+                className="md:ml-2 ml-1"
+                size="sm"
+                onClick={() => {
+                  setShowConvertHintModal(true);
+                }}
+              >
+                {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
+                  ? t('dollar2bracket')
+                  : t('bracket2dollar')}
+              </Button>
+            </div>
           </div>
-          <div className="flex justify-end mb-4 mt-4 md:mt-m1">
-            <Button variant="primary" className="ml-2" onClick={insertMark}>
-              {t('mark')} {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR ? '$' : '\\( \\)'}
-            </Button>
-            <Button
-              variant="primary"
-              className="md:ml-2 ml-1"
-              size="sm"
-              onClick={() => {
-                setShowConvertHintModal(true);
-              }}
-            >
-              {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
-                ? t('dollar2bracket')
-                : t('bracket2dollar')}
-            </Button>
-          </div>
-          <EditIconsTab insertLatex={insertLatex} />
-          <div className="flex flex-1">
-            <div
-              id="codemirror"
-              className="left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
-            />
-            <input
-              ref={importFile}
-              accept={[...importTextAcceptedExtension, ...importAcceptedExtension].join(', ')}
-              type="file"
-              className="hidden"
-              onChange={importFileAction}
-            />
+
+          <div className="flex h-[600px]">
+            <div className="w-1/3 flex-shrink-0 h-full">
+              <EditIconsTab insertLatex={insertLatex} />
+            </div>
+            <div className="w-2/3 h-full">
+              <div
+                id="codemirror"
+                className="h-full left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
+              />
+              <input
+                ref={importFile}
+                accept={[...importTextAcceptedExtension, ...importAcceptedExtension].join(', ')}
+                type="file"
+                className="hidden"
+                onChange={importFileAction}
+              />
+            </div>
           </div>
         </div>
 
         {/* Right side output panel */}
-        <div className="md:w-1/2 flex flex-col md:h-full h-[600px] md:p-8 p-4">
+        <div className="md:w-2/5 flex flex-col md:h-full h-[600px] md:p-8 p-4">
           <div className="flex mb-4 w-100 justify-between">
             <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
             <div className="flex justify-end">
@@ -330,7 +342,7 @@ export default function Home() {
                 <ToggleButtonGroup
                   options={[
                     { value: DocumentFormat.BLOCK, label: t('documentFormat.block') },
-                    { value: DocumentFormat.INLINE, label: t('documentFormat.inline') }
+                    { value: DocumentFormat.INLINE, label: t('documentFormat.inline') },
                   ]}
                   activeOption={displayConfig.documentFormat}
                   onOptionChange={(option) => setDisplayConfig({ documentFormat: option })}
@@ -340,7 +352,7 @@ export default function Home() {
                 <ToggleButtonGroup
                   options={[
                     { value: DocumentColor.LIGHT, label: t('documentColor.light') },
-                    { value: DocumentColor.DARK, label: t('documentColor.dark') }
+                    { value: DocumentColor.DARK, label: t('documentColor.dark') },
                   ]}
                   activeOption={displayConfig.documentColor}
                   onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
