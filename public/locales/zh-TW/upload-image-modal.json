@@ -1,0 +1,16 @@
+{
+  "title": "上傳圖片",
+  "dimensions": "尺寸",
+  "fileSize": "檔案大小",
+  "altText": "替代文字",
+  "altTextPlaceholder": "輸入圖片的替代文字",
+  "cancel": "取消",
+  "confirm": "確認",
+  "chooseFile": "選擇檔案",
+  "imagePreview": "圖片預覽",
+  "removeImage": "移除圖片",
+  "modalDescription": "在此上傳圖片並添加替代文字描述",
+  "replaceImage": "替換圖片",
+  "required": "必填",
+  "altTextRequired": "請輸入替代文字"
+}

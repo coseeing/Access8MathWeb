@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@headlessui/react';
 
@@ -8,12 +8,32 @@ import markdowns from '@/lib/tabs/markdowns';
 
 import { compare } from '@/lib/data-process';
 import mathTabList from '@/lib/tabs/math';
+import ImageUploadModal from './image-upload-modal';
 
-const EditIconsTab = ({ insertLatex }) => {
+const generateUniqueId = (length = 8) => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  return Array.from(
+    { length }, 
+    () => chars.charAt(Math.floor(Math.random() * chars.length))
+  ).join('');
+};
+
+const EditIconsTab = ({ insertLatex, addImageToExport }) => {
   const [selectedMainTabIndex, setSelectedMainTabIndex] = useState(null);
   const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   const t = useTranslation('tabs');
+
+  const handleImageConfirm = useCallback((file, altText) => {
+    const fileID = generateUniqueId();
+    insertLatex({
+      latex: `![${altText}](${fileID})`,
+      offset: -1
+    });
+    
+    addImageToExport(fileID, file);
+  }, [insertLatex, addImageToExport]);
 
   return (
     <div>
@@ -104,7 +124,13 @@ const EditIconsTab = ({ insertLatex }) => {
                   key={tab.id}
                   className="w-w5 h-w5 bg-white border group relative"
                   aria-label={t(`markdown.${tab.id}`)}
-                  onClick={() => insertLatex(tab)}
+                  onClick={() => {
+                    if (tab.id === 'insert_image') {
+                      setIsImageModalOpen(true);
+                      return;
+                    }
+                    insertLatex(tab);
+                  }}
                 >
                   <tab.Icon width={50} height={50} />
                   <Tab
@@ -123,13 +149,19 @@ const EditIconsTab = ({ insertLatex }) => {
             </Tab.Panel>
           </Tab.Panels>
         </div>
+
+        <ImageUploadModal
+          isOpen={isImageModalOpen}
+          onClose={() => setIsImageModalOpen(false)}
+          onConfirm={handleImageConfirm}
+        />
       </Tab.Group>
     </div>
   );
 };
 
 EditIconsTab.propTypes = {
-  insertLatex: PropTypes.func,
+  insertLatex: PropTypes.func.isRequired,
 };
 
 export default EditIconsTab;
