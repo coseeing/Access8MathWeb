@@ -10,22 +10,22 @@ import { compare } from '@/lib/data-process';
 import mathTabList from '@/lib/tabs/math';
 
 const EditIconsTab = ({ insertLatex }) => {
-  const [selectedMainTabIndex, setSelectedMainTabIndex] = useState(null);
-  const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(null);
+  const [selectedMainTabIndex, setSelectedMainTabIndex] = useState(0);
+  const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(0);
 
   const t = useTranslation('tabs');
 
   return (
-    <div>
-      <Tab.Group as="div" selectedIndex={selectedMainTabIndex} onChange={setSelectedMainTabIndex}>
-        <div className="flex padding_bottom mb-2">
-          <Tab.List as="div" className="flex-auto xl:grow-0 flex flex-wrap xl:flex-nowrap bg-white">
-            {mainTabList.map(({ id, mainTabIndex }) => (
+    <div className="flex h-[600px]">
+      <Tab.Group as="div" selectedIndex={selectedMainTabIndex} onChange={setSelectedMainTabIndex} className="flex flex-col w-full">
+        <div className="flex bg-cyan p-2">
+          <Tab.List as="div" className="w-full flex bg-cyan">
+            {mainTabList.map(({ id }, index) => (
               <Tab
                 as="button"
                 key={id}
-                className={`category-icon w-24 h-12 flex-basis-like-1/3 xl:flex-basis-auto grow xl:grow-0 xl:shrink-0 order mx-0.5 border bg-gray-50 text-sm text-center cursor-pointer transition-color ${
-                  selectedMainTabIndex === mainTabIndex ? 'main_active' : ''
+                className={`rounded flex-1 px-4 py-2 text-sm text-center cursor-pointer transition-colors ${
+                  selectedMainTabIndex === index ? 'bg-white text-black' : 'bg-cyan text-white'
                 }`}
               >
                 {t(`main.${id}`)}
@@ -33,28 +33,29 @@ const EditIconsTab = ({ insertLatex }) => {
             ))}
           </Tab.List>
         </div>
-        <div>
-          <Tab.Panels as="div" className="bg-bg2 border border-gray-300 flex flex-wrap">
-            <Tab.Panel>
+        <div className="flex flex-1  h-full">
+          <Tab.Panels as="div" className="flex w-full">
+            <Tab.Panel className="h-full w-full">
               <Tab.Group
                 as="div"
                 selectedIndex={selectedMathTabIndex}
                 onChange={setSelectedMathTabIndex}
+                className="h-full flex"
               >
-                <div className="flex mb-4">
-                  <Tab.List as="div" className="flex-auto flex flex-wrap xl:flex-nowrap bg-white">
+                <div className="flex h-full w-full">
+                  <Tab.List as="div" className="flex flex-col bg-cyan p-2">
                     {mathTabList.map((tab, mathTabIndex) => (
                       <Tab
                         as="button"
                         key={tab.id}
                         aria-label={t(`categorys.${tab.id}`)}
-                        className={`group relative category-icon h-12 flex-basis-like-1/3 xl:flex-basis-auto grow xl:shrink-0 order mx-0.5 border bg-gray-50 cursor-pointer transition-color ${
+                        className={`group relative rounded mb-1 category-icon h-12 w-12 flex items-center justify-center mx-0.5 bg-white cursor-pointer transition-colors ${
                           selectedMathTabIndex === mathTabIndex ? 'active' : ''
                         }`}
                       >
                         <tab.Icon width={48} height={48} />
                         <div
-                          className="absolute p-4 shadow-lg hidden bg-bg2 group-hover:block whitespace-nowrap z-10"
+                          className="absolute p-4 shadow-lg hidden bg-gray-50 group-hover:block whitespace-nowrap z-10"
                           style={{
                             left: '50%',
                             transform: 'translateX(-50%)',
@@ -63,53 +64,66 @@ const EditIconsTab = ({ insertLatex }) => {
                         >
                           {t(`categorys.${tab.id}`)}
                         </div>
+                        {selectedMathTabIndex === mathTabIndex && (
+                          // White triangle arrow pointing right to indicate selected tab
+                          <div
+                            className="absolute -right-2 top-1/2 -translate-y-1/2 w-0 h-0"
+                            style={{
+                              borderTop: '8px solid transparent',
+                              borderBottom: '8px solid transparent',
+                              borderLeft: '8px solid white'
+                            }}
+                          />
+                        )}
                       </Tab>
                     ))}
                   </Tab.List>
-                </div>
-                <Tab.Panels as="div" className="bg-bg2 border border-gray-300 flex flex-wrap">
-                  {mathTabList.map((mathTab) => {
-                    return (
-                      <Tab.Panel key={mathTab.id}>
-                        {(mathTab?.subTabs || []).sort(compare('order', 'asc')).map((subTab) => (
-                          <button
-                            key={subTab.id}
-                            className="w-w5 h-w5 bg-white border group relative"
-                            aria-label={t(`latexs.${subTab.id}`)}
-                            onClick={() => insertLatex(subTab)}
-                          >
-                            <subTab.Icon width={50} height={50} />
-                            <Tab
-                              as="div"
-                              className="absolute p-4 shadow-lg hidden bg-bg2 group-hover:block whitespace-nowrap z-10"
-                              style={{
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                top: '55px',
-                              }}
+                  <Tab.Panels
+                    as="div"
+                    className="flex-1 bg-gray-50 border border-gray-300 p-2 overflow-y-auto"
+                  >
+                    {mathTabList.map((mathTab) => {
+                      return (
+                        <Tab.Panel key={mathTab.id} className="flex flex-wrap">
+                          {(mathTab?.subTabs || []).sort(compare('order', 'asc')).map((subTab) => (
+                            <button
+                              key={subTab.id}
+                              className="w-w5 h-w5 group relative m-1"
+                              aria-label={t(`latexs.${subTab.id}`)}
+                              onClick={() => insertLatex(subTab)}
                             >
-                              {t(`latexs.${subTab.id}`)}
-                            </Tab>
-                          </button>
-                        ))}
-                      </Tab.Panel>
-                    );
-                  })}
-                </Tab.Panels>
+                              <subTab.Icon width={50} height={50} className="bg-cyanLight rounded"/>
+                              <Tab
+                                as="div"
+                                className="absolute p-4 rounded shadow-lg bg-gray-50 hidden group-hover:block whitespace-nowrap z-10"
+                                style={{
+                                  left: '50%',
+                                  transform: 'translateX(-50%)',
+                                  top: '55px',
+                                }}
+                              >
+                                {t(`latexs.${subTab.id}`)}
+                              </Tab>
+                            </button>
+                          ))}
+                        </Tab.Panel>
+                      );
+                    })}
+                  </Tab.Panels>
+                </div>
               </Tab.Group>
             </Tab.Panel>
-            <Tab.Panel>
+            <Tab.Panel className="flex flex-wrap content-baseline bg-cyan p-1 h-full">
               {markdowns.map((tab) => (
                 <button
                   key={tab.id}
-                  className="w-w5 h-w5 bg-white border group relative"
                   aria-label={t(`markdown.${tab.id}`)}
+                  className="group relative rounded mb-1 h-12 w-12 mx-0.5 bg-white cursor-pointer transition-colors flex items-center justify-center"
                   onClick={() => insertLatex(tab)}
                 >
-                  <tab.Icon width={50} height={50} />
-                  <Tab
-                    as="div"
-                    className="absolute p-4 shadow-lg hidden bg-bg2 group-hover:block whitespace-nowrap z-10"
+                  <tab.Icon width={48} height={48} />
+                  <div
+                    className="absolute p-4 shadow-lg hidden bg-gray-50 group-hover:block whitespace-nowrap z-10"
                     style={{
                       left: '50%',
                       transform: 'translateX(-50%)',
@@ -117,7 +131,7 @@ const EditIconsTab = ({ insertLatex }) => {
                     }}
                   >
                     {t(`markdown.${tab.id}`)}
-                  </Tab>
+                  </div>
                 </button>
               ))}
             </Tab.Panel>
