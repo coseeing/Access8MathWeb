@@ -75,7 +75,7 @@ const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig, exportType, se
                 aria-label={t('exportType')}
               >
                 <option value="zip">{t('zip')}</option>
-                <option value="text">{t('text')}</option>
+                <option value="text">{t('a8m')}</option>
               </select>
             </fieldset>
           </div>
