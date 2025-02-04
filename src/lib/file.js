@@ -137,6 +137,6 @@ export const saveContentAsOriginalFile = (sourceText, config) => {
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(entry, markdownBlob);
   zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-    saveAs(newZipData, `${config.title}.${ORIGINAL_FILE_EXTENSION}`);
+    saveAs(newZipData, `${config.title || '未命名文件'}.${ORIGINAL_FILE_EXTENSION}`);
   });
 };
