@@ -22,5 +22,8 @@
   "cancel": "Cancel",
   "submit": "Export File",
   "title": "Setting",
-  "exportType": "Export Type"
+  "exportType": "Export Type",
+  "a8m": "a8m",
+  "zip": "zip",
+  "untitledDocument": "Untitled document"
 }
