@@ -1,5 +1,6 @@
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
+import i18n from '@/lib/i18n';
 
 import { asConfigData } from '@/lib/config/data';
 
@@ -137,6 +138,6 @@ export const saveContentAsOriginalFile = (sourceText, config) => {
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(entry, markdownBlob);
   zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-    saveAs(newZipData, `${config.title}.${ORIGINAL_FILE_EXTENSION}`);
+    saveAs(newZipData, `${config.title || i18n.t('untitledDocument', { ns: 'setting-modal' })}.${ORIGINAL_FILE_EXTENSION}`);
   });
 };

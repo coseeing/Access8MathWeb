@@ -3,7 +3,7 @@ import { asConfigData } from './config/data';
 
 export const ExportType = {
   ZIP: 'zip',
-  TEXT: 'text',
+  A8M: 'a8m',
 };
 
 export const LatexDelimiter = {

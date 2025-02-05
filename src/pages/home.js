@@ -225,7 +225,7 @@ export default function Home() {
         case ExportType.ZIP:
           saveContentAsWebsite(data, asConfigData(updatedConfig));
           break;
-        case ExportType.TEXT:
+        case ExportType.A8M:
           saveContentAsOriginalFile(data, asConfigData(updatedConfig));
           break;
         default:
