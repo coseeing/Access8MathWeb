@@ -49,17 +49,38 @@ export const parseA8MWFile = (file) => {
         .loadAsync(e.target.result)
         .then(parseConfigFile)
         .then(extractEntryData)
-        .then(({ text, config }) => {
+        .then(async ({ text, config, contents }) => {
+          const imagesFolder = contents.folder('images');
+          if (!imagesFolder) {
+            resolve({
+              text,
+              config: asConfigData(config),
+              imagesFolder: { files: {} }
+            });
+            return;
+          }
+
+          const imageFiles = Object.entries(contents.files)
+            .filter(([path]) => path.startsWith('images/') && path !== 'images/')
+            .reduce((acc, [path, file]) => {
+              return {
+                ...acc,
+                files: {
+                  ...acc.files,
+                  [path]: file
+                }
+              };
+            }, { files: {} });
+
           resolve({
             text,
             config: asConfigData(config),
+            imagesFolder: imageFiles
           });
         })
-        .catch((e) => {
-          reject(e);
-        });
+        .catch(reject);
     };
-
+    
     reader.onerror = (e) => {
       console.error(e);
       reject(e);
@@ -104,10 +125,16 @@ const extractEntryData = ({ config, contents }) => {
 
 const genConfigJs = (raw) => `window.contentConfig = ${raw}`;
 
-export const saveContentAsWebsite = (sourceText, configInput = {}) => {
+export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExport = {}) => {
+  let updatedSourceText = sourceText;
   const config = {
     ...configInput,
-    sourceText,
+    sourceText: updatedSourceText,
+    images: Object.entries(imagesToExport).reduce((acc, [fileID, file]) => {
+      const fileName = `${fileID}.${file.type.split('/')[1]}`;
+      acc[fileID] = fileName;
+      return acc;
+    }, {})
   };
 
   const configBlob = new Blob([genConfigJs(JSON.stringify(config))], {
@@ -117,8 +144,14 @@ export const saveContentAsWebsite = (sourceText, configInput = {}) => {
   fetch('./access8math-web-template.zip')
     .then((response) => response.blob())
     .then((zipData) => {
-      JSZip.loadAsync(zipData).then((zip) => {
+      JSZip.loadAsync(zipData).then(async (zip) => {
         zip.file('content-config.js', configBlob);
+
+        const imagesFolder = zip.folder('images');
+        for (const [fileName, file] of Object.entries(imagesToExport)) {
+          const imageBlob = await file.arrayBuffer();
+          imagesFolder.file(fileName, imageBlob);
+        }
 
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
           saveAs(newZipData, `${config.title}.zip`);
@@ -127,14 +160,32 @@ export const saveContentAsWebsite = (sourceText, configInput = {}) => {
     });
 };
 
-export const saveContentAsOriginalFile = (sourceText, config) => {
+export const saveContentAsOriginalFile = async (sourceText, config, imagesToExport) => {
   const { entry } = config;
-  const configBlob = new Blob([JSON.stringify(config, null, 2)], {
+  const images = Object.keys(imagesToExport).reduce((acc, fileName) => {
+    const key = fileName.split('.')[0];
+    return { ...acc, [key]: fileName };
+  }, {});
+
+  const configWithMapping = {
+    ...config,
+    images
+  };
+
+  const configBlob = new Blob([JSON.stringify(configWithMapping, null, 2)], {
     type: 'application/json',
   });
-  const markdownBlob = new Blob([sourceText], { type: 'text/markdown' });
 
   const zip = new JSZip();
+  const imagesFolder = zip.folder('images');
+
+  for (const [fileName, file] of Object.entries(imagesToExport)) {
+    const imageBlob = await file.arrayBuffer();
+    imagesFolder.file(fileName, imageBlob);
+  }
+
+  const markdownBlob = new Blob([sourceText], { type: 'text/markdown' });
+
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(entry, markdownBlob);
   zip.generateAsync({ type: 'blob' }).then((newZipData) => {
