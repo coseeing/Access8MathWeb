@@ -43,7 +43,15 @@ const EditIconsTab = ({ insertLatex }) => {
                 className="h-full flex"
               >
                 <div className="flex h-full w-full">
-                  <Tab.List as="div" className="flex flex-col bg-cyan p-2">
+                  <Tab.List as="div" className="flex flex-col bg-cyan p-2 overflow-y-auto" 
+                  style={{
+                    maxHeight: '550px',
+                    overflowY: 'auto',
+                    scrollbarWidth: 'none', // hide scrollbar in Firefox
+                    msOverflowStyle: 'none' // hide scrollbar in IE/Edge
+                  }}
+                  >
+
                     {mathTabList.map((tab, mathTabIndex) => (
                       <Tab
                         as="button"

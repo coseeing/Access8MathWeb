@@ -31,7 +31,11 @@
     "lower_greek_alphabet": "小寫希臘字母",
     "upper_greek_alphabet": "大寫希臘字母",
     "greek_alphabet": "希臘字母",
-    "other": "其他"
+    "other": "其他",
+    "calculus": "微積分",
+    "combinatorics": "組合學",
+    "geometry": "幾何",
+    "trigonometric": "三角學"
   },
   "latexs": {
     "frac": "分數",
