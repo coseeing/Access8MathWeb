@@ -56,9 +56,10 @@ export default function Home() {
 
 
   const addImageToExport = useCallback((fileID, file) => {
+    const fileName = `${fileID}.${file.type.split('/')[1]}`;
     imagesToExportRef.current = {
       ...imagesToExportRef.current,
-      [fileID]: file
+      [fileID]: {file, fileName}
     };
     setImageFiles(prevFiles => ({
       ...prevFiles,
@@ -205,9 +206,18 @@ export default function Home() {
       for (const [relativePath, file] of Object.entries(imagesFolder.files)) {
         if (!relativePath.endsWith('/')) {
           const fileName = relativePath.split('/').pop();
-          const blob = await file.async('blob');
-          newImageFiles[fileName] = blob;
-          addImageToExport(fileName, blob);
+          let blob;
+          const fileContent = await file.async('text');
+          const isSvg = fileContent.includes('<svg');
+
+          if (isSvg) {
+            blob = new Blob([fileContent], { type: 'image/svg+xml' });
+          } else {
+            blob = await file.async('blob');
+          }
+          const fileID = fileName.split('.')[0];
+          newImageFiles[fileID] = blob;
+          addImageToExport(fileID, blob);
         }
       }
       setImageFiles(newImageFiles);

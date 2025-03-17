@@ -109,7 +109,6 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
               type="file"
               ref={fileInputRef}
               className="hidden"
-                accept="image/jpeg, image/png, image/gif, image/bmp, image/webp"
               onChange={handleFileSelect}
               aria-hidden="true"
             />
