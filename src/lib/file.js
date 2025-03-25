@@ -177,10 +177,13 @@ export const saveContentAsOriginalFile = async (sourceText, config, imagesToExpo
 
   const zip = new JSZip();
   const imagesFolder = zip.folder('images');
-
-  for (const [{fileName, file}] of Object.entries(imagesToExport)) {
-    const imageBlob = await file.arrayBuffer();
-    imagesFolder.file(fileName, imageBlob);
+  for (const [fileId, { fileName, file }] of Object.entries(imagesToExport)) {
+    if (file instanceof Blob) {
+      const imageBlob = await file.arrayBuffer();
+      imagesFolder.file(fileName, imageBlob);
+    } else {
+      console.error(`File for ${fileName} is not a Blob.`);
+    }
   }
 
   const markdownBlob = new Blob([sourceText], { type: 'text/markdown' });
