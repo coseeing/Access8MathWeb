@@ -11,5 +11,6 @@
   "replaceImage": "Replace Image",
   "required": "Required",
   "altTextRequired": "Alt text is required",
-  "modalDescription": "Upload an image to add it to your document. You can replace an existing image by uploading a new one."
+  "modalDescription": "Upload an image to add it to your document. You can replace an existing image by uploading a new one.",
+  "fileSizeExceeds": "File size exceeds {{maxSize}} MB"
 }
