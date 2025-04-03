@@ -5,7 +5,7 @@ import cn from 'classnames';
 const ToggleButton = ({ isActive = false, onClick = () => {}, children = '', label = '' }) => {
   return (
     <button
-      className={cn('py-2 px-4 rounded-md', isActive ? 'bg-cyan text-white' : 'bg-white text-cyan')}
+      className={cn('py-2 px-3 rounded-md', isActive ? 'bg-cyan text-white' : 'bg-white text-cyan')}
       onClick={onClick}
       aria-label={label}
       aria-pressed={isActive}

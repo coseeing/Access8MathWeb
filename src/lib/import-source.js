@@ -10,20 +10,23 @@ async function toBlob(file) {
 }
 
 export async function importSource(text, config = {}, imagesFolder, addImageToExport, setImageFiles, setDisplayConfig, createView, displayConfig) {
-  if (imagesFolder) {
-    const newImageFiles = {};
-    for (const [relativePath, file] of Object.entries(imagesFolder.files)) {
-      if (!relativePath.endsWith('/')) {
-        const fileName = relativePath.split('/').pop();
-        const blob = await toBlob(file);
-        const fileID = fileName.split('.')[0];
-        newImageFiles[fileID] = blob;
-        addImageToExport(fileID, blob);
-      }
-    }
-    setImageFiles(newImageFiles);
+  if (!imagesFolder) {
+    setDisplayConfig({ ...displayConfig, ...config });
+    createView(text);
+    return;
   }
-  
+
+  const newImageFiles = {};
+  for (const [relativePath, file] of Object.entries(imagesFolder.files)) {
+    if (!relativePath.endsWith('/')) {
+      const fileName = relativePath.split('/').pop();
+      const blob = await toBlob(file);
+      const fileID = fileName.split('.')[0];
+      newImageFiles[fileID] = blob;
+      addImageToExport(fileID, blob);
+    }
+  }
+  setImageFiles(newImageFiles);
   setDisplayConfig({ ...displayConfig, ...config });
   createView(text);
-} 
+}

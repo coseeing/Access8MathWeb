@@ -6,7 +6,7 @@ import { PlusCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import SecondaryButton from '@/components/core/button/secondary-button';
 import PrimaryButton from '@/components/core/button/primary-button';
 
-const MAX_FILE_SIZE_MB = 0.001;
+const MAX_FILE_SIZE_MB = 10;
 
 const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -49,7 +49,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
       };
       img.src = URL.createObjectURL(file);
     }
-  }, []);
+  }, [t]);
 
   const handleDrop = useCallback((event) => {
     event.preventDefault();
@@ -148,7 +148,13 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
           </div>
 
           {errorMessage && (
-            <div className="text-red-500 text-sm mb-4" role="alert">
+            <div
+              className="text-red-500 text-sm mb-4"
+              role="alert"
+              aria-invalid="true"
+              aria-errormessage="error-message"
+              id="error-message"
+            >
                 {errorMessage}
             </div>
           )}
