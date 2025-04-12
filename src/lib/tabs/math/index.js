@@ -8,6 +8,10 @@ import { ReactComponent as SetIcon } from '@/components/svg/math/set.svg';
 import { ReactComponent as Other } from '@/components/svg/math/other.svg';
 import { ReactComponent as UpperGreekAlphabet } from '@/components/svg/math/upper_greek_alphabet.svg';
 import { ReactComponent as LowerGreekAlphabet } from '@/components/svg/math/lower_greek_alphabet.svg';
+import { ReactComponent as Calculus } from '@/components/svg/math/calculus.svg';
+import { ReactComponent as Combinatorics } from '@/components/svg/math/combinatorics.svg';
+import { ReactComponent as Geometry } from '@/components/svg/math/geometry.svg';
+import { ReactComponent as Trigonometric } from '@/components/svg/math/trigonometric.svg';
 
 import commonList from './common';
 import operatorList from './operator';
@@ -19,6 +23,10 @@ import setList from './set';
 import otherList from './other';
 import upperGreekAlphabetList from './upper-greek-alphabet';
 import lowerGreekAlphabetList from './lower-greek-alphabet';
+import calculusList from './calculus';
+import combinatoricsList from './combinatorics';
+import geometryList from './geometry';
+import trigonometricList from './trigonometric';
 
 const mathTabList = [
   {
@@ -70,6 +78,26 @@ const mathTabList = [
     id: 'lower_greek_alphabet',
     Icon: LowerGreekAlphabet,
     subTabs: lowerGreekAlphabetList,
+  },
+  {
+    id: 'calculus',
+    Icon: Calculus,
+    subTabs: calculusList,
+  },
+  {
+    id: 'combinatorics',
+    Icon: Combinatorics,
+    subTabs: combinatoricsList,
+  },
+  {
+    id: 'geometry',
+    Icon: Geometry,
+    subTabs: geometryList,
+  },
+  {
+    id: 'trigonometric',
+    Icon: Trigonometric,
+    subTabs: trigonometricList,
   },
 ];
 
