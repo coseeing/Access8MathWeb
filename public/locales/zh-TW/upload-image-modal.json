@@ -12,5 +12,6 @@
   "modalDescription": "在此上傳圖片並添加替代文字描述",
   "replaceImage": "替換圖片",
   "required": "必填",
-  "altTextRequired": "請輸入替代文字"
+  "altTextRequired": "請輸入替代文字",
+  "fileSizeExceeds": "檔案大小超過 {{maxSize}} MB"
 }

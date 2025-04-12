@@ -130,8 +130,7 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
   const config = {
     ...configInput,
     sourceText: updatedSourceText,
-    images: Object.entries(imagesToExport).reduce((acc, [fileID, file]) => {
-      const fileName = `${fileID}.${file.type.split('/')[1]}`;
+    images: Object.entries(imagesToExport).reduce((acc, [fileID, {fileName, file}]) => {
       acc[fileID] = fileName;
       return acc;
     }, {})
@@ -148,7 +147,7 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
         zip.file('content-config.js', configBlob);
 
         const imagesFolder = zip.folder('images');
-        for (const [fileName, file] of Object.entries(imagesToExport)) {
+        for (const [fileId, {fileName, file}  ] of Object.entries(imagesToExport)) {
           const imageBlob = await file.arrayBuffer();
           imagesFolder.file(fileName, imageBlob);
         }
@@ -162,8 +161,8 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
 
 export const saveContentAsOriginalFile = async (sourceText, config, imagesToExport) => {
   const { entry } = config;
-  const images = Object.keys(imagesToExport).reduce((acc, fileName) => {
-    const key = fileName.split('.')[0];
+  const images = Object.entries(imagesToExport).reduce((acc, [fileId, {fileName}]) => {
+    const key = fileId;
     return { ...acc, [key]: fileName };
   }, {});
 
@@ -178,10 +177,13 @@ export const saveContentAsOriginalFile = async (sourceText, config, imagesToExpo
 
   const zip = new JSZip();
   const imagesFolder = zip.folder('images');
-
-  for (const [fileName, file] of Object.entries(imagesToExport)) {
-    const imageBlob = await file.arrayBuffer();
-    imagesFolder.file(fileName, imageBlob);
+  for (const [fileId, { fileName, file }] of Object.entries(imagesToExport)) {
+    if (file instanceof Blob) {
+      const imageBlob = await file.arrayBuffer();
+      imagesFolder.file(fileName, imageBlob);
+    } else {
+      console.error(`File for ${fileName} is not a Blob.`);
+    }
   }
 
   const markdownBlob = new Blob([sourceText], { type: 'text/markdown' });

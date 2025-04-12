@@ -6,11 +6,14 @@ import { PlusCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import SecondaryButton from '@/components/core/button/secondary-button';
 import PrimaryButton from '@/components/core/button/primary-button';
 
+const MAX_FILE_SIZE_MB = 10;
+
 const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [altText, setAltText] = useState('');
   const [imageInfo, setImageInfo] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
   const fileInputRef = useRef(null);
   const t = useTranslation('upload-image-modal');
 
@@ -18,6 +21,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
     setSelectedFile(null);
     setPreviewUrl(null);
     setImageInfo(null);
+    setErrorMessage('');
   }, []);
 
   const resetForm = useCallback(() => {
@@ -28,9 +32,13 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const handleFileSelect = useCallback((event) => {
     const file = event.target.files[0];
     if (file) {
+      if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        setErrorMessage(t('fileSizeExceeds', { maxSize: MAX_FILE_SIZE_MB }));
+        return;
+      }
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
-      
+      setErrorMessage('');
       const img = new Image();
       img.onload = () => {
         setImageInfo({
@@ -41,7 +49,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
       };
       img.src = URL.createObjectURL(file);
     }
-  }, []);
+  }, [t]);
 
   const handleDrop = useCallback((event) => {
     event.preventDefault();
@@ -108,8 +116,8 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
             <input
               type="file"
               ref={fileInputRef}
+              accept="image/jpeg, image/png, image/gif, image/bmp, image/webp, image/svg"
               className="hidden"
-                accept="image/jpeg, image/png, image/gif, image/bmp, image/webp"
               onChange={handleFileSelect}
               aria-hidden="true"
             />
@@ -138,6 +146,18 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
               </div>
             )}
           </div>
+
+          {errorMessage && (
+            <div
+              className="text-red-500 text-sm mb-4"
+              role="alert"
+              aria-invalid="true"
+              aria-errormessage="error-message"
+              id="error-message"
+            >
+                {errorMessage}
+            </div>
+          )}
 
           {imageInfo && (
             <div className="mb-4 text-sm text-gray-600" aria-live="polite">

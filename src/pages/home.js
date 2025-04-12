@@ -36,6 +36,7 @@ import {
   DocumentFormat,
   DocumentColor,
 } from '@/lib/display-config';
+import { importSource } from '@/lib/import-source';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
@@ -54,11 +55,11 @@ export default function Home() {
   const importFile = useRef(null);
   const imagesToExportRef = useRef({});
 
-
   const addImageToExport = useCallback((fileID, file) => {
+    const fileName = `${fileID}.${file.type.split('/')[1]}`;
     imagesToExportRef.current = {
       ...imagesToExportRef.current,
-      [fileID]: file
+      [fileID]: { file, fileName }
     };
     setImageFiles(prevFiles => ({
       ...prevFiles,
@@ -199,24 +200,6 @@ export default function Home() {
     view.focus();
   }, []);
 
-  const importSource = useCallback(async (text, config = {}, imagesFolder) => {
-    if (imagesFolder) {
-      const newImageFiles = {};
-      for (const [relativePath, file] of Object.entries(imagesFolder.files)) {
-        if (!relativePath.endsWith('/')) {
-          const fileName = relativePath.split('/').pop();
-          const blob = await file.async('blob');
-          newImageFiles[fileName] = blob;
-          addImageToExport(fileName, blob);
-        }
-      }
-      setImageFiles(newImageFiles);
-    }
-    
-    setDisplayConfig({ ...displayConfig, ...config });
-    createView(text);
-  }, [createView, displayConfig, setDisplayConfig, addImageToExport]);
-
   const importFileAction = useCallback(
     async (event) => {
       const file = event.target.files[0];
@@ -229,12 +212,12 @@ export default function Home() {
       try {
         if (importAcceptedExtension.includes(fileExtension)) {
           const { config, text, imagesFolder } = await parseA8MWFile(file);
-          return importSource(text, config, imagesFolder);
+          return importSource(text, config, imagesFolder, addImageToExport, setImageFiles, setDisplayConfig, createView, displayConfig);
         }
 
         if (importTextAcceptedExtension.includes(fileExtension)) {
           const newData = await getFileDataAsText(file);
-          return importSource(newData);
+          return importSource(newData, {}, null, addImageToExport, setImageFiles, setDisplayConfig, createView, displayConfig);
         }
       } catch (error) {
         // TODO: implement global alert or notification to handle the error
@@ -243,7 +226,7 @@ export default function Home() {
         event.target.value = null;
       }
     },
-    [importSource]
+    [createView, displayConfig, setDisplayConfig, addImageToExport]
   );
 
   const exportFileAction = useCallback(
