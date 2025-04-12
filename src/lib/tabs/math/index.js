@@ -65,11 +65,6 @@ const mathTabList = [
     subTabs: setList,
   },
   {
-    id: 'other',
-    Icon: Other,
-    subTabs: otherList,
-  },
-  {
     id: 'upper_greek_alphabet',
     Icon: UpperGreekAlphabet,
     subTabs: upperGreekAlphabetList,
@@ -99,6 +94,11 @@ const mathTabList = [
     Icon: Trigonometric,
     subTabs: trigonometricList,
   },
+  {
+    id: 'other',
+    Icon: Other,
+    subTabs: otherList,
+  }
 ];
 
 export default mathTabList;
