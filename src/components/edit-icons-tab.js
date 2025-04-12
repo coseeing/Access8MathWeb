@@ -9,6 +9,8 @@ import markdowns from '@/lib/tabs/markdowns';
 import { compare } from '@/lib/data-process';
 import mathTabList from '@/lib/tabs/math';
 import ImageUploadModal from './image-upload-modal';
+import { useTooltip } from '@/hooks/useTooltip';
+import Tooltip from './Tooltip';
 
 const generateUniqueId = (length = 8) => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -22,6 +24,8 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
   const [selectedMainTabIndex, setSelectedMainTabIndex] = useState(0);
   const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(0);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
+  const { tooltip, showTooltip, hideTooltip } = useTooltip();
 
   const t = useTranslation('tabs');
 
@@ -53,7 +57,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
             ))}
           </Tab.List>
         </div>
-        <div className="flex flex-1  h-full">
+        <div className="flex flex-1 h-full">
           <Tab.Panels as="div" className="flex w-full">
             <Tab.Panel className="h-full w-full">
               <Tab.Group
@@ -63,7 +67,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                 className="h-full flex"
               >
                 <div className="flex h-full w-full">
-                  <Tab.List as="div" className="flex flex-col bg-cyan p-2 overflow-y-auto" 
+                  <Tab.List as="div" className="flex flex-col bg-cyan p-2" 
                   style={{
                     maxHeight: '550px',
                     overflowY: 'auto',
@@ -71,7 +75,6 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                     msOverflowStyle: 'none' // hide scrollbar in IE/Edge
                   }}
                   >
-
                     {mathTabList.map((tab, mathTabIndex) => (
                       <Tab
                         as="button"
@@ -80,18 +83,10 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                         className={`group relative rounded mb-1 category-icon h-12 w-12 flex items-center justify-center mx-0.5 bg-white cursor-pointer transition-colors ${
                           selectedMathTabIndex === mathTabIndex ? 'active' : ''
                         }`}
+                        onMouseEnter={(e) => showTooltip(t(`categorys.${tab.id}`), e.currentTarget)}
+                        onMouseLeave={(e) => hideTooltip(e.currentTarget)}
                       >
                         <tab.Icon width={48} height={48} />
-                        <div
-                          className="absolute p-4 shadow-lg hidden bg-gray-50 group-hover:block whitespace-nowrap z-10"
-                          style={{
-                            left: '50%',
-                            transform: 'translateX(-50%)',
-                            top: '55px',
-                          }}
-                        >
-                          {t(`categorys.${tab.id}`)}
-                        </div>
                         {selectedMathTabIndex === mathTabIndex && (
                           // White triangle arrow pointing right to indicate selected tab
                           <div
@@ -119,19 +114,10 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                               className="w-w5 h-w5 group relative m-1"
                               aria-label={t(`latexs.${subTab.id}`)}
                               onClick={() => insertLatex(subTab)}
+                              onMouseEnter={(e) => showTooltip(t(`latexs.${subTab.id}`), e.currentTarget)}
+                              onMouseLeave={(e) => hideTooltip(e.currentTarget)}
                             >
                               <subTab.Icon width={50} height={50} className="bg-cyanLight rounded"/>
-                              <Tab
-                                as="div"
-                                className="absolute p-4 rounded shadow-lg bg-gray-50 hidden group-hover:block whitespace-nowrap z-10"
-                                style={{
-                                  left: '50%',
-                                  transform: 'translateX(-50%)',
-                                  top: '55px',
-                                }}
-                              >
-                                {t(`latexs.${subTab.id}`)}
-                              </Tab>
                             </button>
                           ))}
                         </Tab.Panel>
@@ -154,18 +140,10 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                     }
                     insertLatex(tab);
                   }}
+                  onMouseEnter={(e) => showTooltip(t(`markdown.${tab.id}`), e.currentTarget)}
+                  onMouseLeave={(e) => hideTooltip(e.currentTarget)}
                 >
                   <tab.Icon width={48} height={48} />
-                  <div
-                    className="absolute p-4 shadow-lg hidden bg-gray-50 group-hover:block whitespace-nowrap z-10"
-                    style={{
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      top: '55px',
-                    }}
-                  >
-                    {t(`markdown.${tab.id}`)}
-                  </div>
                 </button>
               ))}
             </Tab.Panel>
@@ -178,6 +156,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
           onConfirm={handleImageConfirm}
         />
       </Tab.Group>
+      <Tooltip text={tooltip.text} position={tooltip.position} id={tooltip.id} />
     </div>
   );
 };
