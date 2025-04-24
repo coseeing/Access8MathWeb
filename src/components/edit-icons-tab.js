@@ -9,7 +9,7 @@ import markdowns from '@/lib/tabs/markdowns';
 import { compare } from '@/lib/data-process';
 import mathTabList from '@/lib/tabs/math';
 import ImageUploadModal from './image-upload-modal';
-import Tooltip from './Tooltip';
+import Tooltip from './core/tooltip';
 
 const generateUniqueId = (length = 8) => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
