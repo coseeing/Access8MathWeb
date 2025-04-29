@@ -130,7 +130,7 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
   const config = {
     ...configInput,
     sourceText: updatedSourceText,
-    images: Object.entries(imagesToExport).reduce((acc, [fileID, {fileName, file}]) => {
+    images: Object.entries(imagesToExport).reduce((acc, [fileID, {fileName}]) => {
       acc[fileID] = fileName;
       return acc;
     }, {})
@@ -147,8 +147,8 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
         zip.file('content-config.js', configBlob);
 
         const imagesFolder = zip.folder('images');
-        for (const [fileId, {fileName, file}  ] of Object.entries(imagesToExport)) {
-          const imageBlob = await file.arrayBuffer();
+        for (const [fileId, {fileName}  ] of Object.entries(imagesToExport)) {
+          const imageBlob = await imagesToExport[fileId].file.arrayBuffer();
           imagesFolder.file(fileName, imageBlob);
         }
 
@@ -177,7 +177,7 @@ export const saveContentAsOriginalFile = async (sourceText, config, imagesToExpo
 
   const zip = new JSZip();
   const imagesFolder = zip.folder('images');
-  for (const [fileId, { fileName, file }] of Object.entries(imagesToExport)) {
+  for (const [, { fileName, file }] of Object.entries(imagesToExport)) {
     if (file instanceof Blob) {
       const imageBlob = await file.arrayBuffer();
       imagesFolder.file(fileName, imageBlob);
