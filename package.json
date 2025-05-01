@@ -7,7 +7,7 @@
   "dependencies": {
     "@codemirror/lang-markdown": "^6.0.5",
     "@coseeing/access8math-web-lib": "1.2.0",
-    "@coseeing/see-mark": "0.0.1",
+    "@coseeing/see-mark": "0.0.2",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "classnames": "^2.3.2",
