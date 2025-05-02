@@ -54,8 +54,8 @@ export default function Home() {
   const importFile = useRef(null);
   const imagesToExportRef = useRef({});
 
-  const addImageToExport = useCallback((fileID, file) => {
-    const fileName = `${fileID}.${file.type.split('/')[1]}`;
+  const addImageToExport = useCallback((fileID, fileType, file) => {
+    const fileName = `${fileID}.${fileType}`;
     imagesToExportRef.current = {
       ...imagesToExportRef.current,
       [fileID]: { file, fileName }
