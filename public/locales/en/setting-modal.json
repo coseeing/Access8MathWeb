@@ -1,9 +1,4 @@
 {
-  "documentDisplay": {
-    "name": "HTML Document Display",
-    "markdown": "Markdown",
-    "text": "text"
-  },
   "documentFormat": {
     "name": "HTML Math Display",
     "block": "block",

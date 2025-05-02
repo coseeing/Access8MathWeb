@@ -1,9 +1,4 @@
 {
-  "documentDisplay": {
-    "name": "文件顯示",
-    "markdown": "Markdown",
-    "text": "文字"
-  },
   "documentFormat": {
     "name": "版面格式",
     "block": "塊級",

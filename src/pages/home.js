@@ -20,7 +20,6 @@ import autoCompletions from '@/lib/editor-auto-completion';
 
 import {
   latexDelimiterConvertor,
-  textProcessorFactory,
   markedProcessorFactory,
 } from '@coseeing/access8math-web-lib';
 
@@ -66,16 +65,6 @@ export default function Home() {
       [fileID]: file
     }));
   }, []);
-
-  const content = useMemo(() => {
-    const processor = textProcessorFactory({
-      latexDelimiter: displayConfig.latexDelimiter,
-      asciimathDelimiter: 'graveaccent',
-      htmlMathDisplay: displayConfig.htmlMathDisplay,
-      imageFiles
-    });
-    return processor(data);
-  }, [data, displayConfig, imageFiles]);
 
   const markedFunc = useMemo(() => {
     return markedProcessorFactory({
@@ -393,25 +382,11 @@ export default function Home() {
             }`}
           >
             <div data-remove-styles>
-              {displayConfig.documentDisplay === 'markdown' ? (
-                <div
+              <div
                 dangerouslySetInnerHTML={{
                   __html: contentmd,
                 }}
               />
-            ) : (
-                <div>
-                  {content.map((line, key) => (
-                    <span key={key}>
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: line,
-                        }}
-                      />
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         </div>
