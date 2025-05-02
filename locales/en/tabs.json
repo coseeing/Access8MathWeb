@@ -32,7 +32,11 @@
     "lower_greek_alphabet": "lowercase greek alphabet",
     "upper_greek_alphabet": "uppercase greek alphabet",
     "greek_alphabet": "greek alphabet",
-    "other": "Other"
+    "other": "Other",
+    "calculus": "Calculus",
+    "combinatorics": "Combinatorics",
+    "geometry": "Geometry",
+    "trigonometric": "Trigonometric"
   },
   "latexs": {
     "frac": "fractions",
@@ -143,6 +147,31 @@
     "chi-lower": "x",
     "chi-upper": "X",
     "zeta-lower": "z",
-    "zeta-upper": "Z"
+    "zeta-upper": "Z",
+    "dotproduct": "dot product",
+    "integral": "integral",
+    "nabla": "nabla",
+    "partial": "partial derivative",
+    "prime": "derivative",
+    "differential": "differential",
+    "combination": "combination",
+    "permutation": "permutation",
+    "combination-with-repetition": "combination with repetition",
+    "unordered-selection": "unordered selection",
+    "floor": "floor",
+    "ceil": "ceil",
+    "sine": "sine",
+    "cosine": "cosine",
+    "tangent": "tangent",
+    "cotangent": "cotangent",
+    "secant": "secant",
+    "cosecant": "cosecant",
+    "arcsine": "arcsine",
+    "arccosine": "arccosine",
+    "arctangent": "arctangent",
+    "hyperbolic-sine": "hyperbolic sine",
+    "hyperbolic-cosine": "hyperbolic cosine",
+    "hyperbolic-tangent": "hyperbolic tangent",
+    "hyperbolic-cotangent": "hyperbolic cotangent"
   }
 }

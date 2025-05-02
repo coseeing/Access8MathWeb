@@ -31,7 +31,11 @@
     "lower_greek_alphabet": "小寫希臘字母",
     "upper_greek_alphabet": "大寫希臘字母",
     "greek_alphabet": "希臘字母",
-    "other": "其他"
+    "other": "其他",
+    "calculus": "微積分",
+    "combinatorics": "組合學",
+    "geometry": "幾何",
+    "trigonometric": "三角學"
   },
   "latexs": {
     "frac": "分數",
@@ -142,6 +146,31 @@
     "chi-lower": "x",
     "chi-upper": "X",
     "zeta-lower": "z",
-    "zeta-upper": "Z"
+    "zeta-upper": "Z",
+    "dotproduct": "點積",
+    "integral": "積分",
+    "nabla": "梯度",
+    "partial": "偏導數",
+    "prime": "導數",
+    "differential": "微分",
+    "combination": "組合",
+    "permutation": "排列",
+    "combination-with-repetition": "重複組合",
+    "unordered-selection": "無序選擇",
+    "floor": "取地板",
+    "ceil": "取天花板",
+    "sine": "sine",
+    "cosine": "cosine",
+    "tangent": "tangent",
+    "cotangent": "cotangent",
+    "secant": "secant",
+    "cosecant": "cosecant",
+    "arcsine": "arcsine",
+    "arccosine": "arccosine",
+    "arctangent": "arctangent",
+    "hyperbolic-sine": "hyperbolic sine",
+    "hyperbolic-cosine": "hyperbolic cosine",
+    "hyperbolic-tangent": "hyperbolic tangent",
+    "hyperbolic-cotangent": "hyperbolic cotangent"
   }
 }
