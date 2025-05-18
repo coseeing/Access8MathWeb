@@ -21,4 +21,4 @@ jobs:
         run: npm run lint
 
       - name: Run Prettier check
-        run: npx run format:check
+        run: npm run format:check
