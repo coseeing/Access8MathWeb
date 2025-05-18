@@ -44,7 +44,8 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "lint": "npx eslint .",
-    "format": "npx prettier --write ."
+    "format": "npx prettier --write .",
+    "format:check": "npx prettier --check ."
   },
   "browserslist": {
     "production": [
