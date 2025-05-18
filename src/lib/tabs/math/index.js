@@ -98,7 +98,7 @@ const mathTabList = [
     id: 'other',
     Icon: Other,
     subTabs: otherList,
-  }
+  },
 ];
 
 export default mathTabList;

@@ -9,7 +9,16 @@ async function toBlob(file) {
   }
 }
 
-export async function importSource(text, config = {}, imagesFolder, addImageToExport, setImageFiles, setDisplayConfig, createView, displayConfig) {
+export async function importSource(
+  text,
+  config = {},
+  imagesFolder,
+  addImageToExport,
+  setImageFiles,
+  setDisplayConfig,
+  createView,
+  displayConfig
+) {
   if (!imagesFolder) {
     setDisplayConfig({ ...displayConfig, ...config });
     createView(text);

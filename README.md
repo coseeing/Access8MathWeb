@@ -1,6 +1,7 @@
 # Access8mathweb
 
 ## Release
+
 https://github.com/coseeing/Access8MathWeb/wiki/Release-Flow
 
 ## Sites
@@ -47,6 +48,7 @@ npm link @coseeing/access8math-web-lib
 ```
 
 ## How to bump first-party dependencies
+
 https://github.com/coseeing/Access8MathWeb/wiki/Bump-first%E2%80%90party-dependencies
 
 ## Project setup
@@ -86,4 +88,5 @@ npm run format
 ```
 
 ### Editor Custom Syntax & Demo Content
+
 https://github.com/coseeing/Access8MathWeb/wiki/Editor-Custom-Syntax

@@ -80,7 +80,7 @@ const other = [
     shortcut: -1,
     order: 8,
     Icon: Ceil,
-  }
+  },
 ];
 
 export default other;

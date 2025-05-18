@@ -40,10 +40,12 @@ const ToggleButtonGroup = ({ options = [], activeOption = '', onOptionChange = (
 };
 
 ToggleButtonGroup.propTypes = {
-  options: PropTypes.arrayOf(PropTypes.shape({
-    value: PropTypes.string.isRequired,
-    label: PropTypes.string.isRequired,
-  })).isRequired,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
   activeOption: PropTypes.string.isRequired,
   onOptionChange: PropTypes.func.isRequired,
 };

@@ -25,8 +25,8 @@ module.exports = {
   },
   settings: {
     react: {
-       version: 'detect',
-     },
+      version: 'detect',
+    },
     'import/resolver': {
       'eslint-import-resolver-custom-alias': {
         alias: {

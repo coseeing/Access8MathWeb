@@ -18,10 +18,7 @@ import {
 } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
-import {
-  latexDelimiterConvertor,
-  markedProcessorFactory,
-} from '@coseeing/see-mark';
+import { latexDelimiterConvertor, markedProcessorFactory } from '@coseeing/see-mark';
 
 import Button from '@/components/core/button';
 import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
@@ -58,11 +55,11 @@ export default function Home() {
     const fileName = `${fileID}.${fileType}`;
     imagesToExportRef.current = {
       ...imagesToExportRef.current,
-      [fileID]: { file, fileName }
+      [fileID]: { file, fileName },
     };
-    setImageFiles(prevFiles => ({
+    setImageFiles((prevFiles) => ({
       ...prevFiles,
-      [fileID]: file
+      [fileID]: file,
     }));
   }, []);
 
@@ -71,7 +68,7 @@ export default function Home() {
       latexDelimiter: displayConfig.latexDelimiter,
       asciimathDelimiter: 'graveaccent',
       htmlMathDisplay: displayConfig.htmlMathDisplay,
-      imageFiles
+      imageFiles,
     });
   }, [displayConfig, imageFiles]);
 
@@ -117,7 +114,7 @@ export default function Home() {
     createView();
     // Adjust selection after creating the view
     if (codemirrorView.current) {
-        adjustSelection(codemirrorView.current);
+      adjustSelection(codemirrorView.current);
     }
   }, [createView]);
 
@@ -201,12 +198,30 @@ export default function Home() {
       try {
         if (importAcceptedExtension.includes(fileExtension)) {
           const { config, text, imagesFolder } = await parseA8MWFile(file);
-          return importSource(text, config, imagesFolder, addImageToExport, setImageFiles, setDisplayConfig, createView, displayConfig);
+          return importSource(
+            text,
+            config,
+            imagesFolder,
+            addImageToExport,
+            setImageFiles,
+            setDisplayConfig,
+            createView,
+            displayConfig
+          );
         }
 
         if (importTextAcceptedExtension.includes(fileExtension)) {
           const newData = await getFileDataAsText(file);
-          return importSource(newData, {}, null, addImageToExport, setImageFiles, setDisplayConfig, createView, displayConfig);
+          return importSource(
+            newData,
+            {},
+            null,
+            addImageToExport,
+            setImageFiles,
+            setDisplayConfig,
+            createView,
+            displayConfig
+          );
         }
       } catch (error) {
         // TODO: implement global alert or notification to handle the error
@@ -247,10 +262,10 @@ export default function Home() {
 
     // Check if the cursor is outside the document
     if (cursor > doc.length) {
-        // Set the cursor to the end of the document
-        view.dispatch({
-            selection: EditorSelection.cursor(doc.length)
-        });
+      // Set the cursor to the end of the document
+      view.dispatch({
+        selection: EditorSelection.cursor(doc.length),
+      });
     }
   }
 
@@ -329,7 +344,7 @@ export default function Home() {
 
           <div className="flex h-[600px]">
             <div className="w-1/3 flex-shrink-0 h-full">
-             <EditIconsTab insertLatex={insertLatex} addImageToExport={addImageToExport}/>
+              <EditIconsTab insertLatex={insertLatex} addImageToExport={addImageToExport} />
             </div>
             <div className="w-2/3 h-full">
               <div
