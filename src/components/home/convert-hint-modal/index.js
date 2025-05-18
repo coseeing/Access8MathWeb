@@ -15,10 +15,11 @@ const ConvertHintModal = ({
   const t = useTranslation('convert-hint-modal');
 
   const countDelimiters = useMemo(() => {
-    const delimiter = displayConfig.latexDelimiter === LatexDelimiter.DOLLAR 
-      ? '\\$.*?\\$'  // Match $...$ format, including empty content
-      : '\\\\\\(.*?\\\\\\)';  // Match \(...\) format, including empty content
-    
+    const delimiter =
+      displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
+        ? '\\$.*?\\$' // Match $...$ format, including empty content
+        : '\\\\\\(.*?\\\\\\)'; // Match \(...\) format, including empty content
+
     const regex = new RegExp(delimiter, 'g');
     const matches = data.match(regex);
     return matches ? matches.length : 0;

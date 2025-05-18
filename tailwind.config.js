@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     './src/**/*.{js,jsx,ts,tsx}',
-    './node_modules/@coseeing/access8math-web-lib/src/**/*.{js,jsx,ts,tsx}'
+    './node_modules/@coseeing/access8math-web-lib/src/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {
