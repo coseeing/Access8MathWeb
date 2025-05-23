@@ -13,10 +13,9 @@ import Tooltip from './core/tooltip';
 
 const generateUniqueId = (length = 8) => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  return Array.from(
-    { length },
-    () => chars.charAt(Math.floor(Math.random() * chars.length))
-  ).join('');
+  return Array.from({ length }, () => chars.charAt(Math.floor(Math.random() * chars.length))).join(
+    ''
+  );
 };
 
 const EditIconsTab = ({ insertLatex, addImageToExport }) => {
@@ -26,27 +25,36 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
 
   const t = useTranslation('tabs');
 
-  const handleImageConfirm = useCallback((file, altText) => {
-    const fileID = generateUniqueId();
-    insertLatex({
-      latex: `![${altText}](${fileID})`,
-      offset: -1
-    });
-    const fileType = file.type.split('/')[1];
-    addImageToExport(fileID, fileType, file);
-  }, [insertLatex, addImageToExport]);
+  const handleImageConfirm = useCallback(
+    (file, altText) => {
+      const fileID = generateUniqueId();
+      insertLatex({
+        latex: `![${altText}](${fileID})`,
+        offset: -1,
+      });
+      const fileType = file.type.split('/')[1];
+      addImageToExport(fileID, fileType, file);
+    },
+    [insertLatex, addImageToExport]
+  );
 
   return (
     <div className="flex h-[600px]">
-      <Tab.Group as="div" selectedIndex={selectedMainTabIndex} onChange={setSelectedMainTabIndex} className="flex flex-col w-full">
+      <Tab.Group
+        as="div"
+        selectedIndex={selectedMainTabIndex}
+        onChange={setSelectedMainTabIndex}
+        className="flex flex-col w-full"
+      >
         <div className="flex bg-cyan p-2">
           <Tab.List as="div" className="w-full flex bg-cyan">
             {mainTabList.map(({ id }, index) => (
               <Tab
                 as="button"
                 key={id}
-                className={`rounded flex-1 px-4 py-2 text-sm text-center cursor-pointer transition-colors ${selectedMainTabIndex === index ? 'bg-white text-black' : 'bg-cyan text-white'
-                  }`}
+                className={`rounded flex-1 px-4 py-2 text-sm text-center cursor-pointer transition-colors ${
+                  selectedMainTabIndex === index ? 'bg-white text-black' : 'bg-cyan text-white'
+                }`}
               >
                 {t(`main.${id}`)}
               </Tab>
@@ -63,12 +71,14 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                 className="h-full flex"
               >
                 <div className="flex h-full w-full">
-                  <Tab.List as="div" className="flex flex-col bg-cyan p-2"
+                  <Tab.List
+                    as="div"
+                    className="flex flex-col bg-cyan p-2"
                     style={{
                       maxHeight: '550px',
                       overflowY: 'auto',
                       scrollbarWidth: 'none', // hide scrollbar in Firefox
-                      msOverflowStyle: 'none' // hide scrollbar in IE/Edge
+                      msOverflowStyle: 'none', // hide scrollbar in IE/Edge
                     }}
                   >
                     {mathTabList.map((tab, mathTabIndex) => (
@@ -77,8 +87,9 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                           as="button"
                           key={tab.id}
                           aria-label={t(`categorys.${tab.id}`)}
-                          className={`group relative rounded mb-1 category-icon h-12 w-12 flex items-center justify-center mx-0.5 bg-white cursor-pointer transition-colors ${selectedMathTabIndex === mathTabIndex ? 'active' : ''
-                            }`}
+                          className={`group relative rounded mb-1 category-icon h-12 w-12 flex items-center justify-center mx-0.5 bg-white cursor-pointer transition-colors ${
+                            selectedMathTabIndex === mathTabIndex ? 'active' : ''
+                          }`}
                         >
                           <tab.Icon width={48} height={48} />
                           {selectedMathTabIndex === mathTabIndex && (
@@ -88,7 +99,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                               style={{
                                 borderTop: '8px solid transparent',
                                 borderBottom: '8px solid transparent',
-                                borderLeft: '8px solid white'
+                                borderLeft: '8px solid white',
                               }}
                             />
                           )}
@@ -104,13 +115,21 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                       return (
                         <Tab.Panel key={mathTab.id} className="flex flex-wrap">
                           {(mathTab?.subTabs || []).sort(compare('order', 'asc')).map((subTab) => (
-                            <Tooltip key={subTab.id} label={t(`latexs.${subTab.id}`)} position="top">
+                            <Tooltip
+                              key={subTab.id}
+                              label={t(`latexs.${subTab.id}`)}
+                              position="top"
+                            >
                               <button
                                 aria-label={t(`latexs.${subTab.id}`)}
                                 className="w-w5 h-w5 group relative m-1"
                                 onClick={() => insertLatex(subTab)}
                               >
-                                <subTab.Icon width={50} height={50} className="bg-cyanLight rounded" />
+                                <subTab.Icon
+                                  width={50}
+                                  height={50}
+                                  className="bg-cyanLight rounded"
+                                />
                               </button>
                             </Tooltip>
                           ))}

@@ -38,7 +38,6 @@ const getPositionStyles = (triggerRect, tooltipRect, position = 'top', offset = 
   return styles;
 };
 
-
 const Tooltip = ({ children, label, position = 'top' }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [triggerRect, setTriggerRect] = useState(null);
@@ -67,7 +66,7 @@ const Tooltip = ({ children, label, position = 'top' }) => {
 
   useEffect(() => {
     if (isVisible && tooltipRef.current) {
-       setTooltipRect(tooltipRef.current.getBoundingClientRect());
+      setTooltipRect(tooltipRef.current.getBoundingClientRect());
     }
   }, [label, isVisible]);
 
@@ -117,4 +116,4 @@ Tooltip.propTypes = {
   position: PropTypes.oneOf(['top', 'bottom', 'left', 'right']),
 };
 
-export default Tooltip; 
+export default Tooltip;

@@ -55,32 +55,35 @@ export const parseA8MWFile = (file) => {
             resolve({
               text,
               config: asConfigData(config),
-              imagesFolder: { files: {} }
+              imagesFolder: { files: {} },
             });
             return;
           }
 
           const imageFiles = Object.entries(contents.files)
             .filter(([path]) => path.startsWith('images/') && path !== 'images/')
-            .reduce((acc, [path, file]) => {
-              return {
-                ...acc,
-                files: {
-                  ...acc.files,
-                  [path]: file
-                }
-              };
-            }, { files: {} });
+            .reduce(
+              (acc, [path, file]) => {
+                return {
+                  ...acc,
+                  files: {
+                    ...acc.files,
+                    [path]: file,
+                  },
+                };
+              },
+              { files: {} }
+            );
 
           resolve({
             text,
             config: asConfigData(config),
-            imagesFolder: imageFiles
+            imagesFolder: imageFiles,
           });
         })
         .catch(reject);
     };
-    
+
     reader.onerror = (e) => {
       console.error(e);
       reject(e);
@@ -130,10 +133,10 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
   const config = {
     ...configInput,
     sourceText: updatedSourceText,
-    images: Object.entries(imagesToExport).reduce((acc, [fileID, {fileName}]) => {
+    images: Object.entries(imagesToExport).reduce((acc, [fileID, { fileName }]) => {
       acc[fileID] = fileName;
       return acc;
-    }, {})
+    }, {}),
   };
 
   const configBlob = new Blob([genConfigJs(JSON.stringify(config))], {
@@ -147,7 +150,7 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
         zip.file('content-config.js', configBlob);
 
         const imagesFolder = zip.folder('images');
-        for (const [, {fileName, file}  ] of Object.entries(imagesToExport)) {
+        for (const [, { fileName, file }] of Object.entries(imagesToExport)) {
           const imageBlob = await file.arrayBuffer();
           imagesFolder.file(fileName, imageBlob);
         }
@@ -161,14 +164,14 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
 
 export const saveContentAsOriginalFile = async (sourceText, config, imagesToExport) => {
   const { entry } = config;
-  const images = Object.entries(imagesToExport).reduce((acc, [fileId, {fileName}]) => {
+  const images = Object.entries(imagesToExport).reduce((acc, [fileId, { fileName }]) => {
     const key = fileId;
     return { ...acc, [key]: fileName };
   }, {});
 
   const configWithMapping = {
     ...config,
-    images
+    images,
   };
 
   const configBlob = new Blob([JSON.stringify(configWithMapping, null, 2)], {
@@ -191,6 +194,11 @@ export const saveContentAsOriginalFile = async (sourceText, config, imagesToExpo
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(entry, markdownBlob);
   zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-    saveAs(newZipData, `${config.title || i18n.t('untitledDocument', { ns: 'setting-modal' })}.${ORIGINAL_FILE_EXTENSION}`);
+    saveAs(
+      newZipData,
+      `${
+        config.title || i18n.t('untitledDocument', { ns: 'setting-modal' })
+      }.${ORIGINAL_FILE_EXTENSION}`
+    );
   });
 };

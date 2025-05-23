@@ -29,35 +29,41 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
     setAltText('');
   }, [resetImage]);
 
-  const handleFileSelect = useCallback((event) => {
-    const file = event.target.files[0];
-    if (file) {
-      if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-        setErrorMessage(t('fileSizeExceeds', { maxSize: MAX_FILE_SIZE_MB }));
-        return;
+  const handleFileSelect = useCallback(
+    (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+          setErrorMessage(t('fileSizeExceeds', { maxSize: MAX_FILE_SIZE_MB }));
+          return;
+        }
+        setSelectedFile(file);
+        setPreviewUrl(URL.createObjectURL(file));
+        setErrorMessage('');
+        const img = new Image();
+        img.onload = () => {
+          setImageInfo({
+            width: img.width,
+            height: img.height,
+            size: (file.size / 1024).toFixed(2) + ' KB',
+          });
+        };
+        img.src = URL.createObjectURL(file);
       }
-      setSelectedFile(file);
-      setPreviewUrl(URL.createObjectURL(file));
-      setErrorMessage('');
-      const img = new Image();
-      img.onload = () => {
-        setImageInfo({
-          width: img.width,
-          height: img.height,
-          size: (file.size / 1024).toFixed(2) + ' KB'
-        });
-      };
-      img.src = URL.createObjectURL(file);
-    }
-  }, [t]);
+    },
+    [t]
+  );
 
-  const handleDrop = useCallback((event) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    if (file && file.type.startsWith('image/')) {
-      handleFileSelect({ target: { files: [file] } });
-    }
-  }, [handleFileSelect]);
+  const handleDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+      const file = event.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        handleFileSelect({ target: { files: [file] } });
+      }
+    },
+    [handleFileSelect]
+  );
 
   const handleDragOver = useCallback((event) => {
     event.preventDefault();
@@ -80,21 +86,25 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   }, [resetImage]);
 
   return (
-    <Dialog 
-      open={isOpen} 
-      onClose={handleClose} 
-      className="fixed inset-0 z-50 overflow-y-auto" 
+    <Dialog
+      open={isOpen}
+      onClose={handleClose}
+      className="fixed inset-0 z-50 overflow-y-auto"
       aria-labelledby="upload-image-title"
       aria-describedby="upload-image-description"
     >
-      <div className="flex items-center justify-center min-h-screen" role="dialog" aria-modal="true">
+      <div
+        className="flex items-center justify-center min-h-screen"
+        role="dialog"
+        aria-modal="true"
+      >
         <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
 
         <div className="relative bg-white rounded-lg p-6 max-w-md w-full mx-4">
           <Dialog.Title id="upload-image-title" className="text-lg font-medium mb-4">
             {t('title')}
           </Dialog.Title>
-          
+
           <div id="upload-image-description" className="sr-only">
             {t('modalDescription')}
           </div>
@@ -138,11 +148,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
                 >
                   <XMarkIcon className="h-4 w-4 text-gray-900" />
                 </button>
-                <img
-                  src={previewUrl}
-                  alt={t('imagePreview')}
-                  className="max-h-48 mx-auto"
-                />
+                <img src={previewUrl} alt={t('imagePreview')} className="max-h-48 mx-auto" />
               </div>
             )}
           </div>
@@ -155,21 +161,30 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
               aria-errormessage="error-message"
               id="error-message"
             >
-                {errorMessage}
+              {errorMessage}
             </div>
           )}
 
           {imageInfo && (
             <div className="mb-4 text-sm text-gray-600" aria-live="polite">
-              <p>{t('dimensions')}: {imageInfo.width} x {imageInfo.height}px</p>
-              <p>{t('fileSize')}: {imageInfo.size}</p>
+              <p>
+                {t('dimensions')}: {imageInfo.width} x {imageInfo.height}px
+              </p>
+              <p>
+                {t('fileSize')}: {imageInfo.size}
+              </p>
             </div>
           )}
 
           <div className="mb-4">
-            <label htmlFor="alt-text-input" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="alt-text-input"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               {t('altText')}
-              <span className="text-red-500 ml-1" aria-hidden="true">*</span>
+              <span className="text-red-500 ml-1" aria-hidden="true">
+                *
+              </span>
               <span className="sr-only">{t('required')}</span>
             </label>
             <input
@@ -191,11 +206,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
           </div>
 
           <div className="flex justify-end space-x-2 w-full">
-            <SecondaryButton
-              onClick={handleClose}
-              aria-label={t('cancel')}
-              className="flex-1"
-            >
+            <SecondaryButton onClick={handleClose} aria-label={t('cancel')} className="flex-1">
               {t('cancel')}
             </SecondaryButton>
             <PrimaryButton
