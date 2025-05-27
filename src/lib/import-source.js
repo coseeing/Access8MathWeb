@@ -22,8 +22,9 @@ export async function importSource(text, config = {}, imagesFolder, addImageToEx
       const fileName = relativePath.split('/').pop();
       const blob = await toBlob(file);
       const fileID = fileName.split('.')[0];
+      const fileType = fileName.split('.')[1];
       newImageFiles[fileID] = blob;
-      addImageToExport(fileID, blob);
+      addImageToExport(fileID, fileType, blob);
     }
   }
   setImageFiles(newImageFiles);

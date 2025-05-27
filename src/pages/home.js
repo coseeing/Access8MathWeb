@@ -20,7 +20,6 @@ import autoCompletions from '@/lib/editor-auto-completion';
 
 import {
   latexDelimiterConvertor,
-  textProcessorFactory,
   markedProcessorFactory,
 } from '@coseeing/see-mark';
 
@@ -55,8 +54,8 @@ export default function Home() {
   const importFile = useRef(null);
   const imagesToExportRef = useRef({});
 
-  const addImageToExport = useCallback((fileID, file) => {
-    const fileName = `${fileID}.${file.type.split('/')[1]}`;
+  const addImageToExport = useCallback((fileID, fileType, file) => {
+    const fileName = `${fileID}.${fileType}`;
     imagesToExportRef.current = {
       ...imagesToExportRef.current,
       [fileID]: { file, fileName }
@@ -66,16 +65,6 @@ export default function Home() {
       [fileID]: file
     }));
   }, []);
-
-  const content = useMemo(() => {
-    const processor = textProcessorFactory({
-      latexDelimiter: displayConfig.latexDelimiter,
-      asciimathDelimiter: 'graveaccent',
-      htmlMathDisplay: displayConfig.htmlMathDisplay,
-      imageFiles
-    });
-    return processor(data);
-  }, [data, displayConfig, imageFiles]);
 
   const markedFunc = useMemo(() => {
     return markedProcessorFactory({
@@ -393,25 +382,11 @@ export default function Home() {
             }`}
           >
             <div data-remove-styles>
-              {displayConfig.documentDisplay === 'markdown' ? (
-                <div
+              <div
                 dangerouslySetInnerHTML={{
                   __html: contentmd,
                 }}
               />
-            ) : (
-                <div>
-                  {content.map((line, key) => (
-                    <span key={key}>
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: line,
-                        }}
-                      />
-                    </span>
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         </div>

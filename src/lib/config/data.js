@@ -2,7 +2,6 @@ import { type, pick, compose, mergeRight } from 'ramda';
 
 const DEFAULT_DATA = {
   title: '',
-  documentDisplay: 'markdown',
   documentFormat: 'block',
   latexDelimiter: 'bracket',
   entry: 'content.md',
