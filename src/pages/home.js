@@ -21,7 +21,7 @@ import autoCompletions from '@/lib/editor-auto-completion';
 import {
   latexDelimiterConvertor,
   markedProcessorFactory,
-} from '@coseeing/access8math-web-lib';
+} from '@coseeing/see-mark';
 
 import Button from '@/components/core/button';
 import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
