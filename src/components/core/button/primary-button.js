@@ -16,7 +16,7 @@ const PrimaryButton = ({
     sm: 'px-2 py-1 text-sm',
     md: 'px-2.5 py-1.5 text-sm',
     l: 'px-3 py-2 text-sm',
-    xl: 'px-3.5 py-2.5 text-sm'
+    xl: 'px-3.5 py-2.5 text-sm',
   };
 
   return (
@@ -46,7 +46,7 @@ PrimaryButton.propTypes = {
   children: PropTypes.node,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
-  'aria-label': PropTypes.string
+  'aria-label': PropTypes.string,
 };
 
 export default PrimaryButton;
