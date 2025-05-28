@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/static/css/main.f2e868e2.css",
-    "main.js": "/static/js/main.2643f95c.js",
-    "static/js/27.b2ac052f.chunk.js": "/static/js/27.b2ac052f.chunk.js",
+    "main.css": "/static/css/main.5bb06154.css",
+    "main.js": "/static/js/main.408e017e.js",
+    "static/js/206.ac2bac9c.chunk.js": "/static/js/206.ac2bac9c.chunk.js",
     "static/media/determinant3X3.svg": "/static/media/determinant3X3.4dcb2436b713b50f29a682efe2ea3210.svg",
     "static/media/matrix3X3.svg": "/static/media/matrix3X3.59d1485c2f8d4f1d8308cb7040daa8dd.svg",
     "static/media/limit.svg": "/static/media/limit.cde80c56a66680c6dc1c037373ef37d7.svg",
@@ -175,10 +175,10 @@
     "static/media/common.svg": "/static/media/common.b66e46173388d936c1fad3c7b29d3fe3.svg",
     "static/media/circ.svg": "/static/media/circ.fa2d124fd39a01a35bf56e9f0e8b12d9.svg",
     "static/media/dotproduct.svg": "/static/media/dotproduct.5532861ddddef1643d1dcb875a3e86dd.svg",
-    "static/media/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": "/static/media/.1feff74faaf0efc6a044"
+    "static/media/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": "/static/media/1feff74faaf0efc6a044.1feff74faaf0efc6a044"
   },
   "entrypoints": [
-    "static/css/main.f2e868e2.css",
-    "static/js/main.2643f95c.js"
+    "static/css/main.5bb06154.css",
+    "static/js/main.408e017e.js"
   ]
 }
