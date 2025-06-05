@@ -1,2 +1,2 @@
-Version: 1.5.1
-Build Date: 2025-05-28T14:23:41.217Z
+Version: 1.6.0
+Build Date: 2025-06-05T13:45:26.286Z
