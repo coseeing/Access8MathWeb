@@ -78,7 +78,7 @@ const relation = [
     shortcut: -1,
     order: 7,
     Icon: Propto,
-  }
+  },
 ];
 
 export default relation;

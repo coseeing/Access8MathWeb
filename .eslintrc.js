@@ -24,6 +24,9 @@ module.exports = {
     'no-unused-vars': [1],
   },
   settings: {
+    react: {
+      version: 'detect',
+    },
     'import/resolver': {
       'eslint-import-resolver-custom-alias': {
         alias: {

@@ -43,14 +43,9 @@
     "eject": "craco eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "lint": "npx eslint",
-    "format": "npx prettier --write ."
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "lint": "npx eslint .",
+    "format": "npx prettier --write .",
+    "format:check": "npx prettier --check ."
   },
   "browserslist": {
     "production": [
