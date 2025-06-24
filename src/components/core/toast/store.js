@@ -40,6 +40,14 @@ const store = {
       listener(state);
     }
   },
+
+  /**
+   * Resets the store to its initial state. For testing purposes.
+   */
+  reset() {
+    state = null;
+    listeners.clear();
+  },
 };
 
 export default store;
