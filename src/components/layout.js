@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 import { LocaleContextProvider } from '@/lib/locale-switch';
 
 import Header from './header';
-import Toaster from './core/toast';
+import Toaster from './core/toast/toaster';
 
 const Layout = () => {
   return (
