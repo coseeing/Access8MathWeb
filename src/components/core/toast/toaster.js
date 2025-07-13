@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Transition } from '@headlessui/react';
 
-import store from './store';
+import toastStore from './toastStore';
 import CloseIcon from '@/components/svg/close.svg';
 
 const toastTypeClasses = {
@@ -21,7 +21,7 @@ const Toaster = () => {
   const { id, type, message, showCloseButton } = toastToRender || {};
 
   const handleDismiss = useCallback(() => {
-    store.update(null);
+    toastStore.update(null);
   }, []);
 
   const handlePause = useCallback(() => {
@@ -47,7 +47,7 @@ const Toaster = () => {
   }, [currentToast]);
 
   useEffect(() => {
-    const unsubscribe = store.subscribe((toastState) => {
+    const unsubscribe = toastStore.subscribe((toastState) => {
       setCurrentToast(toastState);
     });
     return () => unsubscribe();

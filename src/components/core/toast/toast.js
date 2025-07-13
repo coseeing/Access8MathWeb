@@ -1,4 +1,4 @@
-import store from '@/components/core/toast/store';
+import toastStore from './toastStore';
 
 const DEFAULT_DURATION = 5000;
 
@@ -16,7 +16,7 @@ const DEFAULT_DURATION = 5000;
  * @param {ToastOptions} [options] Optional settings for the toast.
  */
 const showToast = (type, message, options = {}) => {
-  store.update({
+  toastStore.update({
     id: Date.now(),
     type,
     message,

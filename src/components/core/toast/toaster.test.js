@@ -6,15 +6,15 @@ import '@testing-library/jest-dom';
 
 import Toaster from './toaster';
 import { toast } from '@/components/core/toast/toast';
-import store from './store';
+import toastStore from './toastStore';
 
 // We need to use fake timers to control setTimeout
 jest.useFakeTimers();
 
 describe('<Toaster />', () => {
-  // Reset the store and timers after each test
+  // Reset the toastStore and timers after each test
   afterEach(() => {
-    store.reset();
+    toastStore.reset();
     jest.clearAllTimers();
   });
 
