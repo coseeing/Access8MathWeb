@@ -29,9 +29,9 @@ const showToast = (type, message, options = {}) => {
  * @param {string} message The message to show.
  * @param {ToastOptions} [options] Optional settings for the toast.
  */
-export const toast = (message, options) => showToast('info', message, options);
-
-toast.success = (message, options) => showToast('success', message, options);
-toast.error = (message, options) => showToast('error', message, options);
-toast.warning = (message, options) => showToast('warning', message, options);
-toast.info = (message, options) => showToast('info', message, options);
+export const toast = {
+  info: (message, options) => showToast('info', message, options),
+  success: (message, options) => showToast('success', message, options),
+  error: (message, options) => showToast('error', message, options),
+  warning: (message, options) => showToast('warning', message, options),
+};
