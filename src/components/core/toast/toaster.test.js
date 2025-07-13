@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 
 import Toaster from './toaster';
 import { toast } from '@/components/core/toast/toast';
-import toastStore from './toastStore';
+import toastStore from './toast-store';
 
 // We need to use fake timers to control setTimeout
 jest.useFakeTimers();

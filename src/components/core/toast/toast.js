@@ -1,4 +1,4 @@
-import toastStore from './toastStore';
+import toastStore from './toast-store';
 
 const DEFAULT_DURATION = 5000;
 

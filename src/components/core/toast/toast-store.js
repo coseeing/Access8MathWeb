@@ -1,4 +1,4 @@
-import createStore from './createStore';
+import createStore from '@/lib/create-store';
 
 /**
  * @typedef {'info' | 'success' | 'warning' | 'error'} ToastType
