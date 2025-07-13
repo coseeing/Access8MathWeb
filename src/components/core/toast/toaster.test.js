@@ -5,7 +5,7 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import '@testing-library/jest-dom';
 
 import Toaster from './toaster';
-import { toast } from '@/lib/toast';
+import { toast } from '@/components/core/toast/toast';
 import store from './store';
 
 // We need to use fake timers to control setTimeout
