@@ -238,22 +238,28 @@ export default function Home() {
     (updatedConfig, exportType) => {
       setDisplayConfig(updatedConfig);
       const cleanedImages = cleanUnusedImageResources(
-        imagesToExportRef.current, 
+        imagesToExportRef.current,
         contentmd, // Use HTML content for checking
         data // Pass markdown text as backup check
       );
-      
+
       const stats = getCleanupStats(imagesToExportRef.current, contentmd, data);
       if (stats.hasImages) {
         if (stats.unusedImages > 0) {
-          console.log(`[Images] Image cleanup completed: removed ${stats.unusedImages} unused images`, stats);
+          console.log(
+            `[Images] Image cleanup completed: removed ${stats.unusedImages} unused images`,
+            stats
+          );
         } else {
-          console.log(`[Images] Image cleanup completed: all ${stats.totalImages} images are in use`, stats);
+          console.log(
+            `[Images] Image cleanup completed: all ${stats.totalImages} images are in use`,
+            stats
+          );
         }
       } else {
         console.log('[Images] No images need cleanup');
       }
-      
+
       switch (exportType) {
         case ExportType.ZIP:
           saveContentAsWebsite(data, asConfigData(updatedConfig), cleanedImages);
