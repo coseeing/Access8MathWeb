@@ -19,7 +19,7 @@ import {
 } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
-import { latexDelimiterConvertor, createMarkdownToReactParser } from '@coseeing/see-mark';
+import { latexDelimiterConvertor } from '@coseeing/see-mark';
 
 import Button from '@/components/core/button';
 import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
@@ -34,6 +34,8 @@ import {
   DocumentColor,
 } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
+
+import useSeeMarkParse from './useSeeMarkParse';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
@@ -64,18 +66,11 @@ export default function Home() {
     }));
   }, []);
 
-  const seeMarkReactParse = useCallback(
-    (markdown) => {
-      return createMarkdownToReactParser({
-        options: {
-          latexDelimiter: displayConfig.latexDelimiter,
-          htmlMathDisplay: displayConfig.htmlMathDisplay,
-          imageFiles,
-        },
-      })(markdown);
-    },
-    [displayConfig, imageFiles]
-  );
+  const seeMarkReactParse = useSeeMarkParse({
+    latexDelimiter: displayConfig.latexDelimiter,
+    htmlMathDisplay: displayConfig.htmlMathDisplay,
+    imageFiles,
+  });
 
   const content = useMemo(() => {
     return seeMarkReactParse(data);
