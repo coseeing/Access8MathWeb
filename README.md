@@ -29,14 +29,14 @@ Let's say it is your directory structure.
 
 ```
 workspace/
-├── access8math-web-template/ <- @coseeing/access8math-web-lib
+├── SeeMark/ <- @coseeing/see-mark
 └── Access8MathWeb/ <- you are developing application here
 ```
 
 ```sh
 # you are at workspace
 # move to package repository
-cd access8math-web-template/
+cd SeeMark/
 
 # register the package in your local npm system
 npm link
@@ -44,7 +44,7 @@ npm link
 # move to application repository
 cd ../Access8MathWeb/
 # link package
-npm link @coseeing/access8math-web-lib
+npm link @coseeing/see-mark
 ```
 
 ## How to bump first-party dependencies
