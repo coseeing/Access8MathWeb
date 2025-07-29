@@ -6,6 +6,7 @@ import { EditorView } from '@codemirror/view';
 import { EditorState, EditorSelection } from '@codemirror/state';
 import { markdown } from '@codemirror/lang-markdown';
 import { autocompletion } from '@codemirror/autocomplete';
+
 import { asConfigData } from '@/lib/config/data';
 
 import { useTranslation } from '@/lib/i18n';
@@ -18,7 +19,7 @@ import {
 } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
 
-import { latexDelimiterConvertor, markedProcessorFactory } from '@coseeing/see-mark';
+import { latexDelimiterConvertor } from '@coseeing/see-mark';
 
 import Button from '@/components/core/button';
 import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
@@ -33,6 +34,8 @@ import {
   DocumentColor,
 } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
+
+import useSeeMarkParse from './useSeeMarkParse';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
@@ -63,19 +66,15 @@ export default function Home() {
     }));
   }, []);
 
-  const markedFunc = useMemo(() => {
-    return markedProcessorFactory({
-      latexDelimiter: displayConfig.latexDelimiter,
-      asciimathDelimiter: 'graveaccent',
-      htmlMathDisplay: displayConfig.htmlMathDisplay,
-      imageFiles,
-    });
-  }, [displayConfig, imageFiles]);
+  const seeMarkReactParse = useSeeMarkParse({
+    latexDelimiter: displayConfig.latexDelimiter,
+    htmlMathDisplay: displayConfig.htmlMathDisplay,
+    imageFiles,
+  });
 
-  const contentmd = useMemo(() => {
-    const result = markedFunc(data);
-    return result;
-  }, [data, markedFunc]);
+  const content = useMemo(() => {
+    return seeMarkReactParse(data);
+  }, [data, seeMarkReactParse]);
 
   const createView = useCallback((content = '') => {
     if (codemirrorView.current) {
@@ -390,18 +389,13 @@ export default function Home() {
             </div>
           </div>
           <div
-            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${
-              displayConfig.documentColor === DocumentColor.DARK
+            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${displayConfig.documentColor === DocumentColor.DARK
                 ? 'bg-black text-white'
                 : ' text-black'
-            }`}
+              }`}
           >
             <div data-remove-styles>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: contentmd,
-                }}
-              />
+              <div>{content}</div>
             </div>
           </div>
         </div>
