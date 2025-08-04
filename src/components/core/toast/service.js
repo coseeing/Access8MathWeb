@@ -10,27 +10,33 @@ const DEFAULT_DURATION = 5000;
  */
 
 /**
- * Public API to display a toast.
- * @param {ToastType} type The type of the toast.
+ * Public API to display toasts.
  * @param {string} message The message to show.
  * @param {ToastOptions} [options] Optional settings for the toast.
  */
-const showToast = (type, message, options = {}) => {
-  addToast({
-    type,
+export const showToast = {
+  info: (message, options = {}) => addToast({
+    type: 'info',
     message,
     duration: options.duration ?? DEFAULT_DURATION,
     showCloseButton: options.showCloseButton ?? false,
-  });
-};
-
-/**
- * @param {string} message The message to show.
- * @param {ToastOptions} [options] Optional settings for the toast.
- */
-export const toast = {
-  info: (message, options) => showToast('info', message, options),
-  success: (message, options) => showToast('success', message, options),
-  error: (message, options) => showToast('error', message, options),
-  warning: (message, options) => showToast('warning', message, options),
+  }),
+  success: (message, options = {}) => addToast({
+    type: 'success',
+    message,
+    duration: options.duration ?? DEFAULT_DURATION,
+    showCloseButton: options.showCloseButton ?? false,
+  }),
+  error: (message, options = {}) => addToast({
+    type: 'error',
+    message,
+    duration: options.duration ?? DEFAULT_DURATION,
+    showCloseButton: options.showCloseButton ?? false,
+  }),
+  warning: (message, options = {}) => addToast({
+    type: 'warning',
+    message,
+    duration: options.duration ?? DEFAULT_DURATION,
+    showCloseButton: options.showCloseButton ?? false,
+  }),
 };

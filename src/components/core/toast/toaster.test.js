@@ -5,7 +5,7 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import '@testing-library/jest-dom';
 
 import Toaster from './toaster';
-import { toast } from '@/components/core/toast/service';
+import { showToast } from '@/components/core/toast/service';
 import { clearAllToasts, MAX_VISIBLE_TOASTS } from './store';
 
 // We need to use fake timers to control setTimeout
@@ -30,7 +30,7 @@ describe('<Toaster />', () => {
     render(<Toaster />);
 
     act(() => {
-      toast.success('File uploaded!');
+      showToast.success('File uploaded!');
     });
 
     // The toast should appear immediately
@@ -43,9 +43,9 @@ describe('<Toaster />', () => {
     render(<Toaster />);
 
     act(() => {
-      toast.info('First toast');
-      toast.success('Second toast');
-      toast.error('Third toast');
+      showToast.info('First toast');
+      showToast.success('Second toast');
+      showToast.error('Third toast');
     });
 
     // All toasts should be visible simultaneously
@@ -64,7 +64,7 @@ describe('<Toaster />', () => {
     // Add more toasts than the maximum allowed
     act(() => {
       for (let i = 1; i <= MAX_VISIBLE_TOASTS + 2; i++) {
-        toast.info(`Toast ${i}`);
+        showToast.info(`Toast ${i}`);
       }
     });
 
@@ -85,9 +85,9 @@ describe('<Toaster />', () => {
     render(<Toaster />);
 
     act(() => {
-      toast.info('Short toast', { duration: 1000 });
-      toast.success('Medium toast', { duration: 3000 });
-      toast.warning('Long toast', { duration: 5000 });
+      showToast.info('Short toast', { duration: 1000 });
+      showToast.success('Medium toast', { duration: 3000 });
+      showToast.warning('Long toast', { duration: 5000 });
     });
 
     // All toasts should be visible initially
@@ -125,8 +125,8 @@ describe('<Toaster />', () => {
     render(<Toaster />);
 
     act(() => {
-      toast.warning('Hover me!', { duration: 5000 });
-      toast.info('Regular toast', { duration: 2000 });
+      showToast.warning('Hover me!', { duration: 5000 });
+      showToast.info('Regular toast', { duration: 2000 });
     });
 
     const hoverToast = await screen.findByText('Hover me!');
@@ -169,9 +169,9 @@ describe('<Toaster />', () => {
     render(<Toaster />);
 
     act(() => {
-      toast.error('Permanent error 1', { showCloseButton: true, duration: Infinity });
-      toast.warning('Permanent warning', { showCloseButton: true, duration: Infinity });
-      toast.info('Auto dismiss', { duration: 5000 });
+      showToast.error('Permanent error 1', { showCloseButton: true, duration: Infinity });
+      showToast.warning('Permanent warning', { showCloseButton: true, duration: Infinity });
+      showToast.info('Auto dismiss', { duration: 5000 });
     });
 
     await screen.findByText('Permanent error 1');
@@ -214,7 +214,7 @@ describe('<Toaster />', () => {
 
     // Add a toast
     act(() => {
-      toast.success('Test toast');
+      showToast.success('Test toast');
     });
 
     // Should render the toast
