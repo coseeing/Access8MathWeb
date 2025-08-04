@@ -5,17 +5,20 @@ import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import '@testing-library/jest-dom';
 
 import Toaster from './toaster';
-import { toast } from '@/components/core/toast/toast';
-import toastStore from './toast-store';
+import { toast } from '@/components/core/toast/service';
+import { clearAllToasts, MAX_VISIBLE_TOASTS } from './store';
 
 // We need to use fake timers to control setTimeout
 jest.useFakeTimers();
 
 describe('<Toaster />', () => {
-  // Reset the toastStore and timers after each test
+  // Reset the store and timers after each test
   afterEach(() => {
-    toastStore.reset();
+    act(() => {
+      clearAllToasts();
+    });
     jest.clearAllTimers();
+    jest.runOnlyPendingTimers();
   });
 
   it('should render nothing when no toast is active', () => {
@@ -36,55 +39,125 @@ describe('<Toaster />', () => {
     expect(toastElement.closest('div')).toHaveClass('bg-green-500');
   });
 
-  it('should dismiss the toast after the duration', async () => {
+  it('should render multiple toasts simultaneously', async () => {
     render(<Toaster />);
 
     act(() => {
-      toast.info('This will disappear soon.', { duration: 3000 });
+      toast.info('First toast');
+      toast.success('Second toast');
+      toast.error('Third toast');
     });
 
-    // Ensure the toast is visible
-    await screen.findByText('This will disappear soon.');
+    // All toasts should be visible simultaneously
+    await screen.findByText('First toast');
+    await screen.findByText('Second toast');
+    await screen.findByText('Third toast');
 
-    // Run all timers (3000ms duration + 150ms leave animation)
-    act(() => {
-      jest.runAllTimers();
-    });
-
-    // Wait for the element to be removed from the DOM
-    await waitFor(() => {
-      expect(screen.queryByText('This will disappear soon.')).not.toBeInTheDocument();
-    });
+    // Verify there are 3 toasts on screen
+    const allToasts = screen.getAllByRole('status');
+    expect(allToasts).toHaveLength(3);
   });
 
-  it('should pause the timer on mouseEnter and resume on mouseLeave', async () => {
+  it('should limit the number of visible toasts to MAX_VISIBLE_TOASTS', async () => {
     render(<Toaster />);
+
+    // Add more toasts than the maximum allowed
+    act(() => {
+      for (let i = 1; i <= MAX_VISIBLE_TOASTS + 2; i++) {
+        toast.info(`Toast ${i}`);
+      }
+    });
+
+    // Only MAX_VISIBLE_TOASTS should be visible
+    const allToasts = screen.getAllByRole('status');
+    expect(allToasts).toHaveLength(MAX_VISIBLE_TOASTS);
+
+    // The newest toasts should be visible (latest first)
+    expect(screen.getByText(`Toast ${MAX_VISIBLE_TOASTS + 2}`)).toBeInTheDocument();
+    expect(screen.getByText(`Toast ${MAX_VISIBLE_TOASTS + 1}`)).toBeInTheDocument();
+
+    // The oldest toasts should not be visible
+    expect(screen.queryByText('Toast 1')).not.toBeInTheDocument();
+    expect(screen.queryByText('Toast 2')).not.toBeInTheDocument();
+  });
+
+  it('should dismiss each toast independently after their duration', async () => {
+    render(<Toaster />);
+
+    act(() => {
+      toast.info('Short toast', { duration: 1000 });
+      toast.success('Medium toast', { duration: 3000 });
+      toast.warning('Long toast', { duration: 5000 });
+    });
+
+    // All toasts should be visible initially
+    await screen.findByText('Short toast');
+    await screen.findByText('Medium toast');
+    await screen.findByText('Long toast');
+
+    // After 1 second + animation, short toast should disappear
+    act(() => {
+      jest.advanceTimersByTime(1000);
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText('Short toast')).not.toBeInTheDocument();
+    });
+
+    // Medium and long toasts should still be visible
+    expect(screen.queryByText('Medium toast')).toBeInTheDocument();
+    expect(screen.queryByText('Long toast')).toBeInTheDocument();
+
+    // After 3 seconds total, medium toast should disappear
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText('Medium toast')).not.toBeInTheDocument();
+    });
+
+    // Long toast should still be visible
+    expect(screen.queryByText('Long toast')).toBeInTheDocument();
+  });
+
+  it('should pause individual toast timers on mouseEnter and resume on mouseLeave', async () => {
+    render(<Toaster />);
+
     act(() => {
       toast.warning('Hover me!', { duration: 5000 });
+      toast.info('Regular toast', { duration: 2000 });
     });
 
-    const toastElement = await screen.findByText('Hover me!');
+    const hoverToast = await screen.findByText('Hover me!');
 
-    // Fast-forward time by 3 seconds
+    // Fast-forward time by 1.5 seconds
     act(() => {
-      jest.advanceTimersByTime(3000);
+      jest.advanceTimersByTime(1500);
     });
 
-    // Pause the timer
-    fireEvent.mouseEnter(toastElement);
+    // Pause only the hover toast timer
+    fireEvent.mouseEnter(hoverToast);
 
-    // Run all remaining timers - the toast should still be visible because it's paused
+    // Advance time by another 1 second (total 2.5s)
     act(() => {
-      jest.runAllTimers();
+      jest.advanceTimersByTime(1000);
     });
+
+    // Regular toast should disappear after 2s
+    await waitFor(() => {
+      expect(screen.queryByText('Regular toast')).not.toBeInTheDocument();
+    });
+
+    // Hover toast should still be visible because it was paused
     expect(screen.queryByText('Hover me!')).toBeInTheDocument();
 
-    // Resume the timer
-    fireEvent.mouseLeave(toastElement);
+    // Resume the hover toast timer
+    fireEvent.mouseLeave(hoverToast);
 
-    // Now run the timers again to dismiss it
+    // Now run the remaining time for the hover toast (3.5s remaining)
     act(() => {
-      jest.runAllTimers();
+      jest.advanceTimersByTime(3500);
     });
 
     await waitFor(() => {
@@ -92,48 +165,67 @@ describe('<Toaster />', () => {
     });
   });
 
-  it('should be dismissible by a close button', async () => {
+  it('should be dismissible by individual close buttons', async () => {
     render(<Toaster />);
+
     act(() => {
-      toast.error('This is a permanent error.', { showCloseButton: true, duration: Infinity });
+      toast.error('Permanent error 1', { showCloseButton: true, duration: Infinity });
+      toast.warning('Permanent warning', { showCloseButton: true, duration: Infinity });
+      toast.info('Auto dismiss', { duration: 5000 });
     });
 
-    const closeButton = await screen.findByRole('button', { name: /close/i });
+    await screen.findByText('Permanent error 1');
+    await screen.findByText('Permanent warning');
+    await screen.findByText('Auto dismiss');
 
-    // Click the button to dismiss
+    // Find and click the close button for "Permanent error 1"
+    // Note: toasts are ordered newest first, so "Auto dismiss" is first, "Permanent warning" is second, "Permanent error 1" is third
+    // But only "Permanent warning" and "Permanent error 1" have close buttons
+    // So closeButtons[0] is for "Permanent warning", closeButtons[1] is for "Permanent error 1"
+    const closeButtons = screen.getAllByRole('button', { name: /close/i });
+    expect(closeButtons).toHaveLength(2); // Only toasts with showCloseButton should have close buttons
+
     act(() => {
-      fireEvent.click(closeButton);
+      fireEvent.click(closeButtons[1]); // Click the close button for "Permanent error 1"
     });
 
-    // Run timers for the leave animation
+    // Run timers for the leave animation (300ms setTimeout + animation time)
     act(() => {
-      jest.runAllTimers();
+      jest.advanceTimersByTime(400); // A bit more than 300ms to ensure both animation and setTimeout complete
     });
 
+    // Wait for the DOM to update after the toast is removed from the store
     await waitFor(() => {
-      expect(screen.queryByText('This is a permanent error.')).not.toBeInTheDocument();
-    });
+      const toastElements = screen.getAllByRole('status');
+      expect(toastElements).toHaveLength(2); // Should be 2 instead of 3
+    }, { timeout: 1000 });
+
+    // Verify the correct toast was removed
+    expect(screen.queryByText('Permanent error 1')).not.toBeInTheDocument();
+    expect(screen.queryByText('Permanent warning')).toBeInTheDocument();
+    expect(screen.queryByText('Auto dismiss')).toBeInTheDocument();
   });
 
-  it('should only render the latest toast when called multiple times synchronously', async () => {
+  it('should handle toast queue state updates correctly', () => {
     render(<Toaster />);
 
+    // Initially no toasts
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+
+    // Add a toast
     act(() => {
-      toast.info('First toast');
-      toast.success('Second toast');
-      toast.error('The final toast');
+      toast.success('Test toast');
     });
 
-    // The last toast should be visible
-    const toastElement = await screen.findByText('The final toast');
-    expect(toastElement).toBeInTheDocument();
+    // Should render the toast
+    expect(screen.getByText('Test toast')).toBeInTheDocument();
 
-    // The previous toasts should never have been rendered
-    expect(screen.queryByText('First toast')).not.toBeInTheDocument();
-    expect(screen.queryByText('Second toast')).not.toBeInTheDocument();
+    // Clear all toasts
+    act(() => {
+      clearAllToasts();
+    });
 
-    // Verify there is only one toast on screen. The role is on the rendered div.
-    const allToasts = screen.getAllByRole('status');
-    expect(allToasts).toHaveLength(1);
+    // Should render nothing
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 });
