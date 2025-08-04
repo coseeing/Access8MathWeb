@@ -195,10 +195,13 @@ describe('<Toaster />', () => {
     });
 
     // Wait for the DOM to update after the toast is removed from the store
-    await waitFor(() => {
-      const toastElements = screen.getAllByRole('status');
-      expect(toastElements).toHaveLength(2); // Should be 2 instead of 3
-    }, { timeout: 1000 });
+    await waitFor(
+      () => {
+        const toastElements = screen.getAllByRole('status');
+        expect(toastElements).toHaveLength(2); // Should be 2 instead of 3
+      },
+      { timeout: 1000 }
+    );
 
     // Verify the correct toast was removed
     expect(screen.queryByText('Permanent error 1')).not.toBeInTheDocument();
