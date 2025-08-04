@@ -1,37 +1,114 @@
-import toastStore from './toast-store';
+import React, { useEffect, useRef, useCallback } from 'react';
+import { Transition } from '@headlessui/react';
 
-const DEFAULT_DURATION = 5000;
+import { markToastAsExiting } from './store';
+import CloseIcon from '@/components/svg/close.svg';
 
-/**
- * @typedef {'info' | 'success' | 'warning' | 'error'} ToastType
- * @typedef {object} ToastOptions
- * @property {number} [duration]
- * @property {boolean} [showCloseButton]
- */
-
-/**
- * Public API to display a toast.
- * @param {ToastType} type The type of the toast.
- * @param {string} message The message to show.
- * @param {ToastOptions} [options] Optional settings for the toast.
- */
-const showToast = (type, message, options = {}) => {
-  toastStore.update({
-    id: Date.now(),
-    type,
-    message,
-    duration: options.duration ?? DEFAULT_DURATION,
-    showCloseButton: options.showCloseButton ?? false,
-  });
+const toastTypeClasses = {
+  info: 'bg-blue-500',
+  success: 'bg-green-500',
+  warning: 'bg-yellow-500',
+  error: 'bg-red-500',
 };
 
 /**
- * @param {string} message The message to show.
- * @param {ToastOptions} [options] Optional settings for the toast.
+ * Toast Component
+ * Manages its own lifecycle, timer, and fade out animation
  */
-export const toast = {
-  info: (message, options) => showToast('info', message, options),
-  success: (message, options) => showToast('success', message, options),
-  error: (message, options) => showToast('error', message, options),
-  warning: (message, options) => showToast('warning', message, options),
+const Toast = ({ toast, onRemove }) => {
+  const timerRef = useRef(null);
+  const remainingDurationRef = useRef(0);
+  const startTimeRef = useRef(0);
+  const { id, type, message, duration, showCloseButton, isExiting } = toast;
+
+  const handleDismiss = useCallback(() => {
+    // Mark as exiting to start fade out animation
+    markToastAsExiting(id);
+
+    // After animation duration, remove from queue
+    setTimeout(() => {
+      onRemove(id);
+    }, 300); // Match the transition duration
+  }, [id, onRemove]);
+
+  const handlePause = useCallback(() => {
+    if (timerRef.current && !isExiting) {
+      clearTimeout(timerRef.current);
+      timerRef.current = null;
+      const elapsedTime = Date.now() - startTimeRef.current;
+      remainingDurationRef.current -= elapsedTime;
+    }
+  }, [isExiting]);
+
+  const handleResume = useCallback(() => {
+    if (remainingDurationRef.current > 0 && !isExiting) {
+      startTimeRef.current = Date.now();
+      timerRef.current = setTimeout(handleDismiss, remainingDurationRef.current);
+    }
+  }, [handleDismiss, isExiting]);
+
+  // Initialize timer when toast is created or when isExiting changes
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+
+    if (!isExiting && duration < Infinity) {
+      remainingDurationRef.current = duration;
+      startTimeRef.current = Date.now();
+      timerRef.current = setTimeout(handleDismiss, duration);
+    }
+
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [duration, handleDismiss, isExiting]);
+
+  // Clean up timer on unmount
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <Transition
+      show={!isExiting}
+      as="div"
+      enter="transition ease-out duration-300"
+      enterFrom="opacity-0 translate-y-4"
+      enterTo="opacity-100 translate-y-0"
+      leave="transition ease-in duration-300"
+      leaveFrom="opacity-100 translate-y-0"
+      leaveTo="opacity-0 translate-y-4"
+    >
+      <div
+        key={id}
+        role="status"
+        aria-live="polite"
+        className={`flex items-center text-white p-4 rounded-md shadow-lg mb-2 ${
+          toastTypeClasses[type] ?? 'bg-gray-800'
+        }`}
+        onMouseEnter={handlePause}
+        onMouseLeave={handleResume}
+      >
+        <p className="mr-4">{message}</p>
+        {showCloseButton && (
+          <button
+            onClick={handleDismiss}
+            aria-label="Close"
+            className="p-1 rounded-full hover:bg-black/20 focus:outline-none focus:ring-2 focus:ring-white"
+          >
+            <img src={CloseIcon} alt="close" className="w-4 h-4" />
+          </button>
+        )}
+      </div>
+    </Transition>
+  );
 };
+
+export default Toast;
