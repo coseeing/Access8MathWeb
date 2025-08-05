@@ -96,58 +96,12 @@ export function cleanUnusedImageResources(imagesToExport, htmlContent, markdownT
     }
   }
 
-  const cleanedImages = {};
-
-  Object.entries(imagesToExport).forEach(([imageId, imageData]) => {
+  const cleanedImages = Object.entries(imagesToExport).reduce((acc, [imageId, imageData]) => {
     if (imageId && typeof imageId === 'string' && usedImageIds.has(imageId.trim())) {
-      cleanedImages[imageId] = imageData;
+      acc[imageId] = imageData;
     }
-  });
+    return acc;
+  }, {});
 
   return cleanedImages;
-}
-
-/**
- * Get cleanup statistics
- * @param {Object} imagesToExport - Current image export list
- * @param {string} htmlContent - HTML content
- * @param {string} markdownText - Markdown text content (optional)
- * @returns {Object} Cleanup statistics
- */
-export function getCleanupStats(imagesToExport, htmlContent, markdownText = null) {
-  if (!imagesToExport || Object.keys(imagesToExport).length === 0) {
-    return {
-      totalImages: 0,
-      usedImages: 0,
-      unusedImages: 0,
-      checkMethod: 'None',
-      unusedImageIds: [],
-      hasImages: false,
-    };
-  }
-
-  let usedImageIds = extractImageIdsFromHtml(htmlContent);
-  let checkMethod = 'HTML';
-
-  if (usedImageIds.size === 0 && markdownText) {
-    const htmlHasImages = htmlContent && htmlContent.includes('<img');
-    if (htmlHasImages) {
-      usedImageIds = extractImageIdsFromText(markdownText);
-      checkMethod = 'Markdown';
-    } else {
-      checkMethod = 'HTML (no images found)';
-    }
-  }
-
-  const allImageIds = Object.keys(imagesToExport);
-  const unusedImageIds = allImageIds.filter((id) => !usedImageIds.has(id));
-
-  return {
-    totalImages: allImageIds.length,
-    usedImages: usedImageIds.size,
-    unusedImages: unusedImageIds.length,
-    checkMethod,
-    unusedImageIds,
-    hasImages: true,
-  };
 }
