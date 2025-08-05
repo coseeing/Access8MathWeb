@@ -17,7 +17,7 @@ export function extractImageIdsFromHtml(html) {
     const imgElements = doc.querySelectorAll('img');
 
     imgElements.forEach((img) => {
-      const dataId = img.getAttribute('data-id');
+      const dataId = img.getAttribute('data-seemark-image-id');
       if (dataId) {
         imageIds.add(dataId);
         return;
