@@ -33,7 +33,7 @@ import {
   DocumentColor,
 } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
-import { cleanUnusedImageResources, getCleanupStats } from '@/lib/image-resource-cleaner';
+import { cleanUnusedImageResources } from '@/lib/image-resource-cleaner';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
@@ -242,23 +242,6 @@ export default function Home() {
         contentmd, // Use HTML content for checking
         data // Pass markdown text as backup check
       );
-
-      const stats = getCleanupStats(imagesToExportRef.current, contentmd, data);
-      if (stats.hasImages) {
-        if (stats.unusedImages > 0) {
-          console.log(
-            `[Images] Image cleanup completed: removed ${stats.unusedImages} unused images`,
-            stats
-          );
-        } else {
-          console.log(
-            `[Images] Image cleanup completed: all ${stats.totalImages} images are in use`,
-            stats
-          );
-        }
-      } else {
-        console.log('[Images] No images need cleanup');
-      }
 
       switch (exportType) {
         case ExportType.ZIP:
