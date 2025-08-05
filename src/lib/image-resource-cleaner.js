@@ -98,7 +98,7 @@ export function cleanUnusedImageResources(imagesToExport, htmlContent, markdownT
 
   const cleanedImages = Object.entries(imagesToExport).reduce((acc, [imageId, imageData]) => {
     if (imageId && typeof imageId === 'string' && usedImageIds.has(imageId.trim())) {
-      acc[imageId] = imageData;
+      return { ...acc, [imageId]: imageData };
     }
     return acc;
   }, {});
