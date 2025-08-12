@@ -11,6 +11,8 @@ const toastTypeClasses = {
   error: 'bg-red-500',
 };
 
+const FADE_OUT_DURATION = 300; // Match the transition duration
+
 /**
  * Toast Component
  * Manages its own lifecycle, timer, and fade out animation
@@ -28,7 +30,7 @@ const Toast = ({ toast, onRemove }) => {
     // After animation duration, remove from queue
     setTimeout(() => {
       onRemove(id);
-    }, 300); // Match the transition duration
+    }, FADE_OUT_DURATION);
   }, [id, onRemove]);
 
   const handlePause = useCallback(() => {
