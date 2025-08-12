@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { toastQueueStore, removeToast } from './store';
+import { toastQueueStore, removeToast, markToastAsExiting } from './store';
 import Toast from './toast';
 
 /**
@@ -31,7 +31,12 @@ const Toaster = () => {
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col-reverse">
       {toastQueue.toasts.map((toast) => (
-        <Toast key={toast.id} toast={toast} onRemove={handleRemoveToast} />
+        <Toast
+          key={toast.id}
+          toast={toast}
+          onRemove={handleRemoveToast}
+          onRemoveStart={markToastAsExiting}
+        />
       ))}
     </div>
   );

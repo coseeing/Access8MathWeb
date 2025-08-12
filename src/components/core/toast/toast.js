@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Transition } from '@headlessui/react';
 
-import { markToastAsExiting } from './store';
 import CloseIcon from '@/components/svg/close.svg';
 
 const toastTypeClasses = {
@@ -17,7 +17,7 @@ const FADE_OUT_DURATION = 300; // Match the transition duration
  * Toast Component
  * Manages its own lifecycle, timer, and fade out animation
  */
-const Toast = ({ toast, onRemove }) => {
+const Toast = ({ toast, onRemove, onRemoveStart }) => {
   const timerRef = useRef(null);
   const remainingDurationRef = useRef(0);
   const startTimeRef = useRef(0);
@@ -25,13 +25,13 @@ const Toast = ({ toast, onRemove }) => {
 
   const handleDismiss = useCallback(() => {
     // Mark as exiting to start fade out animation
-    markToastAsExiting(id);
+    onRemoveStart(id);
 
     // After animation duration, remove from queue
     setTimeout(() => {
       onRemove(id);
     }, FADE_OUT_DURATION);
-  }, [id, onRemove]);
+  }, [id, onRemove, onRemoveStart]);
 
   const handlePause = useCallback(() => {
     if (timerRef.current && !isExiting) {
@@ -111,6 +111,20 @@ const Toast = ({ toast, onRemove }) => {
       </div>
     </Transition>
   );
+};
+
+Toast.propTypes = {
+  toast: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    message: PropTypes.string.isRequired,
+    type: PropTypes.oneOf(['info', 'success', 'warning', 'error']).isRequired,
+    duration: PropTypes.number.isRequired,
+    showCloseButton: PropTypes.bool.isRequired,
+    isExiting: PropTypes.bool.isRequired,
+    createdAt: PropTypes.number,
+  }).isRequired,
+  onRemove: PropTypes.func.isRequired,
+  onRemoveStart: PropTypes.func.isRequired,
 };
 
 export default Toast;
