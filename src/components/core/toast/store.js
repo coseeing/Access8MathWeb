@@ -89,17 +89,23 @@ const toastQueueStore = createStore({
   maxVisible: MAX_VISIBLE_TOASTS,
 });
 
-// Counter to ensure unique IDs
-let idCounter = 0;
+function* infiniteIdGenerator() {
+  let id = 0;
+
+  while (true) {
+    yield id++;
+  }
+}
+
+const idGenerator = infiniteIdGenerator();
 
 /**
  * Add a new toast to the queue
  * @param {Partial<ToastState>} newToast - Toast to add
  */
 const addToast = (newToast) => {
-  // Generate unique ID using counter + timestamp
   const now = Date.now();
-  const uniqueId = now + ++idCounter;
+  const uniqueId = idGenerator.next().value;
 
   const toastWithId = {
     ...newToast,
