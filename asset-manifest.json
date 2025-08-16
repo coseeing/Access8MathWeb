@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.5bb06154.css",
-    "main.js": "/static/js/main.408e017e.js",
+    "main.css": "/static/css/main.7b82c628.css",
+    "main.js": "/static/js/main.c8045315.js",
     "static/js/206.ac2bac9c.chunk.js": "/static/js/206.ac2bac9c.chunk.js",
     "static/media/determinant3X3.svg": "/static/media/determinant3X3.4dcb2436b713b50f29a682efe2ea3210.svg",
     "static/media/matrix3X3.svg": "/static/media/matrix3X3.59d1485c2f8d4f1d8308cb7040daa8dd.svg",
@@ -169,6 +169,7 @@
     "static/media/square.svg": "/static/media/square.116413b4855726a41632f3397a947a2d.svg",
     "static/media/forall.svg": "/static/media/forall.4f62004204abdc5cd42142ddc60bc9db.svg",
     "static/media/operator.svg": "/static/media/operator.690747859a66e58260e123bfefb195e4.svg",
+    "static/media/close.svg": "/static/media/close.9ee9f2fbddd6b3f03b567ad81f9ec9b1.svg",
     "static/media/quote.svg": "/static/media/quote.c9dfcdc21df2038da1f0ecd603d6a28c.svg",
     "static/media/arc.svg": "/static/media/arc.97e38c1fcfec6338eac8a4509033e89e.svg",
     "static/media/exists.svg": "/static/media/exists.1a599add26a38036c23ab9054d04c819.svg",
@@ -178,7 +179,7 @@
     "static/media/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": "/static/media/1feff74faaf0efc6a044.1feff74faaf0efc6a044"
   },
   "entrypoints": [
-    "static/css/main.5bb06154.css",
-    "static/js/main.408e017e.js"
+    "static/css/main.7b82c628.css",
+    "static/js/main.c8045315.js"
   ]
 }
