@@ -37,8 +37,16 @@ module.exports = {
       },
     }),
     alias: {
-      '@': path.resolve(__dirname, 'src/'),
+      '@': path.resolve(__dirname, 'src'),
     },
     plugins: [new VersionPlugin()],
+  },
+  jest: {
+    configure: {
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1',
+        '\\.svg$': '<rootDir>/src/__mocks__/fileMock.js',
+      },
+    },
   },
 };
