@@ -6,17 +6,17 @@ import CloseIcon from '@/components/svg/close.svg';
 import AlertCircleIcon from '@/components/svg/alert-circle.svg';
 
 const toastTypeClasses = {
-  info: 'bg-[#EBEEF2] text-[#394452]',
-  success: 'bg-[#EDF9F0] text-[#287D3C]',
-  warning: 'bg-[#FFF4EC] text-[#B95000]',
-  error: 'bg-[#FEEFEF] text-[#DA1414]',
+  info: 'bg-status-info-bg text-status-info-text',
+  success: 'bg-status-success-bg text-status-success-text',
+  warning: 'bg-status-warning-bg text-status-warning-text',
+  error: 'bg-status-error-bg text-status-error-text',
 };
 
-const iconColors = {
-  info: '#394452',
-  success: '#287D3C',
-  warning: '#B95000',
-  error: '#DA1414',
+const iconTypeClasses = {
+  info: 'bg-status-info-icon',
+  success: 'bg-status-success-icon',
+  warning: 'bg-status-warning-icon',
+  error: 'bg-status-error-icon',
 };
 
 const FADE_OUT_DURATION = 300; // Match the transition duration
@@ -100,19 +100,16 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
         key={id}
         role="status"
         aria-live="polite"
-        className={`min-h-8 w-80 pl-4 pr-2 py-[6px] flex items-center gap-1 text-sm mb-2 rounded-lg ${
-          toastTypeClasses[type] ?? 'bg-[#EBEEF2] text-[#394452]'
-        }`}
+        className={`min-h-8 w-80 pl-4 pr-2 py-[6px] flex items-center gap-1 text-sm mb-2 rounded-lg ${toastTypeClasses[type]}`}
         onMouseEnter={handlePause}
         onMouseLeave={handleResume}
       >
         <div className="shrink-0">
           <div
-            className="w-4 h-4 mask-cover mask-no-repeat"
+            className={`w-4 h-4 mask-cover mask-no-repeat ${iconTypeClasses[type]}`}
             style={{
               maskImage: `url(${AlertCircleIcon})`,
               WebkitMaskImage: `url(${AlertCircleIcon})`,
-              backgroundColor: iconColors[type] ?? iconColors.info,
             }}
             aria-hidden="true"
           />
@@ -125,11 +122,10 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
             className="p-1 rounded-full hover:bg-black/20 focus:outline-none focus:ring-2 focus:ring-white"
           >
             <div
-              className="w-4 h-4 mask-cover mask-no-repeat"
+              className={`w-4 h-4 mask-cover mask-no-repeat ${iconTypeClasses[type]}`}
               style={{
                 maskImage: `url(${CloseIcon})`,
                 WebkitMaskImage: `url(${CloseIcon})`,
-                backgroundColor: iconColors[type] ?? iconColors.info,
               }}
             />
           </button>
