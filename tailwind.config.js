@@ -18,5 +18,24 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  safelist: [
+    {
+      pattern: /mask-(size|repeat)-.*/,
+    },
+  ],
+  plugins: [
+    function({ addUtilities }) {
+      const newUtilities = {
+        '.mask-cover': {
+          'mask-size': 'cover',
+          '-webkit-mask-size': 'cover',
+        },
+        '.mask-no-repeat': {
+          'mask-repeat': 'no-repeat',
+          '-webkit-mask-repeat': 'no-repeat',
+        },
+      }
+      addUtilities(newUtilities)
+    }
+  ],
 };
