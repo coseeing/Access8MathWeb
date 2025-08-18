@@ -24,7 +24,7 @@ module.exports = {
     },
   ],
   plugins: [
-    function({ addUtilities }) {
+    function ({ addUtilities }) {
       const newUtilities = {
         '.mask-cover': {
           'mask-size': 'cover',
@@ -34,8 +34,8 @@ module.exports = {
           'mask-repeat': 'no-repeat',
           '-webkit-mask-repeat': 'no-repeat',
         },
-      }
-      addUtilities(newUtilities)
-    }
+      };
+      addUtilities(newUtilities);
+    },
   ],
 };

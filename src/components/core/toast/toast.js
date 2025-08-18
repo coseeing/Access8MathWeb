@@ -15,7 +15,7 @@ const toastTypeClasses = {
 const iconColors = {
   info: '#394452',
   success: '#287D3C',
-  warning: '#B95000', 
+  warning: '#B95000',
   error: '#DA1414',
 };
 
@@ -107,7 +107,7 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
         onMouseLeave={handleResume}
       >
         <div className="shrink-0">
-          <div 
+          <div
             className="w-4 h-4 mask-cover mask-no-repeat"
             style={{
               maskImage: `url(${AlertCircleIcon})`,
@@ -124,7 +124,7 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
             aria-label="Close"
             className="p-1 rounded-full hover:bg-black/20 focus:outline-none focus:ring-2 focus:ring-white"
           >
-            <div 
+            <div
               className="w-4 h-4 mask-cover mask-no-repeat"
               style={{
                 maskImage: `url(${CloseIcon})`,
