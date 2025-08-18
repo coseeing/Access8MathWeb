@@ -33,6 +33,7 @@ import {
   DocumentColor,
 } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
+import { cleanUnusedImageResources } from '@/lib/image-resource-cleaner';
 
 const importTextAcceptedExtension = ['.txt', '.md'];
 const importAcceptedExtension = [`.${ORIGINAL_FILE_EXTENSION}`];
@@ -236,18 +237,24 @@ export default function Home() {
   const exportFileAction = useCallback(
     (updatedConfig, exportType) => {
       setDisplayConfig(updatedConfig);
+      const cleanedImages = cleanUnusedImageResources(
+        imagesToExportRef.current,
+        contentmd, // Use HTML content for checking
+        data // Pass markdown text as backup check
+      );
+
       switch (exportType) {
         case ExportType.ZIP:
-          saveContentAsWebsite(data, asConfigData(updatedConfig), imagesToExportRef.current);
+          saveContentAsWebsite(data, asConfigData(updatedConfig), cleanedImages);
           break;
         case ExportType.A8M:
-          saveContentAsOriginalFile(data, asConfigData(updatedConfig), imagesToExportRef.current);
+          saveContentAsOriginalFile(data, asConfigData(updatedConfig), cleanedImages);
           break;
         default:
           console.error('Unsupported export type');
       }
     },
-    [data, setDisplayConfig]
+    [data, setDisplayConfig, contentmd]
   );
 
   const latexDelimiterOptions = [
