@@ -15,27 +15,26 @@ module.exports = {
         cyan: '#01A9DB',
         cyanDark: '#0B76B7',
         cyanLight: '#D0F0FD',
-        // Semantic status colors for toast, modal, and other components
         status: {
           info: {
             bg: '#EBEEF2',
             text: '#394452',
-            icon: '#394452', // Same as text color
+            icon: '#394452',
           },
           success: {
             bg: '#EDF9F0',
             text: '#287D3C',
-            icon: '#287D3C', // Same as text color
+            icon: '#287D3C',
           },
           warning: {
             bg: '#FFF4EC',
             text: '#B95000',
-            icon: '#B95000', // Same as text color
+            icon: '#B95000',
           },
           error: {
             bg: '#FEEFEF',
             text: '#DA1414',
-            icon: '#DA1414', // Same as text color
+            icon: '#DA1414',
           },
         },
       },
