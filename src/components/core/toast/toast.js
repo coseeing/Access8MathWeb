@@ -3,12 +3,20 @@ import PropTypes from 'prop-types';
 import { Transition } from '@headlessui/react';
 
 import CloseIcon from '@/components/svg/close.svg';
+import AlertCircleIcon from '@/components/svg/alert-circle.svg';
 
 const toastTypeClasses = {
-  info: 'bg-blue-500',
-  success: 'bg-green-500',
-  warning: 'bg-yellow-500',
-  error: 'bg-red-500',
+  info: 'bg-status-info-bg text-status-info-text',
+  success: 'bg-status-success-bg text-status-success-text',
+  warning: 'bg-status-warning-bg text-status-warning-text',
+  error: 'bg-status-error-bg text-status-error-text',
+};
+
+const iconTypeClasses = {
+  info: 'bg-status-info-icon',
+  success: 'bg-status-success-icon',
+  warning: 'bg-status-warning-icon',
+  error: 'bg-status-error-icon',
 };
 
 const FADE_OUT_DURATION = 300; // Match the transition duration
@@ -92,20 +100,34 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
         key={id}
         role="status"
         aria-live="polite"
-        className={`flex items-center text-white p-4 rounded-md shadow-lg mb-2 ${
-          toastTypeClasses[type] ?? 'bg-gray-800'
-        }`}
+        className={`min-h-8 w-80 pl-4 pr-2 py-[6px] flex items-center gap-1 text-sm mb-2 rounded-lg ${toastTypeClasses[type]}`}
         onMouseEnter={handlePause}
         onMouseLeave={handleResume}
       >
-        <p className="mr-4">{message}</p>
+        <div className="shrink-0">
+          <div
+            className={`w-4 h-4 mask-cover mask-no-repeat ${iconTypeClasses[type]}`}
+            style={{
+              maskImage: `url(${AlertCircleIcon})`,
+              WebkitMaskImage: `url(${AlertCircleIcon})`,
+            }}
+            aria-hidden="true"
+          />
+        </div>
+        <p className="flex-1 mr-4 leading-5">{message}</p>
         {showCloseButton && (
           <button
             onClick={handleDismiss}
             aria-label="Close"
             className="p-1 rounded-full hover:bg-black/20 focus:outline-none focus:ring-2 focus:ring-white"
           >
-            <img src={CloseIcon} alt="close" className="w-4 h-4" />
+            <div
+              className={`w-4 h-4 mask-cover mask-no-repeat ${iconTypeClasses[type]}`}
+              style={{
+                maskImage: `url(${CloseIcon})`,
+                WebkitMaskImage: `url(${CloseIcon})`,
+              }}
+            />
           </button>
         )}
       </div>
