@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.63060158.css",
-    "main.js": "/static/js/main.bf55d7ec.js",
+    "main.css": "/static/css/main.47fc9802.css",
+    "main.js": "/static/js/main.d4eec2e5.js",
     "static/js/206.aee216fa.chunk.js": "/static/js/206.aee216fa.chunk.js",
     "static/media/determinant3X3.svg": "/static/media/determinant3X3.4dcb2436b713b50f29a682efe2ea3210.svg",
     "static/media/matrix3X3.svg": "/static/media/matrix3X3.59d1485c2f8d4f1d8308cb7040daa8dd.svg",
@@ -151,6 +151,7 @@
     "static/media/doteqdot.svg": "/static/media/doteqdot.d9d856b11862549ffcb62f75ea89c512.svg",
     "static/media/italic.svg": "/static/media/italic.4648a2c165e62cc8ce011ae9f4d38720.svg",
     "static/media/heading4.svg": "/static/media/heading4.6b5ea31e6ea006fd1f90359e1e599088.svg",
+    "static/media/alert-circle.svg": "/static/media/alert-circle.9419504938a7a08ea3311bbdf4cb258b.svg",
     "static/media/setminus.svg": "/static/media/setminus.fd620853adf0eaa6b953d5e405dea42f.svg",
     "static/media/partial.svg": "/static/media/partial.c2ff06c5842aa9d113cc5b1d1a36f7b3.svg",
     "static/media/iff.svg": "/static/media/iff.cf9e79b900c4b17d8136337ee10584e5.svg",
@@ -179,7 +180,7 @@
     "static/media/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": "/static/media/1feff74faaf0efc6a044.1feff74faaf0efc6a044"
   },
   "entrypoints": [
-    "static/css/main.63060158.css",
-    "static/js/main.bf55d7ec.js"
+    "static/css/main.47fc9802.css",
+    "static/js/main.d4eec2e5.js"
   ]
 }
