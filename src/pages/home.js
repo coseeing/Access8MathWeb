@@ -25,6 +25,7 @@ import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
 import ConvertHintModal from '@/components/home/convert-hint-modal';
+import TableOfContents from '@/components/home/table-of-contents';
 import {
   useDisplayConfig,
   ExportType,
@@ -77,6 +78,39 @@ export default function Home() {
     const result = markedFunc(data);
     return result;
   }, [data, markedFunc]);
+
+  const extractH1Headers = useCallback((content) => {
+    const lines = content.split('\n');
+    const headers = [];
+    let position = 0;
+    
+    lines.forEach((line, index) => {
+      const match = line.match(/^#\s+(.+)$/);
+      if (match) {
+        headers.push({
+          title: match[1].trim(),
+          line: index,
+          position: position
+        });
+      }
+      position += line.length + 1;
+    });
+    
+    return headers;
+  }, []);
+
+  const headers = useMemo(() => extractH1Headers(data), [data, extractH1Headers]);
+
+  const scrollToLine = useCallback((lineNumber) => {
+    if (codemirrorView.current) {
+      const line = codemirrorView.current.state.doc.line(lineNumber + 1);
+      codemirrorView.current.dispatch({
+        selection: EditorSelection.cursor(line.from),
+        effects: EditorView.scrollIntoView(line.from, { y: 'start' })
+      });
+      codemirrorView.current.focus();
+    }
+  }, []);
 
   const createView = useCallback((content = '') => {
     if (codemirrorView.current) {
@@ -327,6 +361,11 @@ export default function Home() {
       <div className="flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
         {/* Left side input panel */}
         <div className="md:w-3/5 bg-cyanLight md:p-8 p-4 flex flex-col">
+          {headers.length > 0 && (
+            <div className="mb-4">
+              <TableOfContents headers={headers} onHeaderClick={scrollToLine} />
+            </div>
+          )}
           <div className="flex justify-between">
             <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
             <div className="flex justify-end mb-4 mt-4 md:mt-m1">
