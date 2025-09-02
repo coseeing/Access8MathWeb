@@ -83,19 +83,19 @@ export default function Home() {
     const lines = content.split('\n');
     const headers = [];
     let position = 0;
-    
+
     lines.forEach((line, index) => {
       const match = line.match(/^#\s+(.+)$/);
       if (match) {
         headers.push({
           title: match[1].trim(),
           line: index,
-          position: position
+          position: position,
         });
       }
       position += line.length + 1;
     });
-    
+
     return headers;
   }, []);
 
@@ -106,7 +106,7 @@ export default function Home() {
       const line = codemirrorView.current.state.doc.line(lineNumber + 1);
       codemirrorView.current.dispatch({
         selection: EditorSelection.cursor(line.from),
-        effects: EditorView.scrollIntoView(line.from, { y: 'start' })
+        effects: EditorView.scrollIntoView(line.from, { y: 'start' }),
       });
       codemirrorView.current.focus();
     }

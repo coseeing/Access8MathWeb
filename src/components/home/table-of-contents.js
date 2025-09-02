@@ -6,22 +6,15 @@ export default function TableOfContents({ headers, onHeaderClick }) {
   }
 
   return (
-    <nav 
+    <nav
       className="bg-white border border-gray-300 rounded-lg p-4 shadow-sm"
       role="navigation"
       aria-label="文件目錄"
     >
-      <h3 
-        className="text-lg font-semibold text-gray-700 mb-3"
-        id="toc-heading"
-      >
+      <h3 className="text-lg font-semibold text-gray-700 mb-3" id="toc-heading">
         目錄
       </h3>
-      <ul 
-        className="space-y-2"
-        role="list"
-        aria-labelledby="toc-heading"
-      >
+      <ul className="space-y-2" role="list" aria-labelledby="toc-heading">
         {headers.map((header, index) => (
           <li key={index} role="listitem">
             <button
