@@ -238,7 +238,7 @@ export default function Home() {
       setDisplayConfig(updatedConfig);
       const cleanedImages = cleanUnusedImageResources(
         imagesToExportRef.current,
-        contentmd, // Use HTML content for checking
+        content, // Use HTML content for checking
         data // Pass markdown text as backup check
       );
 
@@ -253,7 +253,7 @@ export default function Home() {
           console.error('Unsupported export type');
       }
     },
-    [data, setDisplayConfig, contentmd]
+    [data, setDisplayConfig, content]
   );
 
   const latexDelimiterOptions = [
