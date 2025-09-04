@@ -1,2 +1,2 @@
-Version: 1.7.0
-Build Date: 2025-08-22T06:17:38.000Z
+Version: 2.0.0
+Build Date: 2025-09-04T17:38:00.069Z
