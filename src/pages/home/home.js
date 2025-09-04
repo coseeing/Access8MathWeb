@@ -69,7 +69,7 @@ export default function Home() {
 
   const seeMarkReactParse = useSeeMarkParse({
     latexDelimiter: displayConfig.latexDelimiter,
-    htmlMathDisplay: displayConfig.htmlMathDisplay,
+    documentFormat: displayConfig.documentFormat,
     imageFiles,
   });
 
