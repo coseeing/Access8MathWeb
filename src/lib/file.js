@@ -129,13 +129,11 @@ const extractEntryData = ({ config, contents }) => {
 const genConfigJs = (raw) => `window.contentConfig = ${raw}`;
 
 export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExport = {}) => {
-  let updatedSourceText = sourceText;
   const config = {
     ...configInput,
-    sourceText: updatedSourceText,
+    sourceText,
     images: Object.entries(imagesToExport).reduce((acc, [fileID, { fileName }]) => {
-      acc[fileID] = fileName;
-      return acc;
+      return { ...acc, [fileID]: `./images/${fileName}` };
     }, {}),
   };
 
