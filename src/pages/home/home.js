@@ -392,10 +392,11 @@ export default function Home() {
             </div>
           </div>
           <div
-            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${displayConfig.documentColor === DocumentColor.DARK
+            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${
+              displayConfig.documentColor === DocumentColor.DARK
                 ? 'bg-black text-white'
                 : ' text-black'
-              }`}
+            }`}
           >
             <div data-remove-styles>
               <div>{content}</div>
