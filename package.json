@@ -44,7 +44,9 @@
     "deploy": "gh-pages -d build",
     "lint": "npx eslint .",
     "format": "npx prettier --write .",
-    "format:check": "npx prettier --check ."
+    "format:check": "npx prettier --check .",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "browserslist": {
     "production": [
@@ -69,8 +71,13 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron/fuses": "^1.8.0",
+    "@storybook/addon-docs": "^9.1.2",
+    "@storybook/addon-onboarding": "^9.1.2",
+    "@storybook/addon-themes": "^9.1.2",
+    "@storybook/preset-create-react-app": "^9.1.2",
+    "@storybook/react-webpack5": "^9.1.2",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
+    "@testing-library/react": "^14.3.1",
     "@testing-library/user-event": "^13.5.0",
     "electron": "^31.2.1",
     "eslint": "^8.50.0",
@@ -80,8 +87,11 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-storybook": "^9.1.2",
     "gh-pages": "^6.0.0",
     "prettier": "3.0.3",
-    "tailwindcss": "^3.3.3"
+    "storybook": "^9.1.2",
+    "tailwindcss": "^3.3.3",
+    "webpack": "^5.101.2"
   }
 }

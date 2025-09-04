@@ -9,6 +9,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'eslint:recommended',
     'prettier',
+    'plugin:storybook/recommended',
   ],
   parserOptions: {
     ecmaFeatures: {
