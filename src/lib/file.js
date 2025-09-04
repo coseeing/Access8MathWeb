@@ -134,8 +134,7 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
     ...configInput,
     sourceText: updatedSourceText,
     images: Object.entries(imagesToExport).reduce((acc, [fileID, { fileName }]) => {
-      acc[fileID] = fileName;
-      return acc;
+      return { ...acc, [fileID]: `./images/${fileName}` };
     }, {}),
   };
 

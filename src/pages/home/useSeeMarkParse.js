@@ -13,6 +13,7 @@ const useSeeMarkParse = ({ latexDelimiter, documentFormat, imageFiles }) => {
           latexDelimiter,
           documentFormat,
           imageFiles,
+          shouldBuildImageObjectURL: true,
         },
         components: { alert: Alert, internalLink: InternalLink },
       })(markdown);
