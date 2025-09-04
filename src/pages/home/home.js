@@ -34,7 +34,6 @@ import {
   DocumentColor,
 } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
-import { cleanUnusedImageResources } from '@/lib/image-resource-cleaner';
 
 import useSeeMarkParse from './useSeeMarkParse';
 
@@ -236,11 +235,8 @@ export default function Home() {
   const exportFileAction = useCallback(
     (updatedConfig, exportType) => {
       setDisplayConfig(updatedConfig);
-      const cleanedImages = cleanUnusedImageResources(
-        imagesToExportRef.current,
-        content, // Use HTML content for checking
-        data // Pass markdown text as backup check
-      );
+      // FIXME: get back the cleaning feature
+      const cleanedImages = imagesToExportRef.current;
 
       switch (exportType) {
         case ExportType.ZIP:
@@ -253,7 +249,7 @@ export default function Home() {
           console.error('Unsupported export type');
       }
     },
-    [data, setDisplayConfig, content]
+    [data, setDisplayConfig]
   );
 
   const latexDelimiterOptions = [
