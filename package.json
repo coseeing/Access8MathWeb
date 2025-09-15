@@ -20,6 +20,7 @@
     "i18next-browser-languagedetector": "^7.1.0",
     "i18next-http-backend": "^2.2.2",
     "jszip": "^3.10.1",
+    "patch-package": "^8.0.0",
     "prop-types": "^15.8.1",
     "ramda": "^0.30.1",
     "react": "^18.2.0",
@@ -46,7 +47,8 @@
     "format": "npx prettier --write .",
     "format:check": "npx prettier --check .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "postinstall": "patch-package"
   },
   "browserslist": {
     "production": [

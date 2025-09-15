@@ -1,0 +1,55 @@
+diff --git a/node_modules/mathjax-full/js/input/asciimath/mathjax2/input/AsciiMath.js b/node_modules/mathjax-full/js/input/asciimath/mathjax2/input/AsciiMath.js
+index 41f6a1f..6419364 100644
+--- a/node_modules/mathjax-full/js/input/asciimath/mathjax2/input/AsciiMath.js
++++ b/node_modules/mathjax-full/js/input/asciimath/mathjax2/input/AsciiMath.js
+@@ -1,4 +1,5 @@
+-MathJax = Object.assign(global.MathJax || {}, require("../legacy/MathJax.js").MathJax);
++// MathJax = Object.assign(gloabl.MathJax || {}, require("../legacy/MathJax.js").MathJax);
++window.MathJax = Object.assign(window.MathJax || {}, require("../legacy/MathJax.js").MathJax);
+ 
+ //
+ //  Load component-based configuration, if any
+diff --git a/node_modules/mathjax-full/js/input/asciimath/mathjax2/legacy/MathJax.js b/node_modules/mathjax-full/js/input/asciimath/mathjax2/legacy/MathJax.js
+index 903ede2..cc65a77 100644
+--- a/node_modules/mathjax-full/js/input/asciimath/mathjax2/legacy/MathJax.js
++++ b/node_modules/mathjax-full/js/input/asciimath/mathjax2/legacy/MathJax.js
+@@ -19,7 +19,8 @@ exports.MathJax = MathJax;
+     return obj;
+   };
+   var CONSTRUCTOR = function () {
+-    return function () {return arguments.callee.Init.call(this,arguments)};
++    // return function () {return arguments.callee.Init.call(this,arguments)};
++    return function fn() {return fn.Init.call(this,Object.assign(arguments,{call:fn}))};
+   };
+ 
+   BASE.Object = OBJECT({
+@@ -40,7 +41,8 @@ exports.MathJax = MathJax;
+     Init: function (args) {
+       var obj = this;
+       if (args.length === 1 && args[0] === PROTO) {return obj}
+-      if (!(obj instanceof args.callee)) {obj = new args.callee(PROTO)}
++      // if (!(obj instanceof args.callee)) {obj = new args.callee(PROTO)}
++      if (!(obj instanceof args.call)) {obj = new args.call(PROTO)}
+       return obj.Init.apply(obj,args) || obj;
+     },
+     
+@@ -65,7 +67,8 @@ exports.MathJax = MathJax;
+   
+     prototype: {
+       Init: function () {},
+-      SUPER: function (fn) {return fn.callee.SUPER},
++      // SUPER: function (fn) {return fn.callee.SUPER},
++      SUPER: function (fn) {return fn.SUPER},
+       can: function (method) {return typeof(this[method]) === "function"},
+       has: function (property) {return typeof(this[property]) !== "undefined"},
+       isa: function (obj) {return (obj instanceof Object) && (this instanceof obj)}
+@@ -177,7 +180,8 @@ exports.MathJax = MathJax;
+   //  Create a callback from an associative array
+   //
+   var CALLBACK = function (data) {
+-    var cb = function () {return arguments.callee.execute.apply(arguments.callee,arguments)};
++    // var cb = function () {return arguments.callee.execute.apply(arguments.callee,arguments)};
++    var cb = function fn() {return fn.execute.apply(fn,arguments)};
+     for (var id in CALLBACK.prototype) {
+       if (CALLBACK.prototype.hasOwnProperty(id)) {
+         if (typeof(data[id]) !== 'undefined') {cb[id] = data[id]}
