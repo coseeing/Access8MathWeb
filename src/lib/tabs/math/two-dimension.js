@@ -1,7 +1,7 @@
-import { ReactComponent as Matrix2X2 } from '@/components/svg/two-dimension/matrix2X2.svg';
-import { ReactComponent as Matrix3X3 } from '@/components/svg/two-dimension/matrix3X3.svg';
-import { ReactComponent as Determinant2X2 } from '@/components/svg/two-dimension/determinant2X2.svg';
-import { ReactComponent as Determinant3X3 } from '@/components/svg/two-dimension/determinant3X3.svg';
+import Matrix2X2 from '@/components/svg/two-dimension/matrix2X2.svg';
+import Matrix3X3 from '@/components/svg/two-dimension/matrix3X3.svg';
+import Determinant2X2 from '@/components/svg/two-dimension/determinant2X2.svg';
+import Determinant3X3 from '@/components/svg/two-dimension/determinant3X3.svg';
 
 const twoDimension = [
   {

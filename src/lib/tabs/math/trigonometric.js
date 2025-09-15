@@ -1,16 +1,16 @@
-import { ReactComponent as Sine } from '@/components/svg/trigonometric/sine.svg';
-import { ReactComponent as Cosine } from '@/components/svg/trigonometric/cosine.svg';
-import { ReactComponent as Tangent } from '@/components/svg/trigonometric/tangent.svg';
-import { ReactComponent as Cotangent } from '@/components/svg/trigonometric/cotangent.svg';
-import { ReactComponent as Secant } from '@/components/svg/trigonometric/secant.svg';
-import { ReactComponent as Cosecant } from '@/components/svg/trigonometric/cosecant.svg';
-import { ReactComponent as Arcsine } from '@/components/svg/trigonometric/arcsine.svg';
-import { ReactComponent as Arccosine } from '@/components/svg/trigonometric/arccosine.svg';
-import { ReactComponent as Arctangent } from '@/components/svg/trigonometric/arctangent.svg';
-import { ReactComponent as HyperbolicSine } from '@/components/svg/trigonometric/hyperbolic-sine.svg';
-import { ReactComponent as HyperbolicCosine } from '@/components/svg/trigonometric/hyperbolic-cosine.svg';
-import { ReactComponent as HyperbolicTangent } from '@/components/svg/trigonometric/hyperbolic-tangent.svg';
-import { ReactComponent as HyperbolicCotangent } from '@/components/svg/trigonometric/hyperbolic-cotangent.svg';
+import Sine from '@/components/svg/trigonometric/sine.svg';
+import Cosine from '@/components/svg/trigonometric/cosine.svg';
+import Tangent from '@/components/svg/trigonometric/tangent.svg';
+import Cotangent from '@/components/svg/trigonometric/cotangent.svg';
+import Secant from '@/components/svg/trigonometric/secant.svg';
+import Cosecant from '@/components/svg/trigonometric/cosecant.svg';
+import Arcsine from '@/components/svg/trigonometric/arcsine.svg';
+import Arccosine from '@/components/svg/trigonometric/arccosine.svg';
+import Arctangent from '@/components/svg/trigonometric/arctangent.svg';
+import HyperbolicSine from '@/components/svg/trigonometric/hyperbolic-sine.svg';
+import HyperbolicCosine from '@/components/svg/trigonometric/hyperbolic-cosine.svg';
+import HyperbolicTangent from '@/components/svg/trigonometric/hyperbolic-tangent.svg';
+import HyperbolicCotangent from '@/components/svg/trigonometric/hyperbolic-cotangent.svg';
 
 const trigonometricSymbols = [
   {

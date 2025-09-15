@@ -1,9 +1,9 @@
-import { ReactComponent as DotProduct } from '@/components/svg/calculus/dotproduct.svg';
-import { ReactComponent as Integral } from '@/components/svg/calculus/integral.svg';
-import { ReactComponent as Nabla } from '@/components/svg/calculus/nabla.svg';
-import { ReactComponent as Partial } from '@/components/svg/calculus/partial.svg';
-import { ReactComponent as Prime } from '@/components/svg/calculus/prime.svg';
-import { ReactComponent as Differential } from '@/components/svg/calculus/differential.svg';
+import DotProduct from '@/components/svg/calculus/dotproduct.svg';
+import Integral from '@/components/svg/calculus/integral.svg';
+import Nabla from '@/components/svg/calculus/nabla.svg';
+import Partial from '@/components/svg/calculus/partial.svg';
+import Prime from '@/components/svg/calculus/prime.svg';
+import Differential from '@/components/svg/calculus/differential.svg';
 
 const calculusSymbols = [
   {

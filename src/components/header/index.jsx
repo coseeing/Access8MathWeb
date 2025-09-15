@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Menu from './menu';
 import LanguageMenu from './language-menu';
 import TipModal from '@/components/home/tip-modal';
-import { ReactComponent as QuestionCircleComponent } from '@/components/svg/question-circle.svg';
+import QuestionCircleComponent from '@/components/svg/question-circle.svg';
 import { useTranslation } from '@/lib/i18n';
 
 const Header = () => {

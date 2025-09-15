@@ -1,13 +1,13 @@
-import { ReactComponent as Arc } from '@/components/svg/geometry/arc.svg';
-import { ReactComponent as Triangle } from '@/components/svg/geometry/triangle.svg';
-import { ReactComponent as Angle } from '@/components/svg/geometry/angle.svg';
-import { ReactComponent as Degree } from '@/components/svg/geometry/degree.svg';
-import { ReactComponent as Circ } from '@/components/svg/geometry/circ.svg';
-import { ReactComponent as Parallel } from '@/components/svg/geometry/parallel.svg';
-import { ReactComponent as Perp } from '@/components/svg/geometry/perp.svg';
-import { ReactComponent as Square } from '@/components/svg/geometry/square.svg';
-import { ReactComponent as SmallDiamond } from '@/components/svg/geometry/small-diamond.svg';
-import { ReactComponent as LargeDiamond } from '@/components/svg/geometry/large-diamond.svg';
+import Arc from '@/components/svg/geometry/arc.svg';
+import Triangle from '@/components/svg/geometry/triangle.svg';
+import Angle from '@/components/svg/geometry/angle.svg';
+import Degree from '@/components/svg/geometry/degree.svg';
+import Circ from '@/components/svg/geometry/circ.svg';
+import Parallel from '@/components/svg/geometry/parallel.svg';
+import Perp from '@/components/svg/geometry/perp.svg';
+import Square from '@/components/svg/geometry/square.svg';
+import SmallDiamond from '@/components/svg/geometry/small-diamond.svg';
+import LargeDiamond from '@/components/svg/geometry/large-diamond.svg';
 
 const geometrySymbols = [
   {

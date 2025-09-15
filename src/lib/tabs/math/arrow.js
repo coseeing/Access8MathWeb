@@ -1,9 +1,9 @@
-import { ReactComponent as LeftArrow } from '@/components/svg/arrow/leftarrow.svg';
-import { ReactComponent as RightArrow } from '@/components/svg/arrow/rightarrow.svg';
-import { ReactComponent as LeftRightArrow } from '@/components/svg/arrow/leftrightarrow.svg';
-import { ReactComponent as UpArrow } from '@/components/svg/arrow/uparrow.svg';
-import { ReactComponent as DownArrow } from '@/components/svg/arrow/downarrow.svg';
-import { ReactComponent as UpDownArrow } from '@/components/svg/arrow/updownarrow.svg';
+import LeftArrow from '@/components/svg/arrow/leftarrow.svg';
+import RightArrow from '@/components/svg/arrow/rightarrow.svg';
+import LeftRightArrow from '@/components/svg/arrow/leftrightarrow.svg';
+import UpArrow from '@/components/svg/arrow/uparrow.svg';
+import DownArrow from '@/components/svg/arrow/downarrow.svg';
+import UpDownArrow from '@/components/svg/arrow/updownarrow.svg';
 
 const arrow = [
   {

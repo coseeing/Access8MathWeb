@@ -1,7 +1,7 @@
-import { ReactComponent as Combination } from '@/components/svg/combinatorics/combination.svg';
-import { ReactComponent as Permutation } from '@/components/svg/combinatorics/permutation.svg';
-import { ReactComponent as CombinationWithRepetition } from '@/components/svg/combinatorics/combination-with-repetition.svg';
-import { ReactComponent as UnorderedSelection } from '@/components/svg/combinatorics/unordered-selection.svg';
+import Combination from '@/components/svg/combinatorics/combination.svg';
+import Permutation from '@/components/svg/combinatorics/permutation.svg';
+import CombinationWithRepetition from '@/components/svg/combinatorics/combination-with-repetition.svg';
+import UnorderedSelection from '@/components/svg/combinatorics/unordered-selection.svg';
 
 const combinatoricsSymbols = [
   {
