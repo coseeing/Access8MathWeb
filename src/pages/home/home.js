@@ -18,6 +18,7 @@ import {
   ORIGINAL_FILE_EXTENSION,
 } from '@/lib/file';
 import autoCompletions from '@/lib/editor-auto-completion';
+import { createMarkdownEditorExtensions } from '@/lib/editor-extensions';
 
 import { latexDelimiterConvertor } from '@coseeing/see-mark';
 
@@ -80,15 +81,6 @@ export default function Home() {
     if (codemirrorView.current) {
       codemirrorView.current.destroy();
     }
-    const editorView = EditorView.theme({
-      '&': {
-        fontSize: '16px',
-        backgroundColor: 'white',
-        minHeight: '300px',
-        height: '100%',
-      },
-      '.cm-scroller': { overflow: 'auto' },
-    });
     codemirrorView.current = new EditorView({
       state: EditorState.create({
         doc: content,
@@ -98,11 +90,10 @@ export default function Home() {
             override: [autoCompletions],
           }),
           markdown(),
+          ...createMarkdownEditorExtensions(),
           EditorView.updateListener.of((update) => {
             setData(update.view.state.doc.toString());
           }),
-          editorView,
-          EditorView.lineWrapping,
         ],
       }),
       parent: document.getElementById('codemirror'),
