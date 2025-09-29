@@ -2,6 +2,7 @@ import { EditorView } from '@codemirror/view';
 import { syntaxHighlighting, HighlightStyle } from '@codemirror/language';
 import { tags as t } from '@lezer/highlight';
 import { markdownLineDecorations } from './markdown-line-decorations';
+import { mathDecorations } from './math-decorations';
 
 const markdownHighlighting = HighlightStyle.define([
   { tag: t.heading1, fontSize: '2em', fontWeight: 'bold', color: '#1a1a1a' },
@@ -51,7 +52,7 @@ const baseTheme = EditorView.theme({
   },
   '.cm-code-block': {
     backgroundColor: '#1e293b',
-    color: '#e2e8f0',
+    color: '#333333',
     padding: '4px 8px',
     fontFamily: 'monospace',
     margin: '2px 0',
@@ -86,6 +87,17 @@ const baseTheme = EditorView.theme({
     backgroundColor: '#fefdfb',
     margin: '1px 0',
   },
+  
+  // 數學公式樣式
+  '.cm-math-inline': {
+    backgroundColor: '#e0f2fe',
+    border: '1px solid #0284c7',
+    borderRadius: '4px',
+    padding: '2px 4px',
+    fontFamily: 'monospace',
+    color: '#0c4a6e',
+    fontSize: '0.95em',
+  },
 });
 
 export function createMarkdownEditorExtensions() {
@@ -93,6 +105,7 @@ export function createMarkdownEditorExtensions() {
     baseTheme,
     syntaxHighlighting(markdownHighlighting),
     markdownLineDecorations,
+    mathDecorations,
     EditorView.lineWrapping,
   ];
 }
