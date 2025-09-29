@@ -18,26 +18,26 @@ export const mathDecorations = ViewPlugin.fromClass(
       const builder = [];
       const { state } = view;
       const doc = state.doc.toString();
-      
+
       // 偵測 $...$ 格式（數學公式）
       const dollarRegex = /\$([^$\n]+)\$/g;
       let match;
-      
+
       while ((match = dollarRegex.exec(doc)) !== null) {
         builder.push(
           Decoration.mark({
-            class: 'cm-math-inline'
+            class: 'cm-math-inline',
           }).range(match.index, match.index + match[0].length)
         );
       }
-      
+
       // 偵測 \(...\) 格式（數學公式）
       const bracketRegex = /\\\([^)]*\\\)/g;
-      
+
       while ((match = bracketRegex.exec(doc)) !== null) {
         builder.push(
           Decoration.mark({
-            class: 'cm-math-inline'
+            class: 'cm-math-inline',
           }).range(match.index, match.index + match[0].length)
         );
       }
@@ -46,6 +46,6 @@ export const mathDecorations = ViewPlugin.fromClass(
     }
   },
   {
-    decorations: v => v.decorations
+    decorations: (v) => v.decorations,
   }
 );

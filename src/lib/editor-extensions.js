@@ -11,17 +11,23 @@ const markdownHighlighting = HighlightStyle.define([
   { tag: t.heading4, fontSize: '1.1em', fontWeight: 'bold', color: '#4a4a4a' },
   { tag: t.heading5, fontSize: '1.05em', fontWeight: 'bold', color: '#5a5a5a' },
   { tag: t.heading6, fontSize: '1em', fontWeight: 'bold', color: '#6a6a6a' },
-  
+
   { tag: t.strong, fontWeight: 'bold' },
   { tag: t.emphasis, fontStyle: 'italic' },
   { tag: t.strikethrough, textDecoration: 'line-through' },
-  
+
   { tag: t.link, color: '#0969da', textDecoration: 'underline' },
   { tag: t.url, color: '#0969da' },
-  
+
   { tag: t.quote, color: '#656d76', fontStyle: 'italic' },
-  { tag: t.monospace, fontFamily: 'monospace', backgroundColor: '#f6f8fa', padding: '0.2em 0.4em', borderRadius: '3px' },
-  
+  {
+    tag: t.monospace,
+    fontFamily: 'monospace',
+    backgroundColor: '#f6f8fa',
+    padding: '0.2em 0.4em',
+    borderRadius: '3px',
+  },
+
   { tag: t.content, color: 'inherit' },
   { tag: t.meta, color: '#656d76' },
   { tag: t.processingInstruction, color: '#656d76', fontWeight: 'bold' },
@@ -35,7 +41,7 @@ const baseTheme = EditorView.theme({
     height: '100%',
   },
   '.cm-scroller': { overflow: 'auto' },
-  
+
   // 區塊背景樣式
   '.cm-list-block': {
     backgroundColor: '#f0f9ff',
@@ -87,7 +93,7 @@ const baseTheme = EditorView.theme({
     backgroundColor: '#fefdfb',
     margin: '1px 0',
   },
-  
+
   // 數學公式樣式
   '.cm-math-inline': {
     backgroundColor: '#e0f2fe',
