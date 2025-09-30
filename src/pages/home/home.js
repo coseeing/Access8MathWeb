@@ -162,25 +162,41 @@ export default function Home() {
     importFile.current.click();
   }, []);
 
-  const insertLatex = useCallback(({ latex, offset }) => {
+  const insertLatex = useCallback(({ id, latex, offset }) => {
     const view = codemirrorView.current;
     view.dispatch(
-      view.state.changeByRange((range) => ({
-        changes: [
-          {
-            from: range.from,
-            insert: latex.slice(0, latex.length + offset),
-          },
-          {
-            from: range.to,
-            insert: latex.slice(latex.length + offset, latex.length),
-          },
-        ],
-        range: EditorSelection.range(
-          range.from + latex.length + offset,
-          range.from + latex.length + offset
-        ),
-      }))
+      view.state.changeByRange((range) => {
+        // If it's a heading, insert at the start of the line
+        if (id.startsWith('heading')) {
+          const line = view.state.doc.lineAt(range.from);
+          return {
+            changes: [
+              {
+                from: line.from,
+                insert: latex,
+              },
+            ],
+            range: EditorSelection.range(range.from + latex.length, range.to + latex.length),
+          };
+        }
+
+        return {
+          changes: [
+            {
+              from: range.from,
+              insert: latex.slice(0, latex.length + offset),
+            },
+            {
+              from: range.to,
+              insert: latex.slice(latex.length + offset, latex.length),
+            },
+          ],
+          range: EditorSelection.range(
+            range.from + latex.length + offset,
+            range.from + latex.length + offset
+          ),
+        };
+      })
     );
     view.focus();
   }, []);
