@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { createMarkdownToReactParser } from '@coseeing/see-mark';
 
 import Alert from '@/components/parser-components/alert/alert';
-import InternalLink from '@/components/parser-components/internal-link/inetrnal-link';
+import InternalLink from '@/components/parser-components/internal-link/internal-link';
 
 const useSeeMarkParse = ({ latexDelimiter, documentFormat, imageFiles }) => {
   const seeMarkReactParse = useCallback(
