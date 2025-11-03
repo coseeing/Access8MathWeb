@@ -167,7 +167,7 @@ export default function Home() {
     view.dispatch(
       view.state.changeByRange((range) => {
         // If it's a heading, insert at the start of the line
-        if (id.startsWith('heading')) {
+        if (id?.startsWith('heading')) {
           const line = view.state.doc.lineAt(range.from);
           return {
             changes: [
