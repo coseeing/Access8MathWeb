@@ -29,6 +29,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
     (file, altText) => {
       const fileID = generateUniqueId();
       insertLatex({
+        id: 'insert_image_file',
         latex: `![${altText}](${fileID})`,
         offset: -1,
       });
