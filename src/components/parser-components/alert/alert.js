@@ -19,7 +19,7 @@ const Alert = ({ children, internalLinkId = '', variant = '', title = '' }) => {
       </p>
       {children}
       {showBacklink && (
-        <a href={`${internalLinkId}-source`} className={cls('underline', LINK_COLOR)}>
+        <a href={`#${internalLinkId}-source`} className={cls('underline', LINK_COLOR)}>
           返回
         </a>
       )}
