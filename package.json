@@ -6,7 +6,7 @@
   "main": "main.js",
   "dependencies": {
     "@codemirror/lang-markdown": "^6.0.5",
-    "@coseeing/see-mark": "^1.0.4",
+    "@coseeing/see-mark": "^1.0.5",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "classnames": "^2.3.2",
