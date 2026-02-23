@@ -1,2 +1,2 @@
-Version: 2.0.4
-Build Date: 2026-02-04T14:10:55.206Z
+Version: 2.0.5
+Build Date: 2026-02-23T10:56:47.904Z
