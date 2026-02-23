@@ -1,4 +1,37 @@
 /** @type {import('tailwindcss').Config} */
+
+const v2ColorTokens = {
+  blue: {
+    50: '#EEF7FF',
+    100: '#D8EDFF',
+    200: '#BADFFF',
+    300: '#8ACCFF',
+    400: '#53B0FF',
+    500: '#2B8DFF',
+    600: '#146EFC',
+    700: '#0D56E8',
+    800: '#1246BB',
+    900: '#08184D',
+    950: '#122759',
+  },
+  gray: {
+    50: '#F6F6F6',
+    100: '#E7E7E7',
+    200: '#D1D1D1',
+    300: '#B0B0B0',
+    400: '#888888',
+    500: '#6D6D6D',
+    600: '#595959',
+    700: '#4F4F4F',
+    800: '#454545',
+    900: '#3D3D3D',
+    950: '#262626',
+  },
+  red: {
+    600: '#FC0606',
+  },
+};
+
 module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
@@ -33,6 +66,23 @@ module.exports = {
             text: '#DA1414',
             icon: '#DA1414',
           },
+        },
+
+        // v2 color tokens
+        ...v2ColorTokens,
+        primary: v2ColorTokens.blue[700],
+        error: v2ColorTokens.red[600],
+        bg: {
+          main: '#F8FCFF',
+        },
+        border: {
+          main: v2ColorTokens.gray[400],
+        },
+        text: {
+          heading: v2ColorTokens.gray[900],
+          primary: v2ColorTokens.gray[800],
+          secondary: v2ColorTokens.gray[500],
+          placeholder: v2ColorTokens.gray[400],
         },
       },
     },
