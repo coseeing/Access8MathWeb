@@ -74,6 +74,7 @@ module.exports = {
         error: v2ColorTokens.red[600],
         bg: {
           main: '#F8FCFF',
+          disabled: v2ColorTokens.gray[100],
         },
         border: {
           main: v2ColorTokens.gray[400],
@@ -83,6 +84,7 @@ module.exports = {
           primary: v2ColorTokens.gray[800],
           secondary: v2ColorTokens.gray[500],
           placeholder: v2ColorTokens.gray[400],
+          disabled: v2ColorTokens.gray[400],
         },
       },
     },

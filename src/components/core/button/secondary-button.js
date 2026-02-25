@@ -2,77 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-const SecondaryButton = (
-  { size, className, ...props } = {
-    size: 'md',
-  }
-) => {
-  if (size === 'xs') {
-    return (
-      <button
-        type="button"
-        className={cn(
-          'rounded bg-white px-2 py-1 text-xs font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
-          className
-        )}
-        {...props}
-      />
-    );
-  }
+const sizeClasses = {
+  sm: 'px-3 py-2 text-sm leading-[1.4]',
+  l: 'px-4 py-3 text-base leading-[1.5]',
+};
 
-  if (size === 'sm') {
-    return (
-      <button
-        type="button"
-        className={cn(
-          'rounded bg-white px-2 py-1 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
-          className
-        )}
-        {...props}
-      />
-    );
-  }
-
-  if (size === 'l') {
-    return (
-      <button
-        type="button"
-        className={cn(
-          'rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
-          className
-        )}
-        {...props}
-      />
-    );
-  }
-
-  if (size === 'xl') {
-    return (
-      <button
-        type="button"
-        className={cn(
-          'rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
-          className
-        )}
-        {...props}
-      />
-    );
-  }
-
+const SecondaryButton = ({ size = 'sm', className, children, ...props }) => {
   return (
     <button
       type="button"
       className={cn(
-        'rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50',
+        'flex items-center justify-center text-text-primary border border-border-main rounded-lg',
+        'hover:bg-gray-50',
+        'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+        'disabled:bg-bg-disabled disabled:text-text-disabled disabled:border disabled:border-text-secondary disabled:cursor-not-allowed',
+        sizeClasses[size],
         className
       )}
       {...props}
-    />
+    >
+      {children}
+    </button>
   );
 };
 
 SecondaryButton.propTypes = {
-  size: PropTypes.oneOf(['xs', 'sm', 'md', 'l', 'xl']),
+  size: PropTypes.oneOf(['sm', 'l']),
+  className: PropTypes.string,
+  children: PropTypes.node,
 };
 
 export default SecondaryButton;
