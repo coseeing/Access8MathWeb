@@ -7,13 +7,13 @@ const sizeClasses = {
   l: 'px-4 py-3 text-base leading-[1.5]',
 };
 
-const PrimaryButton = ({ size = 'sm', className, children, ...props }) => {
+const TertiaryButton = ({ size = 'sm', className, children, ...props }) => {
   return (
     <button
       type="button"
       className={cn(
-        'flex items-center justify-center bg-primary text-white rounded-lg',
-        'hover:bg-blue-800',
+        'flex items-center justify-center text-primary rounded-lg',
+        'hover:text-blue-800',
         'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
         'disabled:bg-bg-disabled disabled:text-text-disabled disabled:border disabled:border-text-secondary disabled:cursor-not-allowed',
         sizeClasses[size],
@@ -26,10 +26,10 @@ const PrimaryButton = ({ size = 'sm', className, children, ...props }) => {
   );
 };
 
-PrimaryButton.propTypes = {
+TertiaryButton.propTypes = {
   size: PropTypes.oneOf(['sm', 'l']),
   className: PropTypes.string,
   children: PropTypes.node,
 };
 
-export default PrimaryButton;
+export default TertiaryButton;

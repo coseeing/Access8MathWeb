@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import PrimaryButton from './primary-button';
 import SecondaryButton from './secondary-button';
+import TertiaryButton from './tertiary-button';
 
 const Button = ({ variant, ...props } = { variant: 'primary' }) => {
   if (variant === 'primary') {
@@ -13,11 +14,15 @@ const Button = ({ variant, ...props } = { variant: 'primary' }) => {
     return <SecondaryButton {...props} />;
   }
 
+  if (variant === 'tertiary') {
+    return <TertiaryButton {...props} />;
+  }
+
   return <PrimaryButton {...props} />;
 };
 
 Button.propTypes = {
-  variant: PropTypes.oneOf(['primary', 'secondary']),
+  variant: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
 };
 
 export default Button;
