@@ -25,7 +25,7 @@ const SegmentedControl = ({ items, value, onChange, 'aria-label': ariaLabel, but
                 isSelected
                   ? 'bg-blue-200 text-primary'
                   : 'bg-white text-text-primary hover:bg-gray-50',
-                 buttonClassName 
+                buttonClassName
               )}
             >
               {item.label}
