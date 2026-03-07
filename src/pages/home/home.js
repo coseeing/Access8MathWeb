@@ -290,7 +290,7 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <Header onImportClick={importClick} onExportClick={() => setShowSettingModal(true)} />
       <main className="pt-20">
         {/* Top file setting panel */}
         <div className="flex flex-col md:flex-row justify-between px-8 md:px-20 py-4 ">
@@ -303,20 +303,6 @@ export default function Home() {
                 onOptionChange={(option) => setDisplayConfig({ latexDelimiter: option })}
               />
             </div>
-          </div>
-<div className="flex justify-end md:w-1/3">
-            <button
-              className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1"
-              onClick={importClick}
-            >
-              {t('import')}
-            </button>
-            <button
-              className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3"
-              onClick={() => setShowSettingModal(true)}
-            >
-              {t('export')}
-            </button>
           </div>
         </div>
         <div className="flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">

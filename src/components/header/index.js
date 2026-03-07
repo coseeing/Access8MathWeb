@@ -7,7 +7,7 @@ import { ReactComponent as QuestionCircleComponent } from '@/components/svg/ques
 import { useTranslation } from '@/lib/i18n';
 import { useDisplayConfig } from '@/lib/display-config';
 
-const Header = () => {
+const Header = ({ onImportClick, onExportClick }) => {
   const t = useTranslation('home');
   const [showTipModal, setShowTipModal] = useState(false);
   const { displayConfig, setDisplayConfig } = useDisplayConfig();
@@ -27,6 +27,18 @@ const Header = () => {
         />
       </div>
       <div className="flex items-center">
+        <button
+          className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1"
+          onClick={onImportClick}
+        >
+          {t('import')}
+        </button>
+        <button
+          className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3"
+          onClick={onExportClick}
+        >
+          {t('export')}
+        </button>
         <button
           className="hover:scale-110 transition-scale ml-2"
           onClick={() => setShowTipModal(true)}
