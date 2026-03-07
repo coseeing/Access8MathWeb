@@ -13,7 +13,9 @@ const Header = () => {
   return (
     <header className="px-8 md:px-20 fixed h-20 flex justify-between items-center bg-white text-md md:text-2xl font-bold inset-x-0 z-10">
       <div className="flex">
-        <h1 className="m-0">Access8Math</h1>
+        <h1 className="sr-only">Access8Math</h1>
+      </div>
+      <div className="flex items-center">
         <button
           className="hover:scale-110 transition-scale ml-2"
           onClick={() => setShowTipModal(true)}
@@ -21,12 +23,8 @@ const Header = () => {
         >
           <QuestionCircleComponent className="w-5 h-5" />
         </button>
-      </div>
-      <div className="flex items-center">
-        <div className="md:mr-12 mr-8">
-          <LanguageMenu />
-        </div>
         <Menu />
+        <LanguageMenu />
       </div>
       <TipModal isOpen={showTipModal} onClose={() => setShowTipModal(false)} />
     </header>
