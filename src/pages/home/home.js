@@ -21,6 +21,7 @@ import autoCompletions from '@/lib/editor-auto-completion';
 
 import { latexDelimiterConvertor } from '@coseeing/see-mark';
 
+import Header from '@/components/header';
 import Button from '@/components/core/button';
 import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
 import EditIconsTab from '@/components/edit-icons-tab';
@@ -288,155 +289,158 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full h-full">
-      {/* Top file setting panel */}
-      <div className="flex flex-col md:flex-row justify-between px-8 md:px-20 py-4 ">
-        <div className="flex justify-start md:w-1/3">
-          <div className="content-center mr-3">{t('latexDelimiter.name')}</div>
-          <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
-            <ToggleButtonGroup
-              options={latexDelimiterOptions}
-              activeOption={displayConfig.latexDelimiter}
-              onOptionChange={(option) => setDisplayConfig({ latexDelimiter: option })}
-            />
+    <>
+      <Header />
+      <main className="pt-20">
+        {/* Top file setting panel */}
+        <div className="flex flex-col md:flex-row justify-between px-8 md:px-20 py-4 ">
+          <div className="flex justify-start md:w-1/3">
+            <div className="content-center mr-3">{t('latexDelimiter.name')}</div>
+            <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
+              <ToggleButtonGroup
+                options={latexDelimiterOptions}
+                activeOption={displayConfig.latexDelimiter}
+                onOptionChange={(option) => setDisplayConfig({ latexDelimiter: option })}
+              />
+            </div>
           </div>
-        </div>
-        <div className="flex justify-center md:w-1/3">
-          <div className="flex flex-col items-center w-full">
-            <div className="relative w-full max-w-lg">
+          <div className="flex justify-center md:w-1/3">
+            <div className="flex flex-col items-center w-full">
               <div className="relative w-full max-w-lg">
-                <input
-                  value={displayConfig.title}
-                  type="text"
-                  style={{
-                    outline: 'none',
+                <div className="relative w-full max-w-lg">
+                  <input
+                    value={displayConfig.title}
+                    type="text"
+                    style={{
+                      outline: 'none',
+                    }}
+                    className="text-center text-2xl text-cyan font-bold border-b-2 border-cyan p-2 placeholder-opacity-100 w-full"
+                    placeholder={t('pleaseInputTitle')}
+                    aria-label={t('pleaseInputTitle')}
+                    onChange={(e) => setDisplayConfig({ title: e.target.value })}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex justify-end md:w-1/3">
+            <button
+              className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1"
+              onClick={importClick}
+            >
+              {t('import')}
+            </button>
+            <button
+              className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3"
+              onClick={() => setShowSettingModal(true)}
+            >
+              {t('export')}
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
+          {/* Left side input panel */}
+          <div className="md:w-3/5 bg-cyanLight md:p-8 p-4 flex flex-col">
+            <div className="flex justify-between">
+              <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
+              <div className="flex justify-end mb-4 mt-4 md:mt-m1">
+                <Button variant="primary" className="ml-2" onClick={insertMark}>
+                  {t('mark')}{' '}
+                  {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR ? '$' : '\\( \\)'}
+                </Button>
+                <Button
+                  variant="primary"
+                  className="md:ml-2 ml-1"
+                  size="sm"
+                  onClick={() => {
+                    setShowConvertHintModal(true);
                   }}
-                  className="text-center text-2xl text-cyan font-bold border-b-2 border-cyan p-2 placeholder-opacity-100 w-full"
-                  placeholder={t('pleaseInputTitle')}
-                  aria-label={t('pleaseInputTitle')}
-                  onChange={(e) => setDisplayConfig({ title: e.target.value })}
-                />
+                >
+                  {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
+                    ? t('dollar2bracket')
+                    : t('bracket2dollar')}
+                </Button>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="flex justify-end md:w-1/3">
-          <button
-            className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1"
-            onClick={importClick}
-          >
-            {t('import')}
-          </button>
-          <button
-            className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3"
-            onClick={() => setShowSettingModal(true)}
-          >
-            {t('export')}
-          </button>
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
-        {/* Left side input panel */}
-        <div className="md:w-3/5 bg-cyanLight md:p-8 p-4 flex flex-col">
-          <div className="flex justify-between">
-            <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
-            <div className="flex justify-end mb-4 mt-4 md:mt-m1">
-              <Button variant="primary" className="ml-2" onClick={insertMark}>
-                {t('mark')}{' '}
-                {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR ? '$' : '\\( \\)'}
-              </Button>
-              <Button
-                variant="primary"
-                className="md:ml-2 ml-1"
-                size="sm"
-                onClick={() => {
-                  setShowConvertHintModal(true);
-                }}
-              >
-                {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
-                  ? t('dollar2bracket')
-                  : t('bracket2dollar')}
-              </Button>
+
+            <div className="flex h-[600px]">
+              <div className="w-1/3 flex-shrink-0 h-full">
+                <EditIconsTab insertLatex={insertLatex} addImageToExport={addImageToExport} />
+              </div>
+              <div className="w-2/3 h-full">
+                <div
+                  id="codemirror"
+                  className="h-full left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
+                />
+                <input
+                  ref={importFile}
+                  accept={[...importTextAcceptedExtension, ...importAcceptedExtension].join(', ')}
+                  type="file"
+                  className="hidden"
+                  onChange={importFileAction}
+                />
+              </div>
             </div>
           </div>
 
-          <div className="flex h-[600px]">
-            <div className="w-1/3 flex-shrink-0 h-full">
-              <EditIconsTab insertLatex={insertLatex} addImageToExport={addImageToExport} />
-            </div>
-            <div className="w-2/3 h-full">
-              <div
-                id="codemirror"
-                className="h-full left-side-input-textarea flex-1 resize-none border border-bd1 overflow-y-scroll rounded-b-lg"
-              />
-              <input
-                ref={importFile}
-                accept={[...importTextAcceptedExtension, ...importAcceptedExtension].join(', ')}
-                type="file"
-                className="hidden"
-                onChange={importFileAction}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Right side output panel */}
-        <div className="md:w-2/5 flex flex-col md:h-full h-[600px] md:p-8 p-4">
-          <div className="flex mb-4 w-100 justify-between">
-            <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
-            <div className="flex justify-end">
-              <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
-                <ToggleButtonGroup
-                  options={[
-                    { value: DocumentFormat.BLOCK, label: t('documentFormat.block') },
-                    { value: DocumentFormat.INLINE, label: t('documentFormat.inline') },
-                  ]}
-                  activeOption={displayConfig.documentFormat}
-                  onOptionChange={(option) => setDisplayConfig({ documentFormat: option })}
-                />
+          {/* Right side output panel */}
+          <div className="md:w-2/5 flex flex-col md:h-full h-[600px] md:p-8 p-4">
+            <div className="flex mb-4 w-100 justify-between">
+              <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
+              <div className="flex justify-end">
+                <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
+                  <ToggleButtonGroup
+                    options={[
+                      { value: DocumentFormat.BLOCK, label: t('documentFormat.block') },
+                      { value: DocumentFormat.INLINE, label: t('documentFormat.inline') },
+                    ]}
+                    activeOption={displayConfig.documentFormat}
+                    onOptionChange={(option) => setDisplayConfig({ documentFormat: option })}
+                  />
+                </div>
+                <div className="bg-white border border-gray-300 rounded-md font-bold p-1 ml-4">
+                  <ToggleButtonGroup
+                    options={[
+                      { value: DocumentColor.LIGHT, label: t('documentColor.light') },
+                      { value: DocumentColor.DARK, label: t('documentColor.dark') },
+                    ]}
+                    activeOption={displayConfig.documentColor}
+                    onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
+                  />
+                </div>
               </div>
-              <div className="bg-white border border-gray-300 rounded-md font-bold p-1 ml-4">
-                <ToggleButtonGroup
-                  options={[
-                    { value: DocumentColor.LIGHT, label: t('documentColor.light') },
-                    { value: DocumentColor.DARK, label: t('documentColor.dark') },
-                  ]}
-                  activeOption={displayConfig.documentColor}
-                  onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
-                />
+            </div>
+            <div
+              className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${
+                displayConfig.documentColor === DocumentColor.DARK
+                  ? 'bg-black text-white'
+                  : ' text-black'
+              }`}
+            >
+              <div data-remove-styles>
+                <div>{content}</div>
               </div>
             </div>
           </div>
-          <div
-            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${
-              displayConfig.documentColor === DocumentColor.DARK
-                ? 'bg-black text-white'
-                : ' text-black'
-            }`}
-          >
-            <div data-remove-styles>
-              <div>{content}</div>
-            </div>
-          </div>
+          <SettingModal
+            isOpen={showSettingModal}
+            onClose={() => setShowSettingModal(false)}
+            onSubmit={exportFileAction}
+            displayConfig={displayConfig}
+            exportType={exportType}
+            setExportType={setExportType}
+          />
+          <ConvertHintModal
+            isOpen={showConvertHintModal}
+            onClose={() => setShowConvertHintModal(false)}
+            displayConfig={displayConfig}
+            setDisplayConfig={setDisplayConfig}
+            laTeXSepConvert={laTeXSepConvert}
+            LatexDelimiter={LatexDelimiter}
+            data={data}
+          />
         </div>
-        <SettingModal
-          isOpen={showSettingModal}
-          onClose={() => setShowSettingModal(false)}
-          onSubmit={exportFileAction}
-          displayConfig={displayConfig}
-          exportType={exportType}
-          setExportType={setExportType}
-        />
-        <ConvertHintModal
-          isOpen={showConvertHintModal}
-          onClose={() => setShowConvertHintModal(false)}
-          displayConfig={displayConfig}
-          setDisplayConfig={setDisplayConfig}
-          laTeXSepConvert={laTeXSepConvert}
-          LatexDelimiter={LatexDelimiter}
-          data={data}
-        />
-      </div>
-    </div>
+      </main>
+    </>
   );
 }
