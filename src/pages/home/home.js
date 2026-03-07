@@ -304,26 +304,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <div className="flex justify-center md:w-1/3">
-            <div className="flex flex-col items-center w-full">
-              <div className="relative w-full max-w-lg">
-                <div className="relative w-full max-w-lg">
-                  <input
-                    value={displayConfig.title}
-                    type="text"
-                    style={{
-                      outline: 'none',
-                    }}
-                    className="text-center text-2xl text-cyan font-bold border-b-2 border-cyan p-2 placeholder-opacity-100 w-full"
-                    placeholder={t('pleaseInputTitle')}
-                    aria-label={t('pleaseInputTitle')}
-                    onChange={(e) => setDisplayConfig({ title: e.target.value })}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-end md:w-1/3">
+<div className="flex justify-end md:w-1/3">
             <button
               className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1"
               onClick={importClick}
