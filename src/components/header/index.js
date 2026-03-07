@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { ReactComponent as A8mLogo } from '@/components/svg/a8m-logo.svg';
 import Menu from './menu';
 import LanguageMenu from './language-menu';
 import TipModal from '@/components/home/tip-modal';
@@ -13,9 +14,10 @@ const Header = ({ onImportClick, onExportClick }) => {
   const { displayConfig, setDisplayConfig } = useDisplayConfig();
 
   return (
-    <header className="px-8 md:px-20 fixed h-20 flex justify-between items-center bg-white text-md md:text-2xl font-bold inset-x-0 z-10">
-      <div className="flex">
+    <header className="px-6 fixed h-20 flex justify-between items-center bg-white inset-x-0 z-10">
+      <div className="flex items-center gap-3">
         <h1 className="sr-only">Access8Math</h1>
+        <A8mLogo aria-hidden="true" />
         <input
           value={displayConfig.title}
           type="text"
