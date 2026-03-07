@@ -292,25 +292,22 @@ export default function Home() {
     <>
       <Header onImportClick={importClick} onExportClick={() => setShowSettingModal(true)} />
       <main className="pt-20">
-        {/* Top file setting panel */}
-        <div className="flex flex-col md:flex-row justify-between px-8 md:px-20 py-4 ">
-          <div className="flex justify-start md:w-1/3">
-            <div className="content-center mr-3">{t('latexDelimiter.name')}</div>
-            <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
-              <ToggleButtonGroup
-                options={latexDelimiterOptions}
-                activeOption={displayConfig.latexDelimiter}
-                onOptionChange={(option) => setDisplayConfig({ latexDelimiter: option })}
-              />
-            </div>
-          </div>
-        </div>
+        {/* Left side input panel */}
         <div className="flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
-          {/* Left side input panel */}
           <div className="md:w-3/5 bg-cyanLight md:p-8 p-4 flex flex-col">
             <div className="flex justify-between">
               <h2 className="text-2xl md:text-3xl">{t('editContent')}</h2>
-              <div className="flex justify-end mb-4 mt-4 md:mt-m1">
+              <div className="flex items-center justify-end mb-4 mt-4 md:mt-m1">
+                <div className="flex items-center">
+                  <div className="mr-3">{t('latexDelimiter.name')}</div>
+                  <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
+                    <ToggleButtonGroup
+                      options={latexDelimiterOptions}
+                      activeOption={displayConfig.latexDelimiter}
+                      onOptionChange={(option) => setDisplayConfig({ latexDelimiter: option })}
+                    />
+                  </div>
+                </div>
                 <Button variant="primary" className="ml-2" onClick={insertMark}>
                   {t('mark')}{' '}
                   {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR ? '$' : '\\( \\)'}
