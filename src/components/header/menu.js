@@ -1,8 +1,9 @@
 import React, { Fragment, useMemo } from 'react';
 import { Transition, Menu } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
 
 import { useTranslation } from '@/lib/i18n';
+import Button from '@/components/core/button';
 
 const addonDownloadClick = () => {
   fetch('https://www.nvaccess.org/addonStore/en/all/latest.json', {
@@ -67,11 +68,13 @@ const NativeMenu = () => {
       {({ open }) => (
         <>
           <Menu.Button
-            className="flex items-center md:text-md text-base font-semibold leading-8 text-gray-900"
+            as={Button}
+            variant="tertiary"
+            className="w-[88px] h-9"
             aria-label={t('more')}
           >
+            <EllipsisHorizontalIcon className="h-4 w-4 flex-none mr-1" aria-hidden="true" />
             <span>{t('more')}</span>
-            <ChevronDownIcon className="h-5 w-5 flex-none text-gray-400 ml-1" aria-hidden="true" />
           </Menu.Button>
           {open && <div className="fixed z-10 inset-0 bg-black opacity-30" />}
           <Transition

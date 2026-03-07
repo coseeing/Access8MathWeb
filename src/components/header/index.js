@@ -4,9 +4,10 @@ import { ReactComponent as A8mLogo } from '@/components/svg/a8m-logo.svg';
 import Menu from './menu';
 import LanguageMenu from './language-menu';
 import TipModal from '@/components/home/tip-modal';
-import { ReactComponent as QuestionCircleComponent } from '@/components/svg/question-circle.svg';
+import { ReactComponent as LightBulbComponent } from '@/components/svg/light-bulb.svg';
 import { useTranslation } from '@/lib/i18n';
 import { useDisplayConfig } from '@/lib/display-config';
+import Button from '@/components/core/button';
 
 const Header = ({ onImportClick, onExportClick }) => {
   const t = useTranslation('home');
@@ -14,42 +15,37 @@ const Header = ({ onImportClick, onExportClick }) => {
   const { displayConfig, setDisplayConfig } = useDisplayConfig();
 
   return (
-    <header className="px-6 fixed h-20 flex justify-between items-center bg-white inset-x-0 z-10">
-      <div className="flex items-center gap-3">
+    <header className="px-6 fixed h-[72px] flex items-center gap-2 bg-white inset-x-0 z-10 shadow-shadow2">
+      <div className="flex items-center gap-3 grow">
         <h1 className="sr-only">Access8Math</h1>
         <A8mLogo aria-hidden="true" />
         <input
           value={displayConfig.title}
           type="text"
           style={{ outline: 'none' }}
-          className="text-center text-2xl text-cyan font-bold border-b-2 border-cyan p-2 placeholder-opacity-100 w-full"
+          className="grow max-w-[280px] text-text-primary placeholder-text-placeholder text-xl font-medium leading-[1.4] pb-2 border-b-2 border-primary"
           placeholder={t('pleaseInputTitle')}
           aria-label={t('pleaseInputTitle')}
           onChange={(e) => setDisplayConfig({ title: e.target.value })}
         />
       </div>
-      <div className="flex items-center">
-        <button
-          className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1"
-          onClick={onImportClick}
-        >
-          {t('import')}
-        </button>
-        <button
-          className="rounded-full border bg-white border-cyan text-cyan hover:bg-cyan hover:text-white px-7 py-1 ml-3"
-          onClick={onExportClick}
-        >
-          {t('export')}
-        </button>
-        <button
-          className="hover:scale-110 transition-scale ml-2"
+      <div className="flex items-center gap-3">
+        <Button
+          variant="tertiary"
+          className="w-[88px] h-9 flex items-center gap-1"
           onClick={() => setShowTipModal(true)}
-          aria-label={t('descript')}
         >
-          <QuestionCircleComponent className="w-5 h-5" />
-        </button>
+          <LightBulbComponent aria-hidden="true" />
+          <span>{t('instructions')}</span>
+        </Button>
         <Menu />
         <LanguageMenu />
+        <Button variant="secondary" className="w-[88px] h-9" onClick={onImportClick}>
+          {t('import')}
+        </Button>
+        <Button variant="primary" className="w-[88px] h-9" onClick={onExportClick}>
+          {t('export')}
+        </Button>
       </div>
       <TipModal isOpen={showTipModal} onClose={() => setShowTipModal(false)} />
     </header>

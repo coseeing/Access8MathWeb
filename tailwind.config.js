@@ -36,6 +36,9 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      boxShadow: {
+        'shadow2': '0px 2px 12px 0px rgba(100, 101, 102, 0.12)',
+      },
       colors: {
         bg1: '#E8F0FF',
         bg2: '#EAEDF1',

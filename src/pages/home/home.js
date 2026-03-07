@@ -291,7 +291,7 @@ export default function Home() {
   return (
     <>
       <Header onImportClick={importClick} onExportClick={() => setShowSettingModal(true)} />
-      <main className="pt-20">
+      <main className="pt-[72px]">
         {/* Left side input panel */}
         <div className="flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
           <div className="md:w-3/5 bg-cyanLight md:p-8 p-4 flex flex-col">
