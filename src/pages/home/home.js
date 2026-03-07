@@ -32,7 +32,6 @@ import {
   useDisplayConfig,
   ExportType,
   LatexDelimiter,
-  DocumentFormat,
   DocumentColor,
 } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
@@ -350,30 +349,20 @@ export default function Home() {
         </div>
 
         {/* Right side output panel */}
-        <div className="md:w-2/5 flex flex-col md:h-full h-[600px] md:p-8 p-4">
-          <div className="flex mb-4 w-100 justify-between">
-            <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
-            <div className="flex justify-end">
-              <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
-                <ToggleButtonGroup
-                  options={[
-                    { value: DocumentFormat.BLOCK, label: t('documentFormat.block') },
-                    { value: DocumentFormat.INLINE, label: t('documentFormat.inline') },
-                  ]}
-                  activeOption={displayConfig.documentFormat}
-                  onOptionChange={(option) => setDisplayConfig({ documentFormat: option })}
-                />
-              </div>
-              <div className="bg-white border border-gray-300 rounded-md font-bold p-1 ml-4">
-                <ToggleButtonGroup
-                  options={[
-                    { value: DocumentColor.LIGHT, label: t('documentColor.light') },
-                    { value: DocumentColor.DARK, label: t('documentColor.dark') },
-                  ]}
-                  activeOption={displayConfig.documentColor}
-                  onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
-                />
-              </div>
+        <div className="md:w-2/5 flex flex-col md:h-full h-[600px] p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-text-heading font-bold mb-0">
+              {t('preview')}
+            </h2>
+            <div>
+              <ToggleButtonGroup
+                options={[
+                  { value: DocumentColor.LIGHT, label: t('documentColor.light') },
+                  { value: DocumentColor.DARK, label: t('documentColor.dark') },
+                ]}
+                activeOption={displayConfig.documentColor}
+                onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
+              />
             </div>
           </div>
           <div
