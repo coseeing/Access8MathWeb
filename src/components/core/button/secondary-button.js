@@ -13,7 +13,7 @@ const SecondaryButton = React.forwardRef(({ size = 'sm', className, children, ..
       ref={ref}
       type="button"
       className={cn(
-        'flex items-center justify-center text-text-primary border border-border-main rounded-lg',
+        'flex items-center justify-center bg-white text-text-primary border border-border-main rounded-lg',
         'hover:bg-gray-50',
         'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
         'disabled:bg-bg-disabled disabled:text-text-disabled disabled:border disabled:border-text-secondary disabled:cursor-not-allowed',
