@@ -7,12 +7,13 @@ const sizeClasses = {
   l: 'px-4 py-3 text-base leading-[1.5]',
 };
 
-const SecondaryButton = ({ size = 'sm', className, children, ...props }) => {
+const SecondaryButton = React.forwardRef(({ size = 'sm', className, children, ...props }, ref) => {
   return (
     <button
+      ref={ref}
       type="button"
       className={cn(
-        'flex items-center justify-center text-text-primary border border-border-main rounded-lg',
+        'flex items-center justify-center bg-white text-text-primary border border-border-main rounded-lg',
         'hover:bg-gray-50',
         'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
         'disabled:bg-bg-disabled disabled:text-text-disabled disabled:border disabled:border-text-secondary disabled:cursor-not-allowed',
@@ -24,7 +25,9 @@ const SecondaryButton = ({ size = 'sm', className, children, ...props }) => {
       {children}
     </button>
   );
-};
+});
+
+SecondaryButton.displayName = 'SecondaryButton';
 
 SecondaryButton.propTypes = {
   size: PropTypes.oneOf(['sm', 'l']),
