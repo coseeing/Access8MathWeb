@@ -7,9 +7,10 @@ const sizeClasses = {
   l: 'px-4 py-3 text-base leading-[1.5]',
 };
 
-const TertiaryButton = ({ size = 'sm', className, children, ...props }) => {
+const TertiaryButton = React.forwardRef(({ size = 'sm', className, children, ...props }, ref) => {
   return (
     <button
+      ref={ref}
       type="button"
       className={cn(
         'flex items-center justify-center text-primary rounded-lg',
@@ -24,7 +25,9 @@ const TertiaryButton = ({ size = 'sm', className, children, ...props }) => {
       {children}
     </button>
   );
-};
+});
+
+TertiaryButton.displayName = 'TertiaryButton';
 
 TertiaryButton.propTypes = {
   size: PropTypes.oneOf(['sm', 'l']),
