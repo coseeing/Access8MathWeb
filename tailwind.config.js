@@ -73,7 +73,7 @@ module.exports = {
         primary: v2ColorTokens.blue[700],
         error: v2ColorTokens.red[600],
         bg: {
-          main: '#F8FCFF',
+          main: v2ColorTokens.blue[50],
           disabled: v2ColorTokens.gray[100],
         },
         border: {
@@ -86,6 +86,9 @@ module.exports = {
           placeholder: v2ColorTokens.gray[400],
           disabled: v2ColorTokens.gray[400],
         },
+      },
+      boxShadow: {
+        shadow1: '0px 0px 4px 0px rgba(0, 0, 0, 0.1)',
       },
     },
   },
