@@ -16,18 +16,32 @@ const DropdownMenu = ({ triggerButton, items, align = 'left', className }) => {
         {items.map((item, index) => {
           return (
             <Menu.Item key={index}>
-              {({ active }) => (
-                <button
-                  type="button"
-                  onClick={item.onClick}
-                  className={cn(
-                    'w-full px-3 py-2 text-sm leading-[1.4] text-text-primary text-left',
-                    active ? 'bg-bg-main' : 'bg-white'
-                  )}
-                >
-                  <span>{item.label}</span>
-                </button>
-              )}
+              {({ active }) =>
+                item.href ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      'block w-full px-3 py-2 text-sm leading-[1.4] text-text-primary text-left',
+                      active ? 'bg-bg-main' : 'bg-white'
+                    )}
+                  >
+                    <span>{item.label}</span>
+                  </a>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={item.onClick}
+                    className={cn(
+                      'w-full px-3 py-2 text-sm leading-[1.4] text-text-primary text-left',
+                      active ? 'bg-bg-main' : 'bg-white'
+                    )}
+                  >
+                    <span>{item.label}</span>
+                  </button>
+                )
+              }
             </Menu.Item>
           );
         })}
@@ -42,6 +56,7 @@ DropdownMenu.propTypes = {
     PropTypes.shape({
       label: PropTypes.string.isRequired,
       onClick: PropTypes.func,
+      href: PropTypes.string,
     })
   ).isRequired,
   align: PropTypes.oneOf(['left', 'right']),
