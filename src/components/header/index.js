@@ -1,32 +1,51 @@
 import React, { useState } from 'react';
 
+import { ReactComponent as A8mLogo } from '@/components/svg/a8m-logo.svg';
 import Menu from './menu';
 import LanguageMenu from './language-menu';
 import TipModal from '@/components/home/tip-modal';
-import { ReactComponent as QuestionCircleComponent } from '@/components/svg/question-circle.svg';
+import { IconBulb } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n';
+import { useDisplayConfig } from '@/lib/display-config';
+import Button from '@/components/core/button';
 
-const Header = () => {
+const Header = ({ onImportClick, onExportClick }) => {
   const t = useTranslation('home');
   const [showTipModal, setShowTipModal] = useState(false);
+  const { displayConfig, setDisplayConfig } = useDisplayConfig();
 
   return (
-    <header className="px-8 md:px-20 fixed h-20 flex justify-between items-center bg-white text-md md:text-2xl font-bold inset-x-0 z-10">
-      <div className="flex">
-        <h1 className="m-0">Access8Math</h1>
-        <button
-          className="hover:scale-110 transition-scale ml-2"
-          onClick={() => setShowTipModal(true)}
-          aria-label={t('descript')}
-        >
-          <QuestionCircleComponent className="w-5 h-5" />
-        </button>
+    <header className="px-6 fixed h-[72px] flex items-center gap-2 bg-white inset-x-0 z-10 shadow-shadow2">
+      <div className="flex items-center gap-3 grow">
+        <h1 className="sr-only">Access8Math</h1>
+        <A8mLogo aria-hidden="true" />
+        <input
+          value={displayConfig.title}
+          type="text"
+          style={{ outline: 'none' }}
+          className="grow max-w-[280px] text-text-primary placeholder-text-placeholder text-xl font-medium leading-[1.4] pb-2 border-b-2 border-primary"
+          placeholder={t('pleaseInputTitle')}
+          aria-label={t('pleaseInputTitle')}
+          onChange={(e) => setDisplayConfig({ title: e.target.value })}
+        />
       </div>
-      <div className="flex items-center">
-        <div className="md:mr-12 mr-8">
-          <LanguageMenu />
-        </div>
+      <div className="flex items-center gap-3">
+        <Button
+          variant="tertiary"
+          className="w-[88px] h-9 flex items-center gap-1"
+          onClick={() => setShowTipModal(true)}
+        >
+          <IconBulb size={16} aria-hidden="true" />
+          <span>{t('instructions')}</span>
+        </Button>
         <Menu />
+        <LanguageMenu />
+        <Button variant="secondary" className="w-[88px] h-9" onClick={onImportClick}>
+          {t('import')}
+        </Button>
+        <Button variant="primary" className="w-[88px] h-9" onClick={onExportClick}>
+          {t('export')}
+        </Button>
       </div>
       <TipModal isOpen={showTipModal} onClose={() => setShowTipModal(false)} />
     </header>
