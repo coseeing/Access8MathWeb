@@ -23,7 +23,7 @@ import { latexDelimiterConvertor } from '@coseeing/see-mark';
 
 import Header from '@/components/header';
 import Button from '@/components/core/button';
-import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
+import DropdownMenu from '@/components/core/dropdown-menu';
 import SegmentedControl from '@/components/core/button/segmented-control';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
@@ -355,13 +355,24 @@ export default function Home() {
               {t('preview')}
             </h2>
             <div>
-              <ToggleButtonGroup
-                options={[
-                  { value: DocumentColor.LIGHT, label: t('documentColor.light') },
-                  { value: DocumentColor.DARK, label: t('documentColor.dark') },
+              <DropdownMenu
+                align="right"
+                triggerButton={
+                  <Button variant="secondary" className="h-9 gap-2">
+                    <span>
+                      {displayConfig.documentColor === DocumentColor.DARK
+                        ? t('documentColor.dark')
+                        : t('documentColor.light')}
+                    </span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                  </Button>
+                }
+                items={[
+                  { label: t('documentColor.light'), onClick: () => setDisplayConfig({ documentColor: DocumentColor.LIGHT }) },
+                  { label: t('documentColor.dark'), onClick: () => setDisplayConfig({ documentColor: DocumentColor.DARK }) },
                 ]}
-                activeOption={displayConfig.documentColor}
-                onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
               />
             </div>
           </div>
