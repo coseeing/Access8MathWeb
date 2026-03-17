@@ -53,7 +53,7 @@ math {
   h2,
   h3,
   h4,
-  h6,
+  h5,
   h6 {
     @apply mb-2;
   }
@@ -63,14 +63,22 @@ math {
   }
 
   h2 {
-    @apply text-2xl;
+    @apply text-[28px];
   }
 
   h3 {
-    @apply text-xl;
+    @apply text-2xl;
   }
 
   h4 {
+    @apply text-xl;
+  }
+
+  h5 {
     @apply text-lg;
+  }
+
+  h6 {
+    @apply text-base;
   }
 }
