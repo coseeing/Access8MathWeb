@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+}
+
 [data-remove-styles] ol,
 [data-remove-styles] ul,
 [data-remove-styles] menu,
