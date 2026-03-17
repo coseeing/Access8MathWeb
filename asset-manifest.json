@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.5cb5f198.css",
+    "main.css": "/static/css/main.c0d211ee.css",
     "main.js": "/static/js/main.d12dfda9.js",
     "static/js/206.aee216fa.chunk.js": "/static/js/206.aee216fa.chunk.js",
     "static/media/determinant3X3.svg": "/static/media/determinant3X3.4dcb2436b713b50f29a682efe2ea3210.svg",
@@ -180,7 +180,7 @@
     "static/media/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": "/static/media/1feff74faaf0efc6a044.1feff74faaf0efc6a044"
   },
   "entrypoints": [
-    "static/css/main.5cb5f198.css",
+    "static/css/main.c0d211ee.css",
     "static/js/main.d12dfda9.js"
   ]
 }
