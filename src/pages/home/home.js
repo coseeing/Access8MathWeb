@@ -29,12 +29,7 @@ import SegmentedControl from '@/components/core/button/segmented-control';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
 import ConvertHintModal from '@/components/home/convert-hint-modal';
-import {
-  useDisplayConfig,
-  ExportType,
-  LatexDelimiter,
-  DocumentColor,
-} from '@/lib/display-config';
+import { useDisplayConfig, ExportType, LatexDelimiter, DocumentColor } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
 
 import useSeeMarkParse from './useSeeMarkParse';
@@ -296,9 +291,7 @@ export default function Home() {
         {/* Left side input panel */}
         <div className="md:w-3/5 bg-blue-50 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-text-heading font-bold mb-0">
-              {t('editContent')}
-            </h2>
+            <h2 className="text-text-heading font-bold mb-0">{t('editContent')}</h2>
             <div className="flex items-center gap-2">
               <div className="flex items-center">
                 <div className="mr-2 text-text-primary text-sm font-medium">
@@ -352,9 +345,7 @@ export default function Home() {
         {/* Right side output panel */}
         <div className="md:w-2/5 flex flex-col md:h-full h-[600px] p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-text-heading font-bold mb-0">
-              {t('preview')}
-            </h2>
+            <h2 className="text-text-heading font-bold mb-0">{t('preview')}</h2>
             <div>
               <DropdownMenu
                 align="right"
@@ -369,8 +360,14 @@ export default function Home() {
                   </Button>
                 }
                 items={[
-                  { label: t('documentColor.light'), onClick: () => setDisplayConfig({ documentColor: DocumentColor.LIGHT }) },
-                  { label: t('documentColor.dark'), onClick: () => setDisplayConfig({ documentColor: DocumentColor.DARK }) },
+                  {
+                    label: t('documentColor.light'),
+                    onClick: () => setDisplayConfig({ documentColor: DocumentColor.LIGHT }),
+                  },
+                  {
+                    label: t('documentColor.dark'),
+                    onClick: () => setDisplayConfig({ documentColor: DocumentColor.DARK }),
+                  },
                 ]}
               />
             </div>
