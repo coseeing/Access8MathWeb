@@ -1,5 +1,6 @@
 {
-  "editContent": "編輯區",
+  "editContent": "編輯題目",
+  "insert": "插入",
   "mark": "標記",
   "importText": "匯入純文字",
   "import": "匯入",
@@ -11,7 +12,8 @@
   "bracket2dollar": "括號轉錢號",
   "dollar2bracket": "錢號轉括號",
   "descript": "說明",
-  "preview": "預覽",
+  "instructions": "教學",
+  "preview": "轉換結果",
   "language": "TC",
   "changeLanguage": "語言切換",
   "languageChanged": "已切換為繁體中文",
