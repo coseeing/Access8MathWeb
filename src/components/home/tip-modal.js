@@ -17,15 +17,14 @@ const TipModal = ({ isOpen, onClose }) => {
       onClose={onClose}
       onConfirm={onClose}
       confirmLabel={t('cancelLabel')}
+      size="sm"
     >
-      <div>
-        {tips.map(({ title, content }, index) => (
-          <div key={index} className="mb-4 text-left text-lg">
-            <h4 className="text-base font-semibold leading-6 text-gray-900 mb-1">{title}</h4>
-            <p className="text-base">{content}</p>
-          </div>
-        ))}
-      </div>
+      {tips.map(({ title, content }, index) => (
+        <div key={index} className="mb-6 text-center">
+          <h4 className="text-sm leading-[1.5] text-text-primary mb-2">{title}</h4>
+          <p className="text-sm leading-[1.4] text-text-primary">{content}</p>
+        </div>
+      ))}
     </BasicModal>
   );
 };

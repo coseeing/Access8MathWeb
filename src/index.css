@@ -55,7 +55,9 @@ math {
   h4,
   h5,
   h6 {
-    @apply mb-2;
+    @apply text-text-heading;
+    @apply font-bold;
+    @apply leading-[1.2];
   }
 
   h1 {
@@ -66,19 +68,10 @@ math {
     @apply text-[28px];
   }
 
-  h3 {
-    @apply text-2xl;
-  }
-
-  h4 {
-    @apply text-xl;
-  }
-
-  h5 {
-    @apply text-lg;
-  }
-
+  h3,
+  h4,
+  h4,
   h6 {
-    @apply text-base;
+    @apply text-2xl;
   }
 }

@@ -1,12 +1,12 @@
 {
-  "title": "轉換 LaTeX 分隔符號",
-  "cancel": "暫不轉換",
+  "title": "轉換符號",
+  "cancel": "取消",
   "confirm": "確認轉換",
   "bracket2dollar": "括號轉錢號",
   "dollar2bracket": "錢號轉括號",
   "bracket": "括號",
   "dollar": "錢號",
-  "content": "此編輯器LaTeX分隔符設定為{{delimiterType}}\n文件中包含{{count}}組{{oppositeDelimiterType}}標記\n請問是否轉為{{delimiterType}}？",
+  "content": "目前文件中包含 {{count}} 組{{oppositeDelimiterType}}記號，是否全部轉為{{delimiterType}}？",
   "conversionDescription": "分隔符轉換示意",
   "currentDelimiter": "當前分隔符",
   "newDelimiter": "新分隔符"

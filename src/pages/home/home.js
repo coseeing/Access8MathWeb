@@ -291,7 +291,7 @@ export default function Home() {
         {/* Left side input panel */}
         <div className="md:w-3/5 bg-blue-50 p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-text-heading font-bold mb-0">{t('editContent')}</h2>
+            <h2>{t('editContent')}</h2>
             <div className="flex items-center gap-2">
               <div className="flex items-center">
                 <div className="mr-2 text-text-primary text-sm font-medium">
@@ -345,12 +345,12 @@ export default function Home() {
         {/* Right side output panel */}
         <div className="md:w-2/5 flex flex-col md:h-full h-[600px] p-6">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-text-heading font-bold mb-0">{t('preview')}</h2>
+            <h2>{t('preview')}</h2>
             <div>
               <DropdownMenu
                 align="right"
                 triggerButton={
-                  <Button variant="secondary" className="h-9 gap-2">
+                  <Button variant="secondary" className="gap-2">
                     <span>
                       {displayConfig.documentColor === DocumentColor.DARK
                         ? t('documentColor.dark')

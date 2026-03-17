@@ -65,7 +65,7 @@ const NativeMenu = () => {
     <DropdownMenu
       align="right"
       triggerButton={
-        <Button variant="tertiary" className="w-[88px] h-9" aria-label={t('more')}>
+        <Button variant="tertiary" className="w-[88px]" aria-label={t('more')}>
           <IconDots size={16} className="flex-none mr-1" aria-hidden="true" />
           <span>{t('more')}</span>
         </Button>
