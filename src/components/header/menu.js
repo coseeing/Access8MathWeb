@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { EllipsisHorizontalIcon } from '@heroicons/react/20/solid';
+import { IconDots } from '@tabler/icons-react';
 
 import { useTranslation } from '@/lib/i18n';
 import Button from '@/components/core/button';
@@ -66,7 +66,7 @@ const NativeMenu = () => {
       align="right"
       triggerButton={
         <Button variant="tertiary" className="w-[88px] h-9" aria-label={t('more')}>
-          <EllipsisHorizontalIcon className="h-4 w-4 flex-none mr-1" aria-hidden="true" />
+          <IconDots size={16} className="flex-none mr-1" aria-hidden="true" />
           <span>{t('more')}</span>
         </Button>
       }

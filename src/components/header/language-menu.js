@@ -1,5 +1,5 @@
 import React from 'react';
-import { LanguageIcon } from '@heroicons/react/20/solid';
+import { IconLanguage } from '@tabler/icons-react';
 
 import i18n, { useTranslation } from '@/lib/i18n';
 import { useLocaleContext } from '@/lib/locale-switch';
@@ -27,7 +27,7 @@ const LanguageMenu = () => {
       align="right"
       triggerButton={
         <Button variant="tertiary" className="w-[88px] h-9" aria-label={t('changeLocale')}>
-          <LanguageIcon className="h-4 w-4 flex-none mr-1" aria-hidden="true" />
+          <IconLanguage size={16} className="flex-none mr-1" aria-hidden="true" />
           <span>{t(`locale.${i18n.language}`)}</span>
         </Button>
       }

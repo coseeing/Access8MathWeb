@@ -4,7 +4,7 @@ import { ReactComponent as A8mLogo } from '@/components/svg/a8m-logo.svg';
 import Menu from './menu';
 import LanguageMenu from './language-menu';
 import TipModal from '@/components/home/tip-modal';
-import { ReactComponent as LightBulbComponent } from '@/components/svg/light-bulb.svg';
+import { IconBulb } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n';
 import { useDisplayConfig } from '@/lib/display-config';
 import Button from '@/components/core/button';
@@ -35,7 +35,7 @@ const Header = ({ onImportClick, onExportClick }) => {
           className="w-[88px] h-9 flex items-center gap-1"
           onClick={() => setShowTipModal(true)}
         >
-          <LightBulbComponent aria-hidden="true" />
+          <IconBulb size={16} aria-hidden="true" />
           <span>{t('instructions')}</span>
         </Button>
         <Menu />
