@@ -36,6 +36,9 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Noto Sans TC"', 'sans-serif'],
+      },
       colors: {
         bg1: '#E8F0FF',
         bg2: '#EAEDF1',
