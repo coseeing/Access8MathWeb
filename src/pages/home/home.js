@@ -306,8 +306,8 @@ export default function Home() {
               </div>
               <Button variant="secondary" onClick={insertMark}>
                 {t('insert')}{' '}
-                {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR ? '$' : '\\( \\)'}
-                {t('mark')}{' '}
+                {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR ? '$' : '\\( \\)'}{' '}
+                {t('mark')}
               </Button>
               <Button
                 variant="secondary"
@@ -369,6 +369,7 @@ export default function Home() {
                     onClick: () => setDisplayConfig({ documentColor: DocumentColor.DARK }),
                   },
                 ]}
+                itemsClassName="min-w-[118px]"
               />
             </div>
           </div>

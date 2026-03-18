@@ -5,7 +5,7 @@ import cn from 'classnames';
 
 import Button from '@/components/core/button';
 
-const BsicModal = ({
+const BasicModal = ({
   title,
   isOpen,
   onClose,
@@ -15,26 +15,26 @@ const BsicModal = ({
   hasConfirm = true,
   cancelLabel = 'Cancel',
   confirmLabel = 'Confirm',
-  children,
   size = 'l',
+  children,
 }) => {
   return (
     <Transition.Root appear show={isOpen} as={Fragment}>
-      <Dialog className="fixed z-10 inset-0 overflow-y-auto px-10" open={isOpen} onClose={onClose}>
+      <Dialog className="fixed z-10 inset-0 overflow-y-auto px-10" onClose={onClose}>
         <div className="flex items-center justify-center min-h-screen">
           {/* background layer */}
           <div className="fixed inset-0 bg-black/60" />
           <Dialog.Panel
             className={cn(
-              'flex-col bg-white p-6 z-10',
-              size === 'sm' ? 'w-[384px] rounded-lg' : 'w-[560px] rounded-2xl'
+              'flex flex-col bg-white p-6 z-10 w-full',
+              size === 'sm' ? 'max-w-sm rounded-lg' : 'max-w-xl rounded-2xl'
             )}
           >
             <Dialog.Title
               as="h3"
               className={cn(
                 'text-center mb-6 after:block after:h-[3px] after:bg-primary after:rounded-[2px] after:mt-2 after:w-[90px] after:mx-auto',
-                size === 'sm' ? 'text-lg leading-[1.2]' : ''
+                size === 'sm' && 'text-lg leading-[1.2]'
               )}
             >
               {title}
@@ -47,7 +47,7 @@ const BsicModal = ({
                 </Button>
               )}
               {hasConfirm && (
-                <Button onClick={onConfirm} className="w-full" variant="primary" size={size}>
+                <Button className="w-full" variant="primary" onClick={onConfirm} size={size}>
                   {confirmLabel}
                 </Button>
               )}
@@ -59,7 +59,7 @@ const BsicModal = ({
   );
 };
 
-BsicModal.propTypes = {
+BasicModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
   onCancel: PropTypes.func,
@@ -73,4 +73,4 @@ BsicModal.propTypes = {
   size: PropTypes.oneOf(['sm', 'l']),
 };
 
-export default BsicModal;
+export default BasicModal;

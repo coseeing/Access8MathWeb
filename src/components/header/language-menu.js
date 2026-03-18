@@ -24,14 +24,14 @@ const LanguageMenu = () => {
 
   return (
     <DropdownMenu
-      align="right"
       triggerButton={
-        <Button variant="tertiary" className="w-[88px]" aria-label={t('changeLocale')}>
+        <Button variant="tertiary" className="min-w-[88px]" aria-label={t('changeLocale')}>
           <IconLanguage size={16} className="flex-none mr-1" aria-hidden="true" />
           <span>{t(`locale.${i18n.language}`)}</span>
         </Button>
       }
       items={items}
+      itemsClassName="min-w-[118px]"
     />
   );
 };
