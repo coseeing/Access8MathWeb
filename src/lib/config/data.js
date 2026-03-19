@@ -2,7 +2,7 @@ import { type, pick, compose, mergeRight } from 'ramda';
 
 const DEFAULT_DATA = {
   title: '',
-  documentFormat: 'block',
+  documentFormat: 'inline',
   latexDelimiter: 'bracket',
   entry: 'content.md',
   exportType: 'zip',

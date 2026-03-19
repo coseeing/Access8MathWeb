@@ -374,14 +374,14 @@ export default function Home() {
             </div>
           </div>
           <div
-            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${
+            className={`right-side-input-textarea border border-main p-4 flex-1 rounded-lg leading-[1.5] ${
               displayConfig.documentColor === DocumentColor.DARK
-                ? 'bg-black text-white'
-                : ' text-black'
+                ? 'darkmode bg-gray-800 text-white'
+                : 'lightmode bg-white text-text-primary'
             }`}
           >
             <div data-remove-styles>
-              <div>{content}</div>
+              <div className="space-y-3">{content}</div>
             </div>
           </div>
         </div>
