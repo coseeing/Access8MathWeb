@@ -75,7 +75,6 @@ module.exports = {
         ...v2ColorTokens,
         primary: v2ColorTokens.blue[700],
         error: v2ColorTokens.red[600],
-        tooltip: '#1A1A1A99',
         bg: {
           main: v2ColorTokens.blue[50],
           disabled: v2ColorTokens.gray[100],
