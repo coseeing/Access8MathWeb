@@ -22,19 +22,14 @@ import autoCompletions from '@/lib/editor-auto-completion';
 import { latexDelimiterConvertor } from '@coseeing/see-mark';
 
 import Header from '@/components/header';
+import { IconChevronDown } from '@tabler/icons-react';
 import Button from '@/components/core/button';
-import { ToggleButtonGroup } from '@/components/core/button/toggle-button';
+import DropdownMenu from '@/components/core/dropdown-menu';
 import SegmentedControl from '@/components/core/button/segmented-control';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
 import ConvertHintModal from '@/components/home/convert-hint-modal';
-import {
-  useDisplayConfig,
-  ExportType,
-  LatexDelimiter,
-  DocumentFormat,
-  DocumentColor,
-} from '@/lib/display-config';
+import { useDisplayConfig, ExportType, LatexDelimiter, DocumentColor } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
 
 import useSeeMarkParse from './useSeeMarkParse';
@@ -383,37 +378,41 @@ export default function Home() {
         </div>
 
         {/* Right side output panel */}
-        <div className="md:w-2/5 flex flex-col md:h-full h-[600px] md:p-8 p-4">
-          <div className="flex mb-4 w-100 justify-between">
-            <h2 className="text-2xl md:text-3xl w-100">{t('preview')}</h2>
-            <div className="flex justify-end">
-              <div className="bg-white border border-gray-300 rounded-md font-bold p-1">
-                <ToggleButtonGroup
-                  options={[
-                    { value: DocumentFormat.BLOCK, label: t('documentFormat.block') },
-                    { value: DocumentFormat.INLINE, label: t('documentFormat.inline') },
-                  ]}
-                  activeOption={displayConfig.documentFormat}
-                  onOptionChange={(option) => setDisplayConfig({ documentFormat: option })}
-                />
-              </div>
-              <div className="bg-white border border-gray-300 rounded-md font-bold p-1 ml-4">
-                <ToggleButtonGroup
-                  options={[
-                    { value: DocumentColor.LIGHT, label: t('documentColor.light') },
-                    { value: DocumentColor.DARK, label: t('documentColor.dark') },
-                  ]}
-                  activeOption={displayConfig.documentColor}
-                  onOptionChange={(option) => setDisplayConfig({ documentColor: option })}
-                />
-              </div>
+        <div className="md:w-2/5 flex flex-col md:h-full h-[600px] p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h2>{t('preview')}</h2>
+            <div>
+              <DropdownMenu
+                align="right"
+                triggerButton={
+                  <Button variant="secondary" className="gap-2">
+                    <span>
+                      {displayConfig.documentColor === DocumentColor.DARK
+                        ? t('documentColor.dark')
+                        : t('documentColor.light')}
+                    </span>
+                    <IconChevronDown size={16} aria-hidden="true" />
+                  </Button>
+                }
+                items={[
+                  {
+                    label: t('documentColor.light'),
+                    onClick: () => setDisplayConfig({ documentColor: DocumentColor.LIGHT }),
+                  },
+                  {
+                    label: t('documentColor.dark'),
+                    onClick: () => setDisplayConfig({ documentColor: DocumentColor.DARK }),
+                  },
+                ]}
+                itemsClassName="min-w-[118px]"
+              />
             </div>
           </div>
           <div
-            className={`right-side-preview-area border-2 p-4 flex-1 rounded-lg ${
+            className={`right-side-preview-area border border-border-main leading-[1.5] space-y-3 p-4 flex-1 rounded-lg ${
               displayConfig.documentColor === DocumentColor.DARK
-                ? 'darkmode bg-black text-white'
-                : 'text-black'
+                ? 'darkmode bg-gray-800 text-white'
+                : 'bg-white text-text-primary'
             }`}
           >
             {content}
