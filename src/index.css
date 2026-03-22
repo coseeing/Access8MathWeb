@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,8 +15,13 @@
   list-style-type: disc;
 }
 
+[data-remove-styles] ul,
+[data-remove-styles] ol {
+  padding-left: 1.5em;
+}
+
 [data-remove-styles] table {
-  border: 1px solid black;
+  border: 1px solid rgba(136, 136, 136, 1);
 }
 
 [data-remove-styles] table tr {
@@ -24,11 +31,7 @@
 [data-remove-styles] table td,
 [data-remove-styles] table th {
   padding: 8px;
-  border: 1px solid black;
-}
-
-[data-remove-styles] p {
-  margin: 8px 0;
+  border: 1px solid rgba(136, 136, 136, 1);
 }
 
 .sr-only {
@@ -51,24 +54,57 @@ math {
   h2,
   h3,
   h4,
-  h6,
+  h5,
   h6 {
-    @apply mb-2;
+    @apply text-text-heading;
+    @apply font-bold;
   }
 
   h1 {
     @apply text-3xl;
+    @apply leading-[1.2];
   }
 
   h2 {
+    @apply text-[1.75rem];
+    @apply leading-[1.2];
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply text-2xl;
+    @apply leading-[1.2];
   }
+}
 
-  h3 {
-    @apply text-xl;
-  }
+.right-side-input-textarea h1,
+.right-side-input-textarea h2,
+.right-side-input-textarea h3,
+.right-side-input-textarea h4,
+.right-side-input-textarea h5,
+.right-side-input-textarea h6 {
+  line-height: 1.6;
+}
 
-  h4 {
-    @apply text-lg;
-  }
+.right-side-input-textarea h4 {
+  font-size: 1.25rem;
+}
+
+.right-side-input-textarea h5 {
+  font-size: 1.125rem;
+}
+
+.right-side-input-textarea h6 {
+  font-size: 1rem;
+}
+
+.right-side-input-textarea.darkmode h1,
+.right-side-input-textarea.darkmode h2,
+.right-side-input-textarea.darkmode h3,
+.right-side-input-textarea.darkmode h4,
+.right-side-input-textarea.darkmode h5,
+.right-side-input-textarea.darkmode h6 {
+  color: white;
 }

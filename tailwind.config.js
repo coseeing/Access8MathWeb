@@ -36,6 +36,9 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Noto Sans TC"', 'sans-serif'],
+      },
       colors: {
         bg1: '#E8F0FF',
         bg2: '#EAEDF1',
@@ -72,6 +75,7 @@ module.exports = {
         ...v2ColorTokens,
         primary: v2ColorTokens.blue[700],
         error: v2ColorTokens.red[600],
+        tooltip: '#1A1A1A99',
         bg: {
           main: v2ColorTokens.blue[50],
           disabled: v2ColorTokens.gray[100],
@@ -89,6 +93,7 @@ module.exports = {
       },
       boxShadow: {
         shadow1: '0px 0px 4px 0px rgba(0, 0, 0, 0.1)',
+        shadow2: '0px 2px 12px 0px rgba(100, 101, 102, 0.12)',
       },
     },
   },
