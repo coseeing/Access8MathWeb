@@ -40,136 +40,111 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
   );
 
   return (
-    <div className="flex h-[600px]">
+    <>
       <Tab.Group
         as="div"
         selectedIndex={selectedMainTabIndex}
         onChange={setSelectedMainTabIndex}
-        className="flex flex-col w-full"
+        className="flex flex-col w-full h-[600px] border-r border-border-main"
       >
-        <div className="flex bg-cyan p-2">
-          <Tab.List as="div" className="w-full flex bg-cyan">
-            {mainTabList.map(({ id }, index) => (
-              <Tab
-                as="button"
-                key={id}
-                className={`rounded flex-1 px-4 py-2 text-sm text-center cursor-pointer transition-colors ${
-                  selectedMainTabIndex === index ? 'bg-white text-black' : 'bg-cyan text-white'
-                }`}
-              >
-                {t(`main.${id}`)}
-              </Tab>
-            ))}
-          </Tab.List>
-        </div>
-        <div className="flex flex-1 h-full">
-          <Tab.Panels as="div" className="flex w-full">
-            <Tab.Panel className="h-full w-full">
-              <Tab.Group
-                as="div"
-                selectedIndex={selectedMathTabIndex}
-                onChange={setSelectedMathTabIndex}
-                className="h-full flex"
-              >
-                <div className="flex h-full w-full">
-                  <Tab.List
-                    as="div"
-                    className="flex flex-col bg-cyan p-2"
-                    style={{
-                      maxHeight: '550px',
-                      overflowY: 'auto',
-                      scrollbarWidth: 'none', // hide scrollbar in Firefox
-                      msOverflowStyle: 'none', // hide scrollbar in IE/Edge
-                    }}
-                  >
-                    {mathTabList.map((tab, mathTabIndex) => (
-                      <Tooltip key={tab.id} label={t(`categorys.${tab.id}`)} position="right">
-                        <Tab
-                          as="button"
-                          key={tab.id}
-                          aria-label={t(`categorys.${tab.id}`)}
-                          className={`group relative rounded mb-1 category-icon h-12 w-12 flex items-center justify-center mx-0.5 bg-white cursor-pointer transition-colors ${
-                            selectedMathTabIndex === mathTabIndex ? 'active' : ''
-                          }`}
-                        >
-                          <tab.Icon width={48} height={48} />
-                          {selectedMathTabIndex === mathTabIndex && (
-                            // White triangle arrow pointing right to indicate selected tab
-                            <div
-                              className="absolute -right-2 top-1/2 -translate-y-1/2 w-0 h-0"
-                              style={{
-                                borderTop: '8px solid transparent',
-                                borderBottom: '8px solid transparent',
-                                borderLeft: '8px solid white',
-                              }}
-                            />
-                          )}
-                        </Tab>
-                      </Tooltip>
-                    ))}
-                  </Tab.List>
-                  <Tab.Panels
-                    as="div"
-                    className="flex-1 bg-gray-50 border border-gray-300 p-2 overflow-y-auto"
-                  >
-                    {mathTabList.map((mathTab) => {
-                      return (
-                        <Tab.Panel key={mathTab.id} className="flex flex-wrap">
-                          {(mathTab?.subTabs || []).sort(compare('order', 'asc')).map((subTab) => (
-                            <Tooltip
-                              key={subTab.id}
-                              label={t(`latexs.${subTab.id}`)}
-                              position="top"
+        <Tab.List as="div" className="w-full flex items-center border-b border-border-main">
+          {mainTabList.map(({ id }, index) => (
+            <Tab
+              as="button"
+              key={id}
+              className={`rounded-lg flex-1 text-sm text-center leading-[1.5] py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary m-1 cursor-pointer transition-colors ${
+                selectedMainTabIndex === index ? 'bg-blue-200 text-primary' : 'text-text-primary'
+              }`}
+            >
+              {t(`main.${id}`)}
+            </Tab>
+          ))}
+        </Tab.List>
+        <Tab.Panels as="div" className="flex flex-1 h-full w-full">
+          <Tab.Panel className="h-full w-full">
+            <Tab.Group
+              as="div"
+              selectedIndex={selectedMathTabIndex}
+              onChange={setSelectedMathTabIndex}
+              className="h-full flex"
+            >
+              <div className="flex h-full w-full">
+                <Tab.List
+                  as="div"
+                  className="flex flex-col px-2 py-3 gap-2 border-r border-border-main"
+                  style={{
+                    maxHeight: '562px',
+                    overflowY: 'auto',
+                    scrollbarWidth: 'none', // hide scrollbar in Firefox
+                    msOverflowStyle: 'none', // hide scrollbar in IE/Edge
+                  }}
+                >
+                  {mathTabList.map((tab, mathTabIndex) => (
+                    <Tooltip key={tab.id} label={t(`categorys.${tab.id}`)} position="right">
+                      <Tab
+                        as="button"
+                        key={tab.id}
+                        aria-label={t(`categorys.${tab.id}`)}
+                        className={`group relative rounded category-icon flex items-center justify-center cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                          selectedMathTabIndex === mathTabIndex
+                            ? 'active bg-blue-100'
+                            : 'bg-white hover:bg-blue-100'
+                        }`}
+                      >
+                        <tab.Icon width={52} height={52} />
+                      </Tab>
+                    </Tooltip>
+                  ))}
+                </Tab.List>
+                <Tab.Panels as="div" className="flex-1 px-2 py-3 overflow-y-auto">
+                  {mathTabList.map((mathTab) => {
+                    return (
+                      <Tab.Panel key={mathTab.id} className="flex flex-wrap gap-2">
+                        {(mathTab?.subTabs || []).sort(compare('order', 'asc')).map((subTab) => (
+                          <Tooltip key={subTab.id} label={t(`latexs.${subTab.id}`)} position="top">
+                            <button
+                              aria-label={t(`latexs.${subTab.id}`)}
+                              className="group relative bg-white rounded border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                              onClick={() => insertLatex(subTab)}
                             >
-                              <button
-                                aria-label={t(`latexs.${subTab.id}`)}
-                                className="w-w5 h-w5 group relative m-1"
-                                onClick={() => insertLatex(subTab)}
-                              >
-                                <subTab.Icon
-                                  width={50}
-                                  height={50}
-                                  className="bg-cyanLight rounded"
-                                />
-                              </button>
-                            </Tooltip>
-                          ))}
-                        </Tab.Panel>
-                      );
-                    })}
-                  </Tab.Panels>
-                </div>
-              </Tab.Group>
-            </Tab.Panel>
-            <Tab.Panel className="flex flex-wrap content-baseline bg-cyan p-1 h-full">
-              {markdowns.map((tab) => (
-                <Tooltip key={tab.id} label={t(`markdown.${tab.id}`)} position="top">
-                  <button
-                    aria-label={t(`markdown.${tab.id}`)}
-                    className="group relative rounded mb-1 h-12 w-12 mx-0.5 bg-white cursor-pointer transition-colors flex items-center justify-center"
-                    onClick={() => {
-                      if (tab.id === 'insert_image') {
-                        setIsImageModalOpen(true);
-                        return;
-                      }
-                      insertLatex(tab);
-                    }}
-                  >
-                    <tab.Icon width={48} height={48} />
-                  </button>
-                </Tooltip>
-              ))}
-            </Tab.Panel>
-          </Tab.Panels>
-        </div>
-
-        <ImageUploadModal
-          isOpen={isImageModalOpen}
-          onClose={() => setIsImageModalOpen(false)}
-          onConfirm={handleImageConfirm}
-        />
+                              <subTab.Icon width={50} height={50} className="rounded" />
+                            </button>
+                          </Tooltip>
+                        ))}
+                      </Tab.Panel>
+                    );
+                  })}
+                </Tab.Panels>
+              </div>
+            </Tab.Group>
+          </Tab.Panel>
+          <Tab.Panel className="flex flex-wrap gap-2 content-baseline px-2 py-3 h-full">
+            {markdowns.map((tab) => (
+              <Tooltip key={tab.id} label={t(`markdown.${tab.id}`)} position="top">
+                <button
+                  aria-label={t(`markdown.${tab.id}`)}
+                  className="group relative rounded bg-white cursor-pointer border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary flex items-center justify-center"
+                  onClick={() => {
+                    if (tab.id === 'insert_image') {
+                      setIsImageModalOpen(true);
+                      return;
+                    }
+                    insertLatex(tab);
+                  }}
+                >
+                  <tab.Icon width={50} height={50} />
+                </button>
+              </Tooltip>
+            ))}
+          </Tab.Panel>
+        </Tab.Panels>
       </Tab.Group>
-    </div>
+      <ImageUploadModal
+        isOpen={isImageModalOpen}
+        onClose={() => setIsImageModalOpen(false)}
+        onConfirm={handleImageConfirm}
+      />
+    </>
   );
 };
 
