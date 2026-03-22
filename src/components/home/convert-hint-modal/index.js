@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { IconParentheses, IconCurrencyDollar, IconArrowNarrowRight } from '@tabler/icons-react';
 import BasicModal from '@/components/core/modal/basic-modal';
 import { useTranslation } from '@/lib/i18n';
 
@@ -35,12 +36,12 @@ const ConvertHintModal = ({
     onClose();
   };
 
-  const getConversionText = () =>
-    displayConfig.latexDelimiter === LatexDelimiter.BRACKET
-      ? t('bracket2dollar')
-      : t('dollar2bracket');
-
-  const getDelimiterSymbol = (delimiter) => (delimiter === LatexDelimiter.BRACKET ? '()' : '$');
+  const getDelimiterSymbol = (delimiter) =>
+    delimiter === LatexDelimiter.BRACKET ? (
+      <IconParentheses className="w-5 h-5" />
+    ) : (
+      <IconCurrencyDollar className="w-5 h-5" />
+    );
 
   const getContentText = () =>
     t('content', {
@@ -61,39 +62,30 @@ const ConvertHintModal = ({
       onConfirm={handleConvert}
       cancelLabel={t('cancel')}
       confirmLabel={t('confirm')}
+      size="sm"
     >
-      <div className="p-4 text-center" id="convert-hint-description">
-        <h2 className="text-xl font-bold mb-4">{getConversionText()}</h2>
-        <div
-          className="flex justify-center items-center mb-4"
-          aria-label={t('conversionDescription')}
-        >
-          <div
-            className="bg-gray-200 p-2 rounded mr-2"
-            aria-label={`${t('currentDelimiter')}: ${displayConfig.latexDelimiter}`}
-          >
-            {getDelimiterSymbol(displayConfig.latexDelimiter)}
-          </div>
-          <span className="text-2xl" aria-hidden="true">
-            →
-          </span>
-          <div
-            className="bg-gray-200 p-2 rounded ml-2"
-            aria-label={`${t('newDelimiter')}: ${
-              displayConfig.latexDelimiter === LatexDelimiter.BRACKET ? t('dollar') : t('bracket')
-            }`}
-          >
-            {getDelimiterSymbol(
-              displayConfig.latexDelimiter === LatexDelimiter.BRACKET
-                ? LatexDelimiter.DOLLAR
-                : LatexDelimiter.BRACKET
-            )}
-          </div>
+      <div className="flex justify-center items-center mb-2" aria-hidden="true">
+        <div className="bg-bg-main p-1 rounded-sm text-text-primary">
+          {getDelimiterSymbol(displayConfig.latexDelimiter)}
         </div>
-        <p className="mb-4" style={{ whiteSpace: 'pre-line' }}>
-          {getContentText()}
-        </p>
+        <IconArrowNarrowRight className="w-5 h-5 mx-1 text-text-primary" aria-hidden="true" />
+        <div className="bg-bg-main p-1 rounded-sm text-text-primary">
+          {getDelimiterSymbol(
+            displayConfig.latexDelimiter === LatexDelimiter.BRACKET
+              ? LatexDelimiter.DOLLAR
+              : LatexDelimiter.BRACKET
+          )}
+        </div>
       </div>
+      <div className="sr-only">
+        <p>{`${t('currentDelimiter')}: ${
+          displayConfig.latexDelimiter === LatexDelimiter.BRACKET ? t('bracket') : t('dollar')
+        }`}</p>
+        <p>{`${t('newDelimiter')}: ${
+          displayConfig.latexDelimiter === LatexDelimiter.BRACKET ? t('dollar') : t('bracket')
+        }`}</p>
+      </div>
+      <p className="text-sm text-text-primary leading-[1.4] text-center">{getContentText()}</p>
     </BasicModal>
   );
 };
