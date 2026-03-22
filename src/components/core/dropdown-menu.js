@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 import { Menu } from '@headlessui/react';
 import cn from 'classnames';
 
-const DropdownMenu = ({ triggerButton, items, align = 'left', className }) => {
+const DropdownMenu = ({ triggerButton, items, align = 'left', className, itemsClassName }) => {
   return (
     <Menu as="div" className={cn('relative inline-block', className)}>
       <Menu.Button as={React.Fragment}>{triggerButton}</Menu.Button>
       <Menu.Items
         className={cn(
           'absolute z-50 mt-2 py-2 rounded-lg bg-white shadow-shadow1',
-          align === 'right' ? 'right-0' : 'left-0'
+          align === 'right' ? 'right-0' : 'left-0',
+          itemsClassName
         )}
       >
         {items.map((item, index) => {
@@ -23,7 +24,7 @@ const DropdownMenu = ({ triggerButton, items, align = 'left', className }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className={cn(
-                      'block w-full px-3 py-2 text-sm leading-[1.4] text-text-primary text-left',
+                      'block w-full px-3 py-2 text-sm leading-[1.4] text-text-primary text-left whitespace-nowrap',
                       active ? 'bg-bg-main' : 'bg-white'
                     )}
                   >
@@ -34,7 +35,7 @@ const DropdownMenu = ({ triggerButton, items, align = 'left', className }) => {
                     type="button"
                     onClick={item.onClick}
                     className={cn(
-                      'w-full px-3 py-2 text-sm leading-[1.4] text-text-primary text-left',
+                      'w-full px-3 py-2 text-sm leading-[1.4] text-text-primary text-left whitespace-nowrap',
                       active ? 'bg-bg-main' : 'bg-white'
                     )}
                   >
@@ -61,6 +62,7 @@ DropdownMenu.propTypes = {
   ).isRequired,
   align: PropTypes.oneOf(['left', 'right']),
   className: PropTypes.string,
+  itemsClassName: PropTypes.string,
 };
 
 export default DropdownMenu;
