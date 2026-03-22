@@ -408,15 +408,13 @@ export default function Home() {
             </div>
           </div>
           <div
-            className={`right-side-input-textarea border-2 p-4 flex-1 rounded-lg ${
+            className={`right-side-preview-area border-2 p-4 flex-1 rounded-lg ${
               displayConfig.documentColor === DocumentColor.DARK
-                ? 'bg-black text-white'
-                : ' text-black'
+                ? 'darkmode bg-black text-white'
+                : 'text-black'
             }`}
           >
-            <div data-remove-styles>
-              <div>{content}</div>
-            </div>
+            {content}
           </div>
         </div>
         <SettingModal

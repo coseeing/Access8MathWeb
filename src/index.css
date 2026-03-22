@@ -1,35 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-[data-remove-styles] ol,
-[data-remove-styles] ul,
-[data-remove-styles] menu,
-[data-remove-styles] svg:not(.octicon) {
-  all: revert;
-}
-
-[data-remove-styles] ul {
-  list-style-type: disc;
-}
-
-[data-remove-styles] table {
-  border: 1px solid black;
-}
-
-[data-remove-styles] table tr {
-  border: inherit;
-}
-
-[data-remove-styles] table td,
-[data-remove-styles] table th {
-  padding: 8px;
-  border: 1px solid black;
-}
-
-[data-remove-styles] p {
-  margin: 8px 0;
-}
 
 .sr-only {
   position: absolute;
@@ -51,24 +24,75 @@ math {
   h2,
   h3,
   h4,
-  h6,
+  h5,
   h6 {
-    @apply mb-2;
+    @apply text-text-heading;
+    @apply font-bold;
   }
 
   h1 {
     @apply text-3xl;
+    @apply leading-[1.2];
   }
 
   h2 {
+    @apply text-[1.75rem];
+    @apply leading-[1.2];
+  }
+
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply text-2xl;
+    @apply leading-[1.2];
   }
+}
 
-  h3 {
-    @apply text-xl;
-  }
+.right-side-preview-area ol,
+.right-side-preview-area ul,
+.right-side-preview-area menu,
+.right-side-preview-area svg:not(.octicon) {
+  all: revert; /* reset Tailwind override to browser default */
+}
 
-  h4 {
-    @apply text-lg;
-  }
+.right-side-preview-area ul,
+.right-side-preview-area ol {
+  padding-left: 1.5em;
+}
+
+.right-side-preview-area table td,
+.right-side-preview-area table th {
+  padding: 8px;
+  border: 1px solid rgba(136, 136, 136, 1);
+}
+
+.right-side-preview-area h1,
+.right-side-preview-area h2,
+.right-side-preview-area h3,
+.right-side-preview-area h4,
+.right-side-preview-area h5,
+.right-side-preview-area h6 {
+  line-height: 1.6;
+}
+
+.right-side-preview-area h4 {
+  font-size: 1.25rem;
+}
+
+.right-side-preview-area h5 {
+  font-size: 1.125rem;
+}
+
+.right-side-preview-area h6 {
+  font-size: 1rem;
+}
+
+.right-side-preview-area.darkmode h1,
+.right-side-preview-area.darkmode h2,
+.right-side-preview-area.darkmode h3,
+.right-side-preview-area.darkmode h4,
+.right-side-preview-area.darkmode h5,
+.right-side-preview-area.darkmode h6 {
+  color: white;
 }
