@@ -11,7 +11,7 @@ const SegmentedControl = ({ items, value, onChange, 'aria-label': ariaLabel, but
       {items.map((item) => {
         const isSelected = item.id === value;
         return (
-          <li key={item.id} className="flex bg-white p-1">
+          <li key={item.id} className="flex bg-white p-[3px]">
             <button
               type="button"
               aria-label={item.ariaLabel ?? item.label}
@@ -21,7 +21,7 @@ const SegmentedControl = ({ items, value, onChange, 'aria-label': ariaLabel, but
               }}
               className={cn(
                 'flex items-center justify-center rounded-lg font-medium text-sm leading-[1.4] px-3 py-2',
-                'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[2px] focus-visible:outline-primary',
+                'focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary',
                 isSelected
                   ? 'bg-blue-200 text-primary'
                   : 'bg-white text-text-primary hover:bg-gray-50',

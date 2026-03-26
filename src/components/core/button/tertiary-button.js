@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 const sizeClasses = {
-  sm: 'px-3 py-2 text-sm leading-[1.4]',
-  l: 'px-4 py-3 text-base leading-[1.5]',
+  sm: 'px-3 py-2 text-sm leading-[1.4] disabled:px-[11px] disabled:py-[7px]',
+  l: 'px-4 py-3 text-base leading-[1.5] disabled:px-[15px] disabled:py-[11px]',
 };
 
 const TertiaryButton = React.forwardRef(({ size = 'sm', className, children, ...props }, ref) => {

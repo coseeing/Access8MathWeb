@@ -5,21 +5,23 @@ import PrimaryButton from './primary-button';
 import SecondaryButton from './secondary-button';
 import TertiaryButton from './tertiary-button';
 
-const Button = ({ variant, ...props } = { variant: 'primary' }) => {
+const Button = React.forwardRef(({ variant, ...props } = { variant: 'primary' }, ref) => {
   if (variant === 'primary') {
-    return <PrimaryButton {...props} />;
+    return <PrimaryButton ref={ref} {...props} />;
   }
 
   if (variant === 'secondary') {
-    return <SecondaryButton {...props} />;
+    return <SecondaryButton ref={ref} {...props} />;
   }
 
   if (variant === 'tertiary') {
-    return <TertiaryButton {...props} />;
+    return <TertiaryButton ref={ref} {...props} />;
   }
 
-  return <PrimaryButton {...props} />;
-};
+  return <PrimaryButton ref={ref} {...props} />;
+});
+
+Button.displayName = 'Button';
 
 Button.propTypes = {
   variant: PropTypes.oneOf(['primary', 'secondary', 'tertiary']),
