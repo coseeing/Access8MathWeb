@@ -13,6 +13,7 @@ import { ReactComponent as CreateLink } from '@/components/svg/markdown/create_l
 import { ReactComponent as InsertImage } from '@/components/svg/markdown/insert_image.svg';
 import { ReactComponent as Quote } from '@/components/svg/markdown/quote.svg';
 import { ReactComponent as Table } from '@/components/svg/markdown/table.svg';
+import { ReactComponent as Alert } from '@/components/svg/markdown/alert.svg';
 
 const markdowns = [
   {
@@ -126,6 +127,14 @@ const markdowns = [
     category: 'markdown',
     shortcut: -1,
     Icon: Quote,
+  },
+  {
+    id: 'insert_alert',
+    latex: '',
+    offset: 0,
+    category: 'markdown',
+    shortcut: -1,
+    Icon: Alert,
   },
   {
     id: 'table',
