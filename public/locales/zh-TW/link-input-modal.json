@@ -1,0 +1,15 @@
+{
+  "title": "插入文字連結",
+  "display": "文字連結標題",
+  "displayPlaceholder": "請輸入文字連結標題",
+  "linkTitle": "文字連結說明",
+  "optional": "(選填)",
+  "titlePlaceholder": "請輸入文字連結導向目標的描述",
+  "url": "文字連結 URL",
+  "urlPlaceholder": "請輸入點擊文字連結後打開的網址",
+  "openMethod": "連結開啟方式",
+  "newTab": "在新分頁中開啟",
+  "currentTab": "在當前視窗中開啟",
+  "cancel": "取消",
+  "confirm": "確認"
+}
