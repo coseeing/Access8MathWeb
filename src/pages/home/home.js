@@ -319,8 +319,8 @@ export default function Home() {
       <Header
         onImportClick={importClick}
         onExportClick={() => setShowSettingModal(true)}
-        displayConfig={displayConfig}
-        setDisplayConfig={setDisplayConfig}
+        title={displayConfig.title}
+        onTitleChange={(title) => setDisplayConfig({ title })}
       />
       <main className="pt-[72px] flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
         {/* Left side input panel */}

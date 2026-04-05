@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { ReactComponent as A8mLogo } from '@/components/svg/a8m-logo.svg';
 import Menu from './menu';
@@ -8,7 +9,7 @@ import { IconBulb } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n';
 import Button from '@/components/core/button';
 
-const Header = ({ onImportClick, onExportClick, displayConfig, setDisplayConfig }) => {
+const Header = ({ onImportClick, onExportClick, title, onTitleChange }) => {
   const t = useTranslation('home');
   const [showTipModal, setShowTipModal] = useState(false);
 
@@ -18,13 +19,13 @@ const Header = ({ onImportClick, onExportClick, displayConfig, setDisplayConfig 
         <h1 className="sr-only">Access8Math</h1>
         <A8mLogo aria-hidden="true" />
         <input
-          value={displayConfig.title}
+          value={title}
           type="text"
           style={{ outline: 'none' }}
           className="grow max-w-[280px] text-text-primary placeholder-text-placeholder text-xl font-medium leading-[1.4] pb-2 border-b-2 border-primary"
           placeholder={t('pleaseInputTitle')}
           aria-label={t('pleaseInputTitle')}
-          onChange={(e) => setDisplayConfig({ title: e.target.value })}
+          onChange={(e) => onTitleChange(e.target.value)}
         />
       </div>
       <div className="flex items-center gap-3">
@@ -48,6 +49,13 @@ const Header = ({ onImportClick, onExportClick, displayConfig, setDisplayConfig 
       <TipModal isOpen={showTipModal} onClose={() => setShowTipModal(false)} />
     </header>
   );
+};
+
+Header.propTypes = {
+  onImportClick: PropTypes.func.isRequired,
+  onExportClick: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  onTitleChange: PropTypes.func.isRequired,
 };
 
 export default Header;
