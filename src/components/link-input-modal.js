@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from '@/lib/i18n';
 import BasicModal from '@/components/core/modal/basic-modal';
@@ -10,26 +10,26 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
   const [openInNewTab, setOpenInNewTab] = useState(true);
   const t = useTranslation('link-input-modal');
 
-  const resetForm = useCallback(() => {
+  const resetForm = () => {
     setDisplay('');
     setTitle('');
     setUrl('');
     setOpenInNewTab(true);
-  }, []);
+  };
 
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     resetForm();
     onClose();
-  }, [resetForm, onClose]);
+  };
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = () => {
     if (!display.trim() || !url.trim()) return;
     const prefix = openInNewTab ? '@' : '';
     const titlePart = title.trim() ? `[[${title.trim()}]]` : '';
     const markdown = `${prefix}[${display.trim()}]${titlePart}(${url.trim()})`;
     onConfirm(markdown);
     handleClose();
-  }, [display, title, url, openInNewTab, onConfirm, handleClose]);
+  };
 
   return (
     <BasicModal
