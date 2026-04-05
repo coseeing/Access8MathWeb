@@ -57,7 +57,10 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="flex gap-2 items-center text-text-primary text-base" htmlFor="link-title">
+          <label
+            className="flex gap-2 items-center text-text-primary text-base"
+            htmlFor="link-title"
+          >
             <span>{t('linkTitle')}</span>
             <span className="text-text-primary">{t('optional')}</span>
           </label>
