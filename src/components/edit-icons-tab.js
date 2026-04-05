@@ -9,6 +9,7 @@ import markdowns from '@/lib/tabs/markdowns';
 import { compare } from '@/lib/data-process';
 import mathTabList from '@/lib/tabs/math';
 import ImageUploadModal from './image-upload-modal';
+import LinkInputModal from './link-input-modal';
 import Tooltip from './core/tooltip';
 
 const generateUniqueId = (length = 8) => {
@@ -22,8 +23,20 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
   const [selectedMainTabIndex, setSelectedMainTabIndex] = useState(0);
   const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(0);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
 
   const t = useTranslation('tabs');
+
+  const handleLinkConfirm = useCallback(
+    (markdown) => {
+      insertLatex({
+        id: 'create_link',
+        latex: markdown,
+        offset: 0,
+      });
+    },
+    [insertLatex]
+  );
 
   const handleImageConfirm = useCallback(
     (file, altText) => {
@@ -129,6 +142,10 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                       setIsImageModalOpen(true);
                       return;
                     }
+                    if (tab.id === 'create_link') {
+                      setIsLinkModalOpen(true);
+                      return;
+                    }
                     insertLatex(tab);
                   }}
                 >
@@ -143,6 +160,11 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
         isOpen={isImageModalOpen}
         onClose={() => setIsImageModalOpen(false)}
         onConfirm={handleImageConfirm}
+      />
+      <LinkInputModal
+        isOpen={isLinkModalOpen}
+        onClose={() => setIsLinkModalOpen(false)}
+        onConfirm={handleLinkConfirm}
       />
     </>
   );

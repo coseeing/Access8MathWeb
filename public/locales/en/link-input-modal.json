@@ -1,0 +1,15 @@
+{
+  "title": "Insert Link",
+  "display": "Link Display Text",
+  "displayPlaceholder": "Enter link display text",
+  "linkTitle": "Link Description",
+  "optional": "(Optional)",
+  "titlePlaceholder": "Enter a description for the link target",
+  "url": "Link URL",
+  "urlPlaceholder": "Enter the URL to open when clicking the link",
+  "openMethod": "Link Opening Method",
+  "newTab": "Open in new tab",
+  "currentTab": "Open in current window",
+  "cancel": "Cancel",
+  "confirm": "Confirm"
+}
