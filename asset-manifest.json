@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.ae3fd1ac.css",
-    "main.js": "/static/js/main.fcee35d1.js",
+    "main.css": "/static/css/main.57d088c4.css",
+    "main.js": "/static/js/main.dc19660c.js",
     "static/js/206.aee216fa.chunk.js": "/static/js/206.aee216fa.chunk.js",
     "static/media/arcsine.svg": "/static/media/arcsine.31b7e8faf69f92e90e4762afc176050f.svg",
     "static/media/arctangent.svg": "/static/media/arctangent.b3a2370f206a250e77be3b3cb5411d08.svg",
@@ -19,6 +19,7 @@
     "static/media/simultaneous-equations.svg": "/static/media/simultaneous-equations.5d0ef75af40d25efbeaf38d74b91d562.svg",
     "static/media/secant.svg": "/static/media/secant.863f8d92def044cb150af288a247e21c.svg",
     "static/media/cosine.svg": "/static/media/cosine.37858e9ac5a51f676581aa62122a3f89.svg",
+    "static/media/a8m-logo.svg": "/static/media/a8m-logo.0bb566e28756d572a8593ed59fd07397.svg",
     "static/media/cosecant.svg": "/static/media/cosecant.05f5363ab670b66ee7227c5e77af9f70.svg",
     "static/media/cotangent.svg": "/static/media/cotangent.45368c40f69e2c598f3f596b954162b9.svg",
     "static/media/modulus.svg": "/static/media/modulus.666c53f527f10b143c1e797d5294187f.svg",
@@ -42,7 +43,6 @@
     "static/media/common.svg": "/static/media/common.d4809c8a9d6331d0c6b3498872611227.svg",
     "static/media/overline.svg": "/static/media/overline.7eebe361e19d111c50c8cc2f4fc7b958.svg",
     "static/media/xi-lower.svg": "/static/media/xi-lower.d76b24a04922ed43532579f01c94cb13.svg",
-    "static/media/question-circle.svg": "/static/media/question-circle.04c75fca3ac3338473a9e8abfe5b5d94.svg",
     "static/media/heading6.svg": "/static/media/heading6.7cd4c667afabe8b83df5c0bb7b7b6227.svg",
     "static/media/delta-lower.svg": "/static/media/delta-lower.35c0c785cef5fd4ec096beabbcc45e44.svg",
     "static/media/beta-lower.svg": "/static/media/beta-lower.e03127f6f51d3a903b193b122edfee1f.svg",
@@ -180,7 +180,7 @@
     "static/media/javascript,__webpack_public_path__ = __webpack_base_uri__ = htmlWebpackPluginPublicPath;": "/static/media/1feff74faaf0efc6a044.1feff74faaf0efc6a044"
   },
   "entrypoints": [
-    "static/css/main.ae3fd1ac.css",
-    "static/js/main.fcee35d1.js"
+    "static/css/main.57d088c4.css",
+    "static/js/main.dc19660c.js"
   ]
 }

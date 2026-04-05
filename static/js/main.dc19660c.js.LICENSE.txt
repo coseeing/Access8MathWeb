@@ -50,6 +50,13 @@ https://github.com/nodeca/pako/blob/main/LICENSE
  */
 
 /**
+ * @license @tabler/icons-react v3.40.0 - MIT
+ *
+ * This source code is licensed under the MIT license.
+ * See the LICENSE file in the root directory of this source tree.
+ */
+
+/**
  * @license React
  * react-dom.production.min.js
  *
