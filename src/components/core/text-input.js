@@ -38,6 +38,7 @@ const TextInput = React.forwardRef(
           disabled={disabled}
           aria-required={required || undefined}
           aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${id}-error` : undefined}
           className={cn(
             'w-full border rounded-lg px-4 py-3 text-base transition-colors',
             'placeholder:text-text-placeholder',
@@ -48,7 +49,7 @@ const TextInput = React.forwardRef(
           )}
           {...props}
         />
-        {error && <span className="text-sm text-error leading-[1.4]">{error}</span>}
+        {error && <span id={`${id}-error`} role="alert" className="text-sm text-error leading-[1.4]">{error}</span>}
       </div>
     );
   }

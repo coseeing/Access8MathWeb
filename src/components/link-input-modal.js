@@ -9,6 +9,8 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [openInNewTab, setOpenInNewTab] = useState(true);
+  const [displayError, setDisplayError] = useState('');
+  const [urlError, setUrlError] = useState('');
   const t = useTranslation('link-input-modal');
 
   const resetForm = () => {
@@ -16,6 +18,8 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
     setTitle('');
     setUrl('');
     setOpenInNewTab(true);
+    setDisplayError('');
+    setUrlError('');
   };
 
   const handleClose = () => {
@@ -24,7 +28,13 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
   };
 
   const handleConfirm = () => {
-    if (!display.trim() || !url.trim()) return;
+    const isDisplayEmpty = !display.trim();
+    const isUrlEmpty = !url.trim();
+
+    if (isDisplayEmpty) setDisplayError(t('displayRequiredError'));
+    if (isUrlEmpty) setUrlError(t('urlRequiredError'));
+    if (isDisplayEmpty || isUrlEmpty) return;
+
     const prefix = openInNewTab ? '@' : '';
     const titlePart = title.trim() ? `[[${title.trim()}]]` : '';
     const markdown = `${prefix}[${display.trim()}]${titlePart}(${url.trim()})`;
@@ -47,8 +57,12 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
           id="link-display"
           label={t('display')}
           value={display}
-          onChange={(e) => setDisplay(e.target.value)}
+          onChange={(e) => {
+            setDisplay(e.target.value);
+            setDisplayError('');
+          }}
           placeholder={t('displayPlaceholder')}
+          error={displayError}
           required
         />
         <TextInput
@@ -63,8 +77,12 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
           id="link-url"
           label={t('url')}
           value={url}
-          onChange={(e) => setUrl(e.target.value)}
+          onChange={(e) => {
+            setUrl(e.target.value);
+            setUrlError('');
+          }}
           placeholder={t('urlPlaceholder')}
+          error={urlError}
           required
         />
         <div className="flex flex-col gap-2">

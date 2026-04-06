@@ -11,5 +11,7 @@
   "newTab": "Open in new tab",
   "currentTab": "Open in current window",
   "cancel": "Cancel",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "displayRequiredError": "Link Display Text is required",
+  "urlRequiredError": "Link URL is required"
 }
