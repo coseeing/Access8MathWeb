@@ -49,7 +49,11 @@ const TextInput = React.forwardRef(
           )}
           {...props}
         />
-        {error && <span id={`${id}-error`} role="alert" className="text-sm text-error leading-[1.4]">{error}</span>}
+        {error && (
+          <span id={`${id}-error`} role="alert" className="text-sm text-error leading-[1.4]">
+            {error}
+          </span>
+        )}
       </div>
     );
   }

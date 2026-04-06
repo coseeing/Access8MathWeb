@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useTranslation } from '@/lib/i18n';
 import BasicModal from '@/components/core/modal/basic-modal';
 import TextInput from '@/components/core/text-input';
+import RadioGroup from '@/components/core/radio-group';
 
 const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
   const [display, setDisplay] = useState('');
@@ -85,31 +86,16 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
           error={urlError}
           required
         />
-        <div className="flex flex-col gap-2">
-          <span className="text-text-primary text-base">{t('openMethod')}</span>
-          <div className="flex items-center">
-            <label className="flex flex-1 items-center gap-3 py-1 cursor-pointer">
-              <input
-                type="radio"
-                name="link-open-method"
-                checked={openInNewTab}
-                onChange={() => setOpenInNewTab(true)}
-                className="accent-primary w-5 h-5 shrink-0"
-              />
-              <span className="text-base text-text-primary">{t('newTab')}</span>
-            </label>
-            <label className="flex flex-1 items-center gap-3 px-2 py-1 cursor-pointer">
-              <input
-                type="radio"
-                name="link-open-method"
-                checked={!openInNewTab}
-                onChange={() => setOpenInNewTab(false)}
-                className="accent-primary w-5 h-5 shrink-0"
-              />
-              <span className="text-base text-text-primary">{t('currentTab')}</span>
-            </label>
-          </div>
-        </div>
+        <RadioGroup
+          name="link-open-method"
+          label={t('openMethod')}
+          options={[
+            { value: 'new-tab', label: t('newTab') },
+            { value: 'current-tab', label: t('currentTab') },
+          ]}
+          value={openInNewTab ? 'new-tab' : 'current-tab'}
+          onChange={(val) => setOpenInNewTab(val === 'new-tab')}
+        />
       </div>
     </BasicModal>
   );
