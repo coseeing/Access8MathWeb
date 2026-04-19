@@ -52,8 +52,9 @@ math {
 .right-side-preview-area ol,
 .right-side-preview-area ul,
 .right-side-preview-area menu,
-.right-side-preview-area svg:not(.octicon) {
-  all: revert; /* reset Tailwind override to browser default */
+.right-side-preview-area svg:not(.octicon):not(.tabler-icon) {
+  all: revert;
+  /* reset Tailwind override to browser default */
 }
 
 .right-side-preview-area ul,
@@ -95,4 +96,8 @@ math {
 .right-side-preview-area.darkmode h5,
 .right-side-preview-area.darkmode h6 {
   color: white;
+}
+
+.right-side-preview-area a:not([class]) {
+  @apply inline-flex items-center gap-1 px-2 py-1 rounded text-primary underline hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
 }
