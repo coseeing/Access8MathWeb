@@ -11,5 +11,8 @@
   "newTab": "在新分頁中開啟",
   "currentTab": "在當前視窗中開啟",
   "cancel": "取消",
-  "confirm": "確認"
+  "confirm": "確認",
+  "displayRequiredError": "文字連結標題為必填",
+  "urlRequiredError": "文字連結 URL 為必填",
+  "urlInvalidError": "請輸入有效的 URL（例如：https://example.com）"
 }
