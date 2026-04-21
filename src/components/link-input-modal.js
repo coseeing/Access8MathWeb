@@ -28,13 +28,24 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
     onClose();
   };
 
+  const isValidUrl = (value) => {
+    try {
+      const parsed = new URL(value.trim());
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  };
+
   const handleConfirm = () => {
     const isDisplayEmpty = !display.trim();
     const isUrlEmpty = !url.trim();
+    const isUrlInvalid = !isUrlEmpty && !isValidUrl(url);
 
     if (isDisplayEmpty) setDisplayError(t('displayRequiredError'));
     if (isUrlEmpty) setUrlError(t('urlRequiredError'));
-    if (isDisplayEmpty || isUrlEmpty) return;
+    else if (isUrlInvalid) setUrlError(t('urlInvalidError'));
+    if (isDisplayEmpty || isUrlEmpty || isUrlInvalid) return;
 
     const prefix = openInNewTab ? '@' : '';
     const titlePart = title.trim() ? `[[${title.trim()}]]` : '';

@@ -13,5 +13,6 @@
   "cancel": "Cancel",
   "confirm": "Confirm",
   "displayRequiredError": "Link Display Text is required",
-  "urlRequiredError": "Link URL is required"
+  "urlRequiredError": "Link URL is required",
+  "urlInvalidError": "Please enter a valid URL (e.g. https://example.com)"
 }
