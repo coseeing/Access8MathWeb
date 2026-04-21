@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useId } from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
 const TextInput = React.forwardRef(
   (
     {
-      id,
+      id: idProp,
       type = 'text',
       value,
       onChange,
@@ -20,6 +20,9 @@ const TextInput = React.forwardRef(
     },
     ref
   ) => {
+    const generatedId = useId();
+    const id = idProp ?? generatedId;
+
     return (
       <div className="flex flex-col gap-2">
         {label && (
