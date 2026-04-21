@@ -69,8 +69,8 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
           id="link-display"
           label={t('display')}
           value={display}
-          onChange={(e) => {
-            setDisplay(e.target.value);
+          onChange={(val) => {
+            setDisplay(val);
             setDisplayError('');
           }}
           placeholder={t('displayPlaceholder')}
@@ -82,15 +82,15 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
           label={t('linkTitle')}
           hint={t('optional')}
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={(val) => setTitle(val)}
           placeholder={t('titlePlaceholder')}
         />
         <TextInput
           id="link-url"
           label={t('url')}
           value={url}
-          onChange={(e) => {
-            setUrl(e.target.value);
+          onChange={(val) => {
+            setUrl(val);
             setUrlError('');
           }}
           placeholder={t('urlPlaceholder')}

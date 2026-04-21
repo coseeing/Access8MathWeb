@@ -36,7 +36,7 @@ const TextInput = React.forwardRef(
           id={id}
           type={type}
           value={value}
-          onChange={onChange}
+          onChange={(e) => onChange?.(e.target.value)}
           placeholder={placeholder}
           disabled={disabled}
           aria-required={required || undefined}
