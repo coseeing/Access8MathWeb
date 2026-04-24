@@ -1,0 +1,12 @@
+{
+  "title": "Embed Iframe",
+  "titleLabel": "Iframe Title",
+  "titlePlaceholder": "Enter Iframe title",
+  "titleRequiredError": "Iframe title is required",
+  "urlLabel": "Source",
+  "urlPlaceholder": "Enter source URL",
+  "urlRequiredError": "Source is required",
+  "urlInvalidError": "Please enter a valid URL (e.g. https://example.com)",
+  "cancel": "Cancel",
+  "confirm": "Confirm"
+}
