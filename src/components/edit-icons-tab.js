@@ -39,15 +39,23 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
   );
 
   const handleImageConfirm = useCallback(
-    (file, altText) => {
-      const fileID = generateUniqueId();
+    ({ file, sourceUrl, altText, display, targetUrl }) => {
+      let source;
+      if (file) {
+        const fileID = generateUniqueId();
+        source = fileID;
+        const fileType = file.type.split('/')[1];
+        addImageToExport(fileID, fileType, file);
+      } else {
+        source = sourceUrl;
+      }
+      const displayPart = display ? `[[${display}]]` : '';
+      const targetPart = targetUrl ? `((${targetUrl}))` : '';
       insertLatex({
         id: 'insert_image_file',
-        latex: `![${altText}](${fileID})`,
+        latex: `![${altText}]${displayPart}(${source})${targetPart}`,
         offset: -1,
       });
-      const fileType = file.type.split('/')[1];
-      addImageToExport(fileID, fileType, file);
     },
     [insertLatex, addImageToExport]
   );
