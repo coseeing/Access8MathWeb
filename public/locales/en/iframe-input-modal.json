@@ -1,0 +1,15 @@
+{
+  "title": "Embed Iframe Link",
+  "titleLabel": "Iframe Link Title",
+  "titlePlaceholder": "Enter Iframe link title",
+  "titleRequiredError": "Iframe link title is required",
+  "urlLabel": "Embed Iframe Link",
+  "urlPlaceholder": "Enter Iframe link URL",
+  "urlRequiredError": "Iframe link URL is required",
+  "urlInvalidError": "Please enter a valid HTTPS URL (e.g. https://example.com)",
+  "previewTitle": "Link URL Preview",
+  "previewHint": "Supported URL format: https://",
+  "embed": "Embed",
+  "cancel": "Cancel",
+  "confirm": "Confirm"
+}

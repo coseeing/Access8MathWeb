@@ -1,0 +1,15 @@
+{
+  "title": "嵌入 Iframe 連結",
+  "titleLabel": "Iframe 連結標題",
+  "titlePlaceholder": "請輸入 Iframe 連結標題",
+  "titleRequiredError": "Iframe 連結標題為必填",
+  "urlLabel": "嵌入 Iframe 連結",
+  "urlPlaceholder": "請輸入 Iframe 連結網址",
+  "urlRequiredError": "Iframe 連結網址為必填",
+  "urlInvalidError": "請輸入有效的 HTTPS 網址（例如：https://example.com）",
+  "previewTitle": "連結網址預覽",
+  "previewHint": "支援網址格式：https://",
+  "embed": "嵌入",
+  "cancel": "取消",
+  "confirm": "確認"
+}

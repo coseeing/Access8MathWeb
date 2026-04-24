@@ -10,6 +10,7 @@ import { compare } from '@/lib/data-process';
 import mathTabList from '@/lib/tabs/math';
 import ImageUploadModal from './image-upload-modal';
 import LinkInputModal from './link-input-modal';
+import IframeInputModal from './iframe-input-modal';
 import Tooltip from './core/tooltip';
 
 const generateUniqueId = (length = 8) => {
@@ -24,6 +25,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
   const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(0);
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+  const [isIframeModalOpen, setIsIframeModalOpen] = useState(false);
 
   const t = useTranslation('tabs');
 
@@ -32,6 +34,17 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
       insertLatex({
         id: 'create_link',
         latex: markdown,
+        offset: 0,
+      });
+    },
+    [insertLatex]
+  );
+
+  const handleIframeConfirm = useCallback(
+    (title, url) => {
+      insertLatex({
+        id: 'insert_iframe',
+        latex: `@![${title}](${url})`,
         offset: 0,
       });
     },
@@ -146,6 +159,10 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                       setIsLinkModalOpen(true);
                       return;
                     }
+                    if (tab.id === 'insert_iframe') {
+                      setIsIframeModalOpen(true);
+                      return;
+                    }
                     insertLatex(tab);
                   }}
                 >
@@ -165,6 +182,11 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
         isOpen={isLinkModalOpen}
         onClose={() => setIsLinkModalOpen(false)}
         onConfirm={handleLinkConfirm}
+      />
+      <IframeInputModal
+        isOpen={isIframeModalOpen}
+        onClose={() => setIsIframeModalOpen(false)}
+        onConfirm={handleIframeConfirm}
       />
     </>
   );
