@@ -1,226 +1,326 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { Dialog } from '@headlessui/react';
+import { IconPhoto, IconPlus, IconX } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n';
-import { PlusCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import SecondaryButton from '@/components/core/button/secondary-button';
+import BasicModal from '@/components/core/modal/basic-modal';
 import PrimaryButton from '@/components/core/button/primary-button';
+import TextInput from '@/components/core/text-input';
+import RadioGroup from '@/components/core/radio-group';
 
 const MAX_FILE_SIZE_MB = 10;
+
+const isValidUrl = (value) => {
+  try {
+    const parsed = new URL(value.trim());
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch {
+    return false;
+  }
+};
 
 const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [altText, setAltText] = useState('');
   const [imageInfo, setImageInfo] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [fileError, setFileError] = useState('');
+  const [embedUrl, setEmbedUrl] = useState('');
+  const [embedError, setEmbedError] = useState('');
+  const [altText, setAltText] = useState('');
+  const [altTextError, setAltTextError] = useState('');
+  const [display, setDisplay] = useState('');
+  const [linkOption, setLinkOption] = useState('no-link');
+  const [targetUrl, setTargetUrl] = useState('');
+  const [targetUrlError, setTargetUrlError] = useState('');
+
   const fileInputRef = useRef(null);
   const t = useTranslation('upload-image-modal');
 
-  const resetImage = useCallback(() => {
+  const resetForm = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
     setImageInfo(null);
-    setErrorMessage('');
-  }, []);
-
-  const resetForm = useCallback(() => {
-    resetImage();
+    setFileError('');
+    setEmbedUrl('');
+    setEmbedError('');
     setAltText('');
-  }, [resetImage]);
+    setAltTextError('');
+    setDisplay('');
+    setLinkOption('no-link');
+    setTargetUrl('');
+    setTargetUrlError('');
+  };
 
-  const handleFileSelect = useCallback(
-    (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-          setErrorMessage(t('fileSizeExceeds', { maxSize: MAX_FILE_SIZE_MB }));
-          return;
-        }
-        setSelectedFile(file);
-        setPreviewUrl(URL.createObjectURL(file));
-        setErrorMessage('');
-        const img = new Image();
-        img.onload = () => {
-          setImageInfo({
-            width: img.width,
-            height: img.height,
-            size: (file.size / 1024).toFixed(2) + ' KB',
-          });
-        };
-        img.src = URL.createObjectURL(file);
-      }
-    },
-    [t]
-  );
-
-  const handleDrop = useCallback(
-    (event) => {
-      event.preventDefault();
-      const file = event.dataTransfer.files[0];
-      if (file && file.type.startsWith('image/')) {
-        handleFileSelect({ target: { files: [file] } });
-      }
-    },
-    [handleFileSelect]
-  );
-
-  const handleDragOver = useCallback((event) => {
-    event.preventDefault();
-  }, []);
-
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     resetForm();
     onClose();
-  }, [resetForm, onClose]);
+  };
 
-  const handleConfirm = useCallback(() => {
-    if (selectedFile && altText.trim()) {
-      onConfirm(selectedFile, altText);
-      handleClose();
+  const processFile = (file) => {
+    if (!file) return;
+    if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+      setFileError(t('fileSizeExceeds', { maxSize: MAX_FILE_SIZE_MB }));
+      return;
     }
-  }, [selectedFile, altText, onConfirm, handleClose]);
+    const objectUrl = URL.createObjectURL(file);
+    setSelectedFile(file);
+    setPreviewUrl(objectUrl);
+    setImageInfo(null);
+    setFileError('');
+    setEmbedUrl('');
+    const img = new Image();
+    img.onload = () =>
+      setImageInfo({
+        width: img.width,
+        height: img.height,
+        size: (file.size / 1024).toFixed(0) + 'KB',
+      });
+    img.src = objectUrl;
+  };
 
-  const handleRemoveImage = useCallback(() => {
-    resetImage();
-  }, [resetImage]);
+  const handleFileSelect = (e) => processFile(e.target.files[0]);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if (file?.type.startsWith('image/')) processFile(file);
+  };
+
+  const handleRemoveImage = () => {
+    setSelectedFile(null);
+    setPreviewUrl(null);
+    setImageInfo(null);
+    setFileError('');
+  };
+
+  const handleEmbed = () => {
+    if (!embedUrl.trim()) {
+      setEmbedError(t('embedUrlRequired'));
+      return;
+    }
+    if (!isValidUrl(embedUrl)) {
+      setEmbedError(t('embedUrlInvalid'));
+      return;
+    }
+    setEmbedError('');
+    setSelectedFile(null);
+    setImageInfo(null);
+    setPreviewUrl(embedUrl.trim());
+  };
+
+  const handleConfirm = () => {
+    let valid = true;
+
+    if (!previewUrl) {
+      setFileError(t('imageRequired'));
+      valid = false;
+    }
+    if (!altText.trim()) {
+      setAltTextError(t('altTextRequired'));
+      valid = false;
+    }
+    if (linkOption === 'with-link') {
+      if (!targetUrl.trim()) {
+        setTargetUrlError(t('targetUrlRequired'));
+        valid = false;
+      } else if (!isValidUrl(targetUrl)) {
+        setTargetUrlError(t('targetUrlInvalid'));
+        valid = false;
+      }
+    }
+    if (!valid) return;
+
+    onConfirm({
+      file: selectedFile,
+      sourceUrl: selectedFile ? null : previewUrl,
+      altText: altText.trim(),
+      display: display.trim(),
+      targetUrl: linkOption === 'with-link' ? targetUrl.trim() : '',
+    });
+    handleClose();
+  };
 
   return (
-    <Dialog
-      open={isOpen}
+    <BasicModal
+      title={t('title')}
+      isOpen={isOpen}
       onClose={handleClose}
-      className="fixed inset-0 z-50 overflow-y-auto"
-      aria-labelledby="upload-image-title"
-      aria-describedby="upload-image-description"
+      onCancel={handleClose}
+      onConfirm={handleConfirm}
+      cancelLabel={t('cancel')}
+      confirmLabel={t('confirm')}
     >
-      <div
-        className="flex items-center justify-center min-h-screen"
-        role="dialog"
-        aria-modal="true"
-      >
-        <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
-
-        <div className="relative bg-white rounded-lg p-6 max-w-md w-full mx-4">
-          <Dialog.Title id="upload-image-title" className="text-lg font-medium mb-4">
-            {t('title')}
-          </Dialog.Title>
-
-          <div id="upload-image-description" className="sr-only">
-            {t('modalDescription')}
-          </div>
-
+      <div className="flex flex-col gap-6">
+        {/* Image source block */}
+        <fieldset className="bg-bg-main flex flex-col gap-3 p-3 rounded-lg border-0 m-0">
+          <legend className="sr-only">{t('imageSource')}</legend>
+          {/* Preview box */}
           <div
-            className="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-4 text-center cursor-pointer"
-            onClick={() => !previewUrl && fileInputRef.current?.click()}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                !previewUrl && fileInputRef.current?.click();
-              }
-            }}
             role="button"
             tabIndex={0}
-            aria-label={previewUrl ? t('replaceImage') : t('chooseFile')}
+            aria-label={t('dropZoneLabel')}
+            className={`flex flex-col min-h-[143px] items-center justify-center rounded p-1 ${
+              previewUrl ? 'bg-white' : 'bg-blue-100 border border-dashed border-black'
+            }`}
+            onDrop={handleDrop}
+            onDragOver={(e) => e.preventDefault()}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                fileInputRef.current?.click();
+              }
+            }}
           >
-            <input
-              type="file"
-              ref={fileInputRef}
-              accept="image/jpeg, image/png, image/gif, image/bmp, image/webp, image/svg"
-              className="hidden"
-              onChange={handleFileSelect}
-              aria-hidden="true"
-            />
-            {!previewUrl ? (
-              <div className="flex items-center justify-center space-x-2 text-cyan">
-                <PlusCircleIcon className="h-6 w-6" />
-                <span>{t('chooseFile')}</span>
+            {previewUrl ? (
+              <div className="flex flex-col gap-1 items-center w-full px-2">
+                <div className="relative">
+                  <img
+                    src={previewUrl}
+                    alt={t('imagePreview')}
+                    className="max-h-20 max-w-[150px] border border-dashed border-primary object-contain"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute -top-3 -right-3 size-6 rounded-full bg-white border border-red-500 flex items-center justify-center hover:bg-red-50"
+                    aria-label={t('removeImage')}
+                  >
+                    <IconX className="size-3.5 text-red-500" />
+                  </button>
+                </div>
+                {selectedFile && (
+                  <p className="text-sm font-medium text-primary truncate max-w-full">
+                    {selectedFile.name}
+                  </p>
+                )}
+                {imageInfo && (
+                  <p className="text-xs text-text-secondary text-center">
+                    {t('fileSize')}：{imageInfo.size} {t('dimensions')}：{imageInfo.width} x{' '}
+                    {imageInfo.height} px
+                  </p>
+                )}
               </div>
             ) : (
-              <div className="relative">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleRemoveImage();
-                  }}
-                  className="absolute -top-2 -right-2 p-1 bg-white rounded-full shadow-md hover:bg-gray-100"
-                  aria-label={t('removeImage')}
-                >
-                  <XMarkIcon className="h-4 w-4 text-gray-900" />
-                </button>
-                <img src={previewUrl} alt={t('imagePreview')} className="max-h-48 mx-auto" />
+              <div className="flex flex-col items-center gap-2 py-4">
+                <IconPhoto className="size-5 text-primary" stroke={2} />
+                <p className="text-sm font-bold text-text-primary">{t('dropTitle')}</p>
+                <p className="text-xs text-text-secondary text-center">{t('dropMeta')}</p>
               </div>
             )}
           </div>
 
-          {errorMessage && (
-            <div
-              className="text-red-500 text-sm mb-4"
-              role="alert"
-              aria-invalid="true"
-              aria-errormessage="error-message"
-              id="error-message"
-            >
-              {errorMessage}
-            </div>
-          )}
-
-          {imageInfo && (
-            <div className="mb-4 text-sm text-gray-600" aria-live="polite">
-              <p>
-                {t('dimensions')}: {imageInfo.width} x {imageInfo.height}px
-              </p>
-              <p>
-                {t('fileSize')}: {imageInfo.size}
-              </p>
-            </div>
-          )}
-
-          <div className="mb-4">
-            <label
-              htmlFor="alt-text-input"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
-              {t('altText')}
-              <span className="text-red-500 ml-1" aria-hidden="true">
-                *
-              </span>
-              <span className="sr-only">{t('required')}</span>
-            </label>
+          {/* File select button */}
+          <div className="flex justify-center">
             <input
-              id="alt-text-input"
-              type="text"
-              value={altText}
-              onChange={(e) => setAltText(e.target.value)}
-              className="w-full border rounded-md p-2"
-              placeholder={t('altTextPlaceholder')}
-              aria-required="true"
-              aria-invalid={!altText.trim()}
-              aria-describedby="alt-text-error"
+              id="file-input"
+              type="file"
+              ref={fileInputRef}
+              accept="image/jpeg,image/png,image/gif,image/bmp,image/webp,image/svg+xml"
+              className="sr-only peer"
+              onChange={handleFileSelect}
             />
-            {!altText.trim() && (
-              <div id="alt-text-error" className="text-red-500 text-sm mt-1" role="alert">
-                {t('altTextRequired')}
-              </div>
-            )}
+            <label
+              htmlFor="file-input"
+              className="flex items-center gap-1 text-sm font-medium text-primary hover:underline cursor-pointer rounded peer-focus:outline peer-focus:outline-2 peer-focus:outline-primary"
+            >
+              <IconPlus className="size-4" />
+              {t('chooseFile')}
+            </label>
           </div>
 
-          <div className="flex justify-end space-x-2 w-full">
-            <SecondaryButton onClick={handleClose} aria-label={t('cancel')} className="flex-1">
-              {t('cancel')}
-            </SecondaryButton>
-            <PrimaryButton
-              onClick={handleConfirm}
-              disabled={!selectedFile || !altText.trim()}
-              aria-label={t('confirm')}
-              className="flex-1"
-            >
-              {t('confirm')}
-            </PrimaryButton>
+          {fileError && (
+            <p role="alert" className="text-sm text-error text-center">
+              {fileError}
+            </p>
+          )}
+
+          {/* Divider */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-px bg-border-main" />
+            <span className="text-xs font-medium text-text-primary">or</span>
+            <div className="flex-1 h-px bg-border-main" />
           </div>
-        </div>
+
+          {/* URL embed */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="embed-url" className="text-base text-text-primary">
+              {t('embedFromUrl')}
+            </label>
+            <p id="embed-url-hint" className="text-xs text-text-secondary">{t('embedHint')}</p>
+            <div className="flex gap-2 items-start">
+              <div className="flex-1">
+                <TextInput
+                  id="embed-url"
+                  aria-describedby="embed-url-hint"
+                  value={embedUrl}
+                  onChange={(val) => {
+                    setEmbedUrl(val);
+                    setEmbedError('');
+                  }}
+                  placeholder={t('embedUrlPlaceholder')}
+                  error={embedError}
+                />
+              </div>
+              <PrimaryButton size="l" onClick={handleEmbed} className="shrink-0">
+                {t('embed')}
+              </PrimaryButton>
+            </div>
+          </div>
+        </fieldset>
+
+        {/* Alt text */}
+        <TextInput
+          id="alt-text"
+          label={t('altText')}
+          value={altText}
+          onChange={(val) => {
+            setAltText(val);
+            setAltTextError('');
+          }}
+          placeholder={t('altTextPlaceholder')}
+          error={altTextError}
+          required
+        />
+
+        {/* Display / caption */}
+        <TextInput
+          id="image-display"
+          label={t('display')}
+          hint={t('optional')}
+          value={display}
+          onChange={(val) => setDisplay(val)}
+          placeholder={t('displayPlaceholder')}
+        />
+
+        {/* External link */}
+        <RadioGroup
+          name="image-link-option"
+          label={t('externalLink')}
+          options={[
+            { value: 'no-link', label: t('noLink') },
+            { value: 'with-link', label: t('withLink') },
+          ]}
+          value={linkOption}
+          onChange={(val) => {
+            setLinkOption(val);
+            setTargetUrlError('');
+          }}
+        />
+        {linkOption === 'with-link' && (
+          <TextInput
+            id="target-url"
+            label={t('targetUrl')}
+            value={targetUrl}
+            onChange={(val) => {
+              setTargetUrl(val);
+              setTargetUrlError('');
+            }}
+            placeholder={t('targetUrlPlaceholder')}
+            error={targetUrlError}
+            required
+          />
+        )}
       </div>
-    </Dialog>
+    </BasicModal>
   );
 };
 
