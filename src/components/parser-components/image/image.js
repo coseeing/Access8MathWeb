@@ -5,18 +5,16 @@ import { IconExternalLink } from '@tabler/icons-react';
 import Tooltip from '@/components/core/tooltip';
 
 const Image = ({ alt = '', source = '', display = '', target = '' }) => {
-  const img = <img src={source} alt={alt} className="block w-full" />;
+  const imgEl = <img src={source} alt={alt} className="block w-full" />;
 
-  const imgWithTooltip = alt ? <Tooltip label={alt}>{img}</Tooltip> : img;
-
-  const imgWithLink = target ? (
+  const trigger = target ? (
     <a
       href={target}
       target="_blank"
       rel="noopener noreferrer"
       className="relative block"
     >
-      {imgWithTooltip}
+      {imgEl}
       <span
         aria-hidden="true"
         className="absolute top-2 left-2 flex items-center justify-center bg-white rounded p-1 text-gray-700 shadow-shadow1"
@@ -25,14 +23,24 @@ const Image = ({ alt = '', source = '', display = '', target = '' }) => {
       </span>
     </a>
   ) : (
-    <span className="block">{imgWithTooltip}</span>
+    imgEl
   );
 
-  if (!display) return imgWithLink;
+  const tooltipped = alt ? (
+    <span className="block overflow-hidden">
+      <Tooltip label={alt}>
+        <span className="block -mt-[15px] pt-[15px]">{trigger}</span>
+      </Tooltip>
+    </span>
+  ) : (
+    trigger
+  );
+
+  if (!display) return tooltipped;
 
   return (
     <figure>
-      {imgWithLink}
+      {tooltipped}
       <figcaption className="mt-3 text-center text-base text-text-secondary">
         {display}
       </figcaption>
