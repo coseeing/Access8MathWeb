@@ -25,7 +25,7 @@ const Image = ({ alt = '', source = '', display = '', target = '' }) => {
       </span>
     </a>
   ) : (
-    imgWithTooltip
+    <span className="block">{imgWithTooltip}</span>
   );
 
   if (!display) return imgWithLink;
