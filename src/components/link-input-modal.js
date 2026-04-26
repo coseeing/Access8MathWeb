@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from '@/lib/i18n';
+import { isValidUrl } from '@/lib/url';
 import BasicModal from '@/components/core/modal/basic-modal';
 import TextInput from '@/components/core/text-input';
 import RadioGroup from '@/components/core/radio-group';
@@ -26,15 +27,6 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
   const handleClose = () => {
     resetForm();
     onClose();
-  };
-
-  const isValidUrl = (value) => {
-    try {
-      const parsed = new URL(value.trim());
-      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
-    } catch {
-      return false;
-    }
   };
 
   const handleConfirm = () => {

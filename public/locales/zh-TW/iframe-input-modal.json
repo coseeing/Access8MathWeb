@@ -1,0 +1,12 @@
+{
+  "title": "嵌入 Iframe",
+  "titleLabel": "Iframe 標題",
+  "titlePlaceholder": "請輸入 Iframe 標題",
+  "titleRequiredError": "Iframe 標題為必填",
+  "urlLabel": "來源網址",
+  "urlPlaceholder": "請輸入來源網址",
+  "urlRequiredError": "來源網址為必填",
+  "urlInvalidError": "請輸入有效的網址（例如：https://example.com）",
+  "cancel": "取消",
+  "confirm": "確認"
+}
