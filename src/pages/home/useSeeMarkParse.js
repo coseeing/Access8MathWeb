@@ -8,6 +8,11 @@ import {
   ExternalLinkTabTitle,
   ExternalLinkTitle,
 } from '@/components/parser-components/external-link/external-link';
+import Image, {
+  ImageDisplay,
+  ImageDisplayLink,
+  ImageLink,
+} from '@/components/parser-components/image/image';
 import InternalLink from '@/components/parser-components/internal-link/internal-link';
 
 const useSeeMarkParse = ({ latexDelimiter, documentFormat, imageFiles }) => {
@@ -26,6 +31,10 @@ const useSeeMarkParse = ({ latexDelimiter, documentFormat, imageFiles }) => {
           externalLinkTab: ExternalLinkTab,
           externalLinkTitle: ExternalLinkTitle,
           externalLinkTabTitle: ExternalLinkTabTitle,
+          image: Image,
+          imageLink: ImageLink,
+          imageDisplay: ImageDisplay,
+          imageDisplayLink: ImageDisplayLink,
         },
       })(markdown);
     },
