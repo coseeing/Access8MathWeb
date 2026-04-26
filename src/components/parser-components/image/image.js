@@ -8,12 +8,7 @@ const Image = ({ alt = '', source = '', display = '', target = '' }) => {
   const imgEl = <img src={source} alt={alt} className="block w-full" />;
 
   const trigger = target ? (
-    <a
-      href={target}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="relative block"
-    >
+    <a href={target} target="_blank" rel="noopener noreferrer" className="relative block">
       {imgEl}
       <span
         aria-hidden="true"
@@ -41,9 +36,7 @@ const Image = ({ alt = '', source = '', display = '', target = '' }) => {
   return (
     <figure>
       {tooltipped}
-      <figcaption className="mt-3 text-center text-base text-text-secondary">
-        {display}
-      </figcaption>
+      <figcaption className="mt-3 text-center text-base text-text-secondary">{display}</figcaption>
     </figure>
   );
 };
