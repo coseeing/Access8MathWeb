@@ -33,7 +33,9 @@ const Image = ({ alt = '', source = '', display = '', target = '' }) => {
   return (
     <figure>
       {imgWithLink}
-      <figcaption className="mt-2 text-center text-text-primary">{display}</figcaption>
+      <figcaption className="mt-3 text-center text-base text-text-secondary">
+        {display}
+      </figcaption>
     </figure>
   );
 };
