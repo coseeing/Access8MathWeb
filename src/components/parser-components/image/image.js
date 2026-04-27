@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { IconExternalLink } from '@tabler/icons-react';
 
@@ -6,17 +6,35 @@ import Tooltip from '@/components/core/tooltip';
 
 const renderImg = (source, alt) => <img src={source} alt={alt} className="block w-full" />;
 
-const renderLinkedImg = (source, alt, target) => (
-  <a href={target} target="_blank" rel="noopener noreferrer" className="relative block">
-    {renderImg(source, alt)}
-    <span
-      aria-hidden="true"
-      className="absolute top-2 left-2 flex items-center justify-center bg-white rounded p-1 text-gray-700 shadow-shadow1"
-    >
-      <IconExternalLink size={20} />
-    </span>
-  </a>
-);
+const LinkedImage = ({ source = '', alt = '', target = '' }) => {
+  const [erroredSource, setErroredSource] = useState(null);
+  const imageBroken = erroredSource === source;
+
+  return (
+    <a href={target} target="_blank" rel="noopener noreferrer" className="relative block">
+      <img
+        src={source}
+        alt={alt}
+        className="block w-full"
+        onError={() => setErroredSource(source)}
+      />
+      {!imageBroken && (
+        <span
+          aria-hidden="true"
+          className="absolute top-2 left-2 flex items-center justify-center bg-white rounded p-1 text-gray-700 shadow-shadow1"
+        >
+          <IconExternalLink size={20} />
+        </span>
+      )}
+    </a>
+  );
+};
+
+LinkedImage.propTypes = {
+  source: PropTypes.string,
+  alt: PropTypes.string,
+  target: PropTypes.string,
+};
 
 const withAltTooltip = (content, alt) =>
   alt ? (
@@ -44,7 +62,7 @@ Image.propTypes = {
 };
 
 export const ImageLink = ({ alt = '', source = '', target = '' }) =>
-  withAltTooltip(renderLinkedImg(source, alt, target), alt);
+  withAltTooltip(<LinkedImage source={source} alt={alt} target={target} />, alt);
 
 ImageLink.propTypes = {
   alt: PropTypes.string,
@@ -62,7 +80,10 @@ ImageDisplay.propTypes = {
 };
 
 export const ImageDisplayLink = ({ alt = '', display = '', source = '', target = '' }) =>
-  withDisplayCaption(withAltTooltip(renderLinkedImg(source, alt, target), alt), display);
+  withDisplayCaption(
+    withAltTooltip(<LinkedImage source={source} alt={alt} target={target} />, alt),
+    display
+  );
 
 ImageDisplayLink.propTypes = {
   alt: PropTypes.string,
