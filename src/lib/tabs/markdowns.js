@@ -13,6 +13,7 @@ import { ReactComponent as CreateLink } from '@/components/svg/markdown/create_l
 import { ReactComponent as InsertImage } from '@/components/svg/markdown/insert_image.svg';
 import { ReactComponent as Quote } from '@/components/svg/markdown/quote.svg';
 import { ReactComponent as Table } from '@/components/svg/markdown/table.svg';
+import { ReactComponent as InsertIframe } from '@/components/svg/markdown/insert_iframe.svg';
 
 const markdowns = [
   {
@@ -118,6 +119,14 @@ const markdowns = [
     category: 'markdown',
     shortcut: -1,
     Icon: InsertImage,
+  },
+  {
+    id: 'insert_iframe',
+    latex: '@![]()',
+    offset: -3,
+    category: 'markdown',
+    shortcut: -1,
+    Icon: InsertIframe,
   },
   {
     id: 'quote',
