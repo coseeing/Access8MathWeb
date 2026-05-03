@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.b0a0ec00.css",
-    "main.js": "/static/js/main.422dfeea.js",
+    "main.js": "/static/js/main.3a6ad628.js",
     "static/js/206.aee216fa.chunk.js": "/static/js/206.aee216fa.chunk.js",
     "static/media/arcsine.svg": "/static/media/arcsine.31b7e8faf69f92e90e4762afc176050f.svg",
     "static/media/arctangent.svg": "/static/media/arctangent.b3a2370f206a250e77be3b3cb5411d08.svg",
@@ -138,6 +138,7 @@
     "static/media/not-subset.svg": "/static/media/not-subset.c5be70726707685f247e420756dd3284.svg",
     "static/media/not-supset.svg": "/static/media/not-supset.04b524bc5fee684fd689414cead3c40b.svg",
     "static/media/generic_list.svg": "/static/media/generic_list.cd0e08a8fd5f3b237230eb1ab14a2f16.svg",
+    "static/media/insert_iframe.svg": "/static/media/insert_iframe.6bf67b6cd732974e2e429a60a5a3d593.svg",
     "static/media/forall.svg": "/static/media/forall.b8d997eedb7fdd6483ff5a51f622b6b3.svg",
     "static/media/table.svg": "/static/media/table.64bb4626b704c7ee873918771c52e50f.svg",
     "static/media/square.svg": "/static/media/square.24a1d6352f2b042fabf89c97283195a2.svg",
@@ -181,6 +182,6 @@
   },
   "entrypoints": [
     "static/css/main.b0a0ec00.css",
-    "static/js/main.422dfeea.js"
+    "static/js/main.3a6ad628.js"
   ]
 }
