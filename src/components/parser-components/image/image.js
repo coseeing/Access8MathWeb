@@ -12,13 +12,19 @@ const useImageBroken = (source) => {
   };
 };
 
-const renderImg = (source, alt, onError) => (
+const Img = ({ source = '', alt = '', onError }) => (
   <img src={source} alt={alt} className="block w-full" onError={onError} />
 );
 
-const LinkedImage = ({ source = '', alt = '', target = '', broken = false, onError }) => (
+Img.propTypes = {
+  source: PropTypes.string,
+  alt: PropTypes.string,
+  onError: PropTypes.func,
+};
+
+const LinkedImg = ({ source = '', alt = '', target = '', broken = false, onError }) => (
   <a href={target} target="_blank" rel="noopener noreferrer" className="relative block">
-    <img src={source} alt={alt} className="block w-full" onError={onError} />
+    <Img source={source} alt={alt} onError={onError} />
     {!broken && (
       <span
         aria-hidden="true"
@@ -30,7 +36,7 @@ const LinkedImage = ({ source = '', alt = '', target = '', broken = false, onErr
   </a>
 );
 
-LinkedImage.propTypes = {
+LinkedImg.propTypes = {
   source: PropTypes.string,
   alt: PropTypes.string,
   target: PropTypes.string,
@@ -38,27 +44,42 @@ LinkedImage.propTypes = {
   onError: PropTypes.func,
 };
 
-const withAltTooltip = (content, alt, broken) =>
-  alt && !broken ? (
+const AltTooltip = ({ alt = '', disabled = false, children }) => {
+  if (!alt || disabled) return children;
+  return (
     <span className="block overflow-hidden">
       <Tooltip label={alt}>
-        <span className="block -mt-[15px] pt-[15px]">{content}</span>
+        <span className="block -mt-[15px] pt-[15px]">{children}</span>
       </Tooltip>
     </span>
-  ) : (
-    content
   );
+};
 
-const withDisplayCaption = (content, display) => (
+AltTooltip.propTypes = {
+  alt: PropTypes.string,
+  disabled: PropTypes.bool,
+  children: PropTypes.node.isRequired,
+};
+
+const Caption = ({ display = '', children }) => (
   <figure>
-    {content}
+    {children}
     <figcaption className="mt-3 text-center text-base text-text-secondary">{display}</figcaption>
   </figure>
 );
 
+Caption.propTypes = {
+  display: PropTypes.string,
+  children: PropTypes.node.isRequired,
+};
+
 const Image = ({ alt = '', source = '' }) => {
   const { broken, onError } = useImageBroken(source);
-  return withAltTooltip(renderImg(source, alt, onError), alt, broken);
+  return (
+    <AltTooltip alt={alt} disabled={broken}>
+      <Img source={source} alt={alt} onError={onError} />
+    </AltTooltip>
+  );
 };
 
 Image.propTypes = {
@@ -68,10 +89,10 @@ Image.propTypes = {
 
 export const ImageLink = ({ alt = '', source = '', target = '' }) => {
   const { broken, onError } = useImageBroken(source);
-  return withAltTooltip(
-    <LinkedImage source={source} alt={alt} target={target} broken={broken} onError={onError} />,
-    alt,
-    broken
+  return (
+    <AltTooltip alt={alt} disabled={broken}>
+      <LinkedImg source={source} alt={alt} target={target} broken={broken} onError={onError} />
+    </AltTooltip>
   );
 };
 
@@ -83,7 +104,13 @@ ImageLink.propTypes = {
 
 export const ImageDisplay = ({ alt = '', display = '', source = '' }) => {
   const { broken, onError } = useImageBroken(source);
-  return withDisplayCaption(withAltTooltip(renderImg(source, alt, onError), alt, broken), display);
+  return (
+    <Caption display={display}>
+      <AltTooltip alt={alt} disabled={broken}>
+        <Img source={source} alt={alt} onError={onError} />
+      </AltTooltip>
+    </Caption>
+  );
 };
 
 ImageDisplay.propTypes = {
@@ -94,13 +121,12 @@ ImageDisplay.propTypes = {
 
 export const ImageDisplayLink = ({ alt = '', display = '', source = '', target = '' }) => {
   const { broken, onError } = useImageBroken(source);
-  return withDisplayCaption(
-    withAltTooltip(
-      <LinkedImage source={source} alt={alt} target={target} broken={broken} onError={onError} />,
-      alt,
-      broken
-    ),
-    display
+  return (
+    <Caption display={display}>
+      <AltTooltip alt={alt} disabled={broken}>
+        <LinkedImg source={source} alt={alt} target={target} broken={broken} onError={onError} />
+      </AltTooltip>
+    </Caption>
   );
 };
 
