@@ -1,24 +1,18 @@
 {
-  "documentFormat": {
-    "name": "HTML Math Display",
-    "block": "block",
-    "inline": "inline"
-  },
-  "latexDelimiter": {
-    "name": "LaTeX delimiter",
-    "bracket": "bracket",
-    "dollar": "dollar"
-  },
   "documentColor": {
-    "name": "Color Scheme",
+    "name": "File Display",
     "light": "Light Mode",
     "dark": "Dark Mode"
   },
   "cancel": "Cancel",
-  "submit": "Export File",
-  "title": "Setting",
-  "exportType": "Export Type",
+  "submit": "Export",
+  "title": "Export File",
+  "exportType": "File Format",
   "a8m": "a8m",
   "zip": "zip",
+  "documentTitle": "Document Title",
+  "documentTitlePlaceholder": "Enter a name that summarizes the content of this document",
+  "fileName": "File Name",
+  "fileNamePlaceholder": "Enter a file name",
   "untitledDocument": "Untitled document"
 }

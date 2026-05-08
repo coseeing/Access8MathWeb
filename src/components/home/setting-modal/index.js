@@ -1,25 +1,33 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { useTranslation } from '@/lib/i18n';
 import BasicModal from '@/components/core/modal/basic-modal';
+import TextInput from '@/components/core/text-input';
+import RadioGroup from '@/components/core/radio-group';
 
-import { useOptionGroup, useForm } from './helpers';
+import { useForm } from './helpers';
 
 const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig, exportType, setExportType }) => {
   const t = useTranslation('setting-modal');
-
-  const optionGroup = useOptionGroup(t);
 
   const { localConfig, updateLocalConfig } = useForm({
     isOpen,
     config: displayConfig,
   });
 
+  const [fileName, setFileName] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      setFileName('');
+    }
+  }, [isOpen]);
+
   const onConfirm = useCallback(() => {
-    onSubmit(localConfig, exportType);
+    onSubmit(localConfig, exportType, fileName);
     onClose();
-  }, [onSubmit, onClose, localConfig, exportType]);
+  }, [onSubmit, onClose, localConfig, exportType, fileName]);
 
   return (
     <BasicModal
@@ -32,53 +40,42 @@ const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig, exportType, se
       cancelLabel={t('cancel')}
       confirmLabel={t('submit')}
     >
-      <form>
-        {optionGroup.map(({ configName, configLabel, options }) => {
-          return (
-            <div key={configName} className="grid grid-cols-12 items-center gap-4 p-3">
-              <label className="col-span-4 text-lg font-semibold text-gray-900">
-                {configLabel}：
-              </label>
-              <fieldset className="col-span-8">
-                <legend className="sr-only">{configLabel}</legend>
-                <select
-                  className="block w-full text-md bg-cyanLight border-gray-300 rounded-md focus:outline-none focus:ring-indigo-600 sm:text-sm p-3"
-                  value={localConfig[configName]}
-                  onChange={(e) => {
-                    updateLocalConfig(configName, e.target.value);
-                  }}
-                  aria-label={configLabel}
-                >
-                  {options.map(({ value, label }) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </fieldset>
-            </div>
-          );
-        })}
-        <div className="grid grid-cols-12 items-center gap-4 p-3">
-          <label className="col-span-4 text-lg font-semibold text-gray-900">
-            {t('exportType')}：
-          </label>
-          <fieldset className="col-span-8">
-            <legend className="sr-only">{t('exportType')}</legend>
-            <select
-              className="block w-full text-md bg-cyanLight border-gray-300 rounded-md focus:outline-none focus:ring-indigo-600 sm:text-sm p-3"
-              value={exportType}
-              onChange={(e) => {
-                setExportType(e.target.value);
-              }}
-              aria-label={t('exportType')}
-            >
-              <option value="zip">{t('zip')}</option>
-              <option value="a8m">{t('a8m')}</option>
-            </select>
-          </fieldset>
-        </div>
-      </form>
+      <div className="flex flex-col gap-6">
+        <TextInput
+          id="setting-document-title"
+          label={t('documentTitle')}
+          value={localConfig.title || ''}
+          onChange={(val) => updateLocalConfig('title', val)}
+          placeholder={t('documentTitlePlaceholder')}
+        />
+        <TextInput
+          id="setting-file-name"
+          label={t('fileName')}
+          value={fileName}
+          onChange={setFileName}
+          placeholder={t('fileNamePlaceholder')}
+        />
+        <RadioGroup
+          name="setting-export-type"
+          legend={t('exportType')}
+          options={[
+            { value: 'zip', label: t('zip') },
+            { value: 'a8m', label: t('a8m') },
+          ]}
+          value={exportType}
+          onChange={setExportType}
+        />
+        <RadioGroup
+          name="setting-document-color"
+          legend={t('documentColor.name')}
+          options={[
+            { value: 'light', label: t('documentColor.light') },
+            { value: 'dark', label: t('documentColor.dark') },
+          ]}
+          value={localConfig.documentColor}
+          onChange={(val) => updateLocalConfig('documentColor', val)}
+        />
+      </div>
     </BasicModal>
   );
 };
@@ -88,11 +85,14 @@ SettingModal.propTypes = {
   onClose: PropTypes.func,
   onSubmit: PropTypes.func,
   displayConfig: PropTypes.shape({
+    title: PropTypes.string,
     documentFormat: PropTypes.string,
     latexDelimiter: PropTypes.string,
     exportType: PropTypes.string,
     documentColor: PropTypes.string,
   }),
+  exportType: PropTypes.string,
+  setExportType: PropTypes.func,
 };
 
 export default SettingModal;

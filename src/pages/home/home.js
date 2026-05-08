@@ -276,17 +276,17 @@ export default function Home() {
   );
 
   const exportFileAction = useCallback(
-    (updatedConfig, exportType) => {
+    (updatedConfig, exportType, fileName) => {
       setDisplayConfig(updatedConfig);
       // FIXME: get back the cleaning feature
       const cleanedImages = imagesToExportRef.current;
 
       switch (exportType) {
         case ExportType.ZIP:
-          saveContentAsWebsite(data, asConfigData(updatedConfig), cleanedImages);
+          saveContentAsWebsite(data, asConfigData(updatedConfig), cleanedImages, fileName);
           break;
         case ExportType.A8M:
-          saveContentAsOriginalFile(data, asConfigData(updatedConfig), cleanedImages);
+          saveContentAsOriginalFile(data, asConfigData(updatedConfig), cleanedImages, fileName);
           break;
         default:
           console.error('Unsupported export type');
