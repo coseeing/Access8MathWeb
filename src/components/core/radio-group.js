@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-const RadioGroup = ({ name, label, options, value, onChange }) => {
+const RadioGroup = ({ name, legend, options, value, onChange }) => {
   return (
-    <div className="flex flex-col gap-2">
-      {label && <span className="text-text-primary text-base">{label}</span>}
+    <fieldset>
+      <legend className="text-text-primary text-base mb-2">{legend}</legend>
       <div className="flex items-center">
         {options.map((option) => (
           <div key={option.value} className="flex flex-1 items-center">
@@ -39,13 +39,13 @@ const RadioGroup = ({ name, label, options, value, onChange }) => {
           </div>
         ))}
       </div>
-    </div>
+    </fieldset>
   );
 };
 
 RadioGroup.propTypes = {
   name: PropTypes.string.isRequired,
-  label: PropTypes.string,
+  legend: PropTypes.string.isRequired,
   options: PropTypes.arrayOf(
     PropTypes.shape({
       value: PropTypes.string.isRequired,

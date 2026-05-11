@@ -91,7 +91,7 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
         />
         <RadioGroup
           name="link-open-method"
-          label={t('openMethod')}
+          legend={t('openMethod')}
           options={[
             { value: 'new-tab', label: t('newTab') },
             { value: 'current-tab', label: t('currentTab') },
