@@ -67,7 +67,7 @@ BasicModal.propTypes = {
   onConfirm: PropTypes.func,
   confirmLabel: PropTypes.string,
   title: PropTypes.string,
-  children: PropTypes.element,
+  children: PropTypes.node,
   hasCancel: PropTypes.bool,
   hasConfirm: PropTypes.bool,
   size: PropTypes.oneOf(['sm', 'l']),
