@@ -14,7 +14,7 @@ const Header = ({ onImportClick, onExportClick, title, onTitleChange }) => {
   const [showTipModal, setShowTipModal] = useState(false);
 
   return (
-    <header className="px-6 fixed h-[72px] flex items-center gap-2 bg-white inset-x-0 z-10 shadow-shadow2">
+    <header className="px-6 sticky top-0 min-w-[768px] h-[72px] flex items-center gap-2 bg-white z-10 shadow-shadow2">
       <div className="flex items-center gap-3 grow">
         <h1 className="sr-only">Access8Math</h1>
         <A8mLogo aria-hidden="true" />
@@ -31,7 +31,7 @@ const Header = ({ onImportClick, onExportClick, title, onTitleChange }) => {
       <div className="flex items-center gap-3">
         <Button
           variant="tertiary"
-          className="min-w-[88px] flex items-center gap-1"
+          className="min-w-[64px] lg:min-w-[88px] flex items-center gap-1"
           onClick={() => setShowTipModal(true)}
         >
           <IconBulb size={16} aria-hidden="true" />
@@ -39,10 +39,14 @@ const Header = ({ onImportClick, onExportClick, title, onTitleChange }) => {
         </Button>
         <Menu />
         <LanguageMenu />
-        <Button variant="secondary" className="min-w-[88px]" onClick={onImportClick}>
+        <Button
+          variant="secondary"
+          className="min-w-[64px] lg:min-w-[88px]"
+          onClick={onImportClick}
+        >
           {t('import')}
         </Button>
-        <Button variant="primary" className="min-w-[88px]" onClick={onExportClick}>
+        <Button variant="primary" className="min-w-[64px] lg:min-w-[88px]" onClick={onExportClick}>
           {t('export')}
         </Button>
       </div>

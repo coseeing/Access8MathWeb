@@ -322,7 +322,7 @@ export default function Home() {
         title={displayConfig.title}
         onTitleChange={(title) => setDisplayConfig({ title })}
       />
-      <main className="pt-[72px] min-w-[768px] flex flex-col lg:flex-row">
+      <main className="min-w-[768px] flex flex-col lg:flex-row">
         {/* Left side input panel */}
         <div className="lg:w-3/5 bg-blue-50 p-6">
           <div className="flex items-center justify-between mb-4">
@@ -336,7 +336,7 @@ export default function Home() {
                   items={latexDelimiterOptions}
                   value={displayConfig.latexDelimiter}
                   onChange={(option) => setDisplayConfig({ latexDelimiter: option })}
-                  buttonClassName="w-[88px] h-7"
+                  buttonClassName="w-[64px] h-7"
                 />
               </div>
               <Button variant="secondary" onClick={insertMark}>
