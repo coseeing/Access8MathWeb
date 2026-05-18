@@ -322,7 +322,7 @@ export default function Home() {
         title={displayConfig.title}
         onTitleChange={(title) => setDisplayConfig({ title })}
       />
-      <main className="pt-[72px] min-w-[1024px] flex flex-col lg:flex-row">
+      <main className="pt-[72px] min-w-[768px] flex flex-col lg:flex-row">
         {/* Left side input panel */}
         <div className="lg:w-3/5 bg-blue-50 p-6">
           <div className="flex items-center justify-between mb-4">
