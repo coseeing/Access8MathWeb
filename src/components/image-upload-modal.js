@@ -21,6 +21,7 @@ const ImageSource = ({ onChange }) => {
 
   const fileInputRef = useRef(null);
   const blobUrlRef = useRef(null);
+  const loadRequestIdRef = useRef(0);
 
   const t = useTranslation('upload-image-modal');
 
@@ -40,6 +41,7 @@ const ImageSource = ({ onChange }) => {
     setStatusMessage('');
     revokeBlobUrl();
     if (resetFileInput && fileInputRef.current) fileInputRef.current.value = '';
+    loadRequestIdRef.current++;
   };
 
   const processFile = (file) => {
@@ -61,13 +63,18 @@ const ImageSource = ({ onChange }) => {
     setPreviewUrl(objectUrl);
     onChange({ file, sourceUrl: null });
 
+    const requestId = loadRequestIdRef.current;
     const img = new Image();
-    img.onload = () =>
+    img.onload = () => {
+      // Drop late loads from a superseded source so stale dimensions don't overwrite the current preview.
+      if (requestId !== loadRequestIdRef.current) return;
+
       setImageInfo({
         width: img.width,
         height: img.height,
         size: (file.size / 1024).toFixed(0) + 'KB',
       });
+    };
     img.src = objectUrl;
   };
 
