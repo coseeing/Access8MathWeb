@@ -50,6 +50,7 @@ const ImageSource = ({ onChange }) => {
     if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
       setUploadError(true);
       setStatusMessage(t('announceUploadFailed', { maxSize: MAX_FILE_SIZE_MB }));
+      onChange(null);
       return;
     }
 
@@ -58,6 +59,7 @@ const ImageSource = ({ onChange }) => {
 
     setUploadFile(file);
     setPreviewUrl(objectUrl);
+    onChange({ file, sourceUrl: null });
 
     const img = new Image();
     img.onload = () =>
@@ -86,26 +88,18 @@ const ImageSource = ({ onChange }) => {
     if (!isValidUrl(trimmed)) {
       setEmbedError(true);
       setStatusMessage(t('announceEmbedFailed'));
+      onChange(null);
       return;
     }
 
     setPreviewUrl(trimmed);
+    onChange({ file: null, sourceUrl: trimmed });
   };
 
   const handleRemoveImage = () => {
     resetSourceState({ resetFileInput: true });
+    onChange(null);
   };
-
-  useEffect(() => {
-    if (uploadError || embedError || !previewUrl) {
-      onChange(null);
-      return;
-    }
-    onChange({
-      file: uploadFile,
-      sourceUrl: uploadFile ? null : previewUrl,
-    });
-  }, [uploadError, embedError, previewUrl, onChange, uploadFile]);
 
   useEffect(() => revokeBlobUrl, [revokeBlobUrl]);
 
@@ -151,6 +145,7 @@ const ImageSource = ({ onChange }) => {
                   setEmbedError(true);
                   setPreviewUrl(null);
                   setStatusMessage(t('announceEmbedFailed'));
+                  onChange(null);
                 }
               }}
             />
