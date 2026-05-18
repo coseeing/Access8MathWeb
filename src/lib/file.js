@@ -128,7 +128,12 @@ const extractEntryData = ({ config, contents }) => {
 
 const genConfigJs = (raw) => `window.contentConfig = ${raw}`;
 
-export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExport = {}) => {
+export const saveContentAsWebsite = (
+  sourceText,
+  configInput = {},
+  imagesToExport = {},
+  fileName = ''
+) => {
   const config = {
     ...configInput,
     sourceText,
@@ -153,14 +158,22 @@ export const saveContentAsWebsite = (sourceText, configInput = {}, imagesToExpor
           imagesFolder.file(fileName, imageBlob);
         }
 
+        const saveName =
+          fileName.trim() || config.title || i18n.t('untitledDocument', { ns: 'setting-modal' });
+
         zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-          saveAs(newZipData, `${config.title}.zip`);
+          saveAs(newZipData, `${saveName}.zip`);
         });
       });
     });
 };
 
-export const saveContentAsOriginalFile = async (sourceText, config, imagesToExport) => {
+export const saveContentAsOriginalFile = async (
+  sourceText,
+  config,
+  imagesToExport,
+  fileName = ''
+) => {
   const { entry } = config;
   const images = Object.entries(imagesToExport).reduce((acc, [fileId, { fileName }]) => {
     const key = fileId;
@@ -191,12 +204,11 @@ export const saveContentAsOriginalFile = async (sourceText, config, imagesToExpo
 
   zip.file(CONFIG_JSON_FILE_NAME, configBlob);
   zip.file(entry, markdownBlob);
+
+  const saveName =
+    fileName.trim() || config.title || i18n.t('untitledDocument', { ns: 'setting-modal' });
+
   zip.generateAsync({ type: 'blob' }).then((newZipData) => {
-    saveAs(
-      newZipData,
-      `${
-        config.title || i18n.t('untitledDocument', { ns: 'setting-modal' })
-      }.${ORIGINAL_FILE_EXTENSION}`
-    );
+    saveAs(newZipData, `${saveName}.${ORIGINAL_FILE_EXTENSION}`);
   });
 };
