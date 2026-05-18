@@ -1,24 +1,18 @@
 {
-  "documentFormat": {
-    "name": "版面格式",
-    "block": "塊級",
-    "inline": "行間"
-  },
-  "latexDelimiter": {
-    "name": "LaTeX 分隔符",
-    "bracket": "括號",
-    "dollar": "錢號"
-  },
   "documentColor": {
-    "name": "文件顏色",
+    "name": "檔案顯示",
     "light": "白底黑字",
     "dark": "黑底白字"
   },
   "submit": "匯出",
   "title": "匯出檔案",
   "cancel": "取消",
-  "exportType": "輸出格式",
+  "exportType": "檔案格式",
   "a8m": "a8m",
   "zip": "zip",
+  "documentTitle": "文件標題",
+  "documentTitlePlaceholder": "請輸入可以總結此文件內容的名稱",
+  "fileName": "檔案名稱",
+  "fileNamePlaceholder": "請輸入檔案名稱",
   "untitledDocument": "未命名文件"
 }
