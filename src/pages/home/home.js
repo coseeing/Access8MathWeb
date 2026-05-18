@@ -329,10 +329,14 @@ export default function Home() {
             <h2>{t('editContent')}</h2>
             <div className="flex items-center gap-2">
               <div className="flex items-center">
-                <div className="mr-2 text-text-primary text-sm font-medium">
+                <div
+                  id="latex-delimiter-label"
+                  className="mr-2 text-text-primary text-sm font-medium"
+                >
                   {t('latexDelimiter.name')}
                 </div>
                 <SegmentedControl
+                  aria-labelledby="latex-delimiter-label"
                   items={latexDelimiterOptions}
                   value={displayConfig.latexDelimiter}
                   onChange={(option) => setDisplayConfig({ latexDelimiter: option })}

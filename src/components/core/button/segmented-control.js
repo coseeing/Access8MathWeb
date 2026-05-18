@@ -2,10 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 
-const SegmentedControl = ({ items, value, onChange, 'aria-label': ariaLabel, buttonClassName }) => {
+const SegmentedControl = ({
+  items,
+  value,
+  onChange,
+  'aria-label': ariaLabel,
+  'aria-labelledby': ariaLabelledBy,
+  buttonClassName,
+}) => {
   return (
     <ul
       aria-label={ariaLabel}
+      aria-labelledby={ariaLabelledBy}
       className="flex items-stretch rounded-lg border border-border-main overflow-hidden"
     >
       {items.map((item) => {
@@ -49,6 +57,7 @@ SegmentedControl.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
   'aria-label': PropTypes.string,
+  'aria-labelledby': PropTypes.string,
   buttonClassName: PropTypes.string,
 };
 
