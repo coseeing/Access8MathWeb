@@ -29,6 +29,11 @@ const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig, exportType, se
     onClose();
   }, [onSubmit, onClose, localConfig, exportType, fileName]);
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    onConfirm();
+  };
+
   return (
     <BasicModal
       title={t('title')}
@@ -36,11 +41,17 @@ const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig, exportType, se
       hasCancel={true}
       onClose={onClose}
       onCancel={onClose}
-      onConfirm={onConfirm}
       cancelLabel={t('cancel')}
       confirmLabel={t('submit')}
+      confirmType="submit"
+      confirmForm="setting-form"
     >
-      <div className="flex flex-col gap-6">
+      <form
+        id="setting-form"
+        noValidate
+        onSubmit={handleFormSubmit}
+        className="flex flex-col gap-6"
+      >
         <TextInput
           id="setting-document-title"
           label={t('documentTitle')}
@@ -75,7 +86,7 @@ const SettingModal = ({ isOpen, onClose, onSubmit, displayConfig, exportType, se
           value={localConfig.documentColor}
           onChange={(val) => updateLocalConfig('documentColor', val)}
         />
-      </div>
+      </form>
     </BasicModal>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from '@/lib/i18n';
 import { isValidUrl } from '@/lib/url';
@@ -13,6 +13,8 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
   const [openInNewTab, setOpenInNewTab] = useState(true);
   const [displayError, setDisplayError] = useState('');
   const [urlError, setUrlError] = useState('');
+  const displayRef = useRef(null);
+  const urlRef = useRef(null);
   const t = useTranslation('link-input-modal');
 
   const resetForm = () => {
@@ -37,7 +39,11 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
     if (isDisplayEmpty) setDisplayError(t('displayRequiredError'));
     if (isUrlEmpty) setUrlError(t('urlRequiredError'));
     else if (isUrlInvalid) setUrlError(t('urlInvalidError'));
-    if (isDisplayEmpty || isUrlEmpty || isUrlInvalid) return;
+    if (isDisplayEmpty || isUrlEmpty || isUrlInvalid) {
+      if (isDisplayEmpty) displayRef.current?.focus();
+      else urlRef.current?.focus();
+      return;
+    }
 
     const prefix = openInNewTab ? '@' : '';
     const titlePart = title.trim() ? `[[${title.trim()}]]` : '';
@@ -46,18 +52,25 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
     handleClose();
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleConfirm();
+  };
+
   return (
     <BasicModal
       title={t('title')}
       isOpen={isOpen}
       onClose={handleClose}
       onCancel={handleClose}
-      onConfirm={handleConfirm}
       cancelLabel={t('cancel')}
       confirmLabel={t('confirm')}
+      confirmType="submit"
+      confirmForm="link-form"
     >
-      <div className="flex flex-col gap-6">
+      <form id="link-form" noValidate onSubmit={handleFormSubmit} className="flex flex-col gap-6">
         <TextInput
+          ref={displayRef}
           id="link-display"
           label={t('display')}
           value={display}
@@ -78,6 +91,7 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
           placeholder={t('titlePlaceholder')}
         />
         <TextInput
+          ref={urlRef}
           id="link-url"
           label={t('url')}
           value={url}
@@ -99,7 +113,7 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
           value={openInNewTab ? 'new-tab' : 'current-tab'}
           onChange={(val) => setOpenInNewTab(val === 'new-tab')}
         />
-      </div>
+      </form>
     </BasicModal>
   );
 };

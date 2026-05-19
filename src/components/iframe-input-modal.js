@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from '@/lib/i18n';
 import { isValidUrl } from '@/lib/url';
@@ -10,6 +10,8 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
   const [url, setUrl] = useState('');
   const [titleError, setTitleError] = useState('');
   const [urlError, setUrlError] = useState('');
+  const titleRef = useRef(null);
+  const urlRef = useRef(null);
   const t = useTranslation('iframe-input-modal');
 
   const resetForm = () => {
@@ -32,10 +34,19 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
     if (isTitleEmpty) setTitleError(t('titleRequiredError'));
     if (isUrlEmpty) setUrlError(t('urlRequiredError'));
     else if (isUrlInvalid) setUrlError(t('urlInvalidError'));
-    if (isTitleEmpty || isUrlEmpty || isUrlInvalid) return;
+    if (isTitleEmpty || isUrlEmpty || isUrlInvalid) {
+      if (isTitleEmpty) titleRef.current?.focus();
+      else urlRef.current?.focus();
+      return;
+    }
 
     onConfirm(title.trim(), url.trim());
     handleClose();
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleConfirm();
   };
 
   return (
@@ -44,12 +55,14 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
       isOpen={isOpen}
       onClose={handleClose}
       onCancel={handleClose}
-      onConfirm={handleConfirm}
       cancelLabel={t('cancel')}
       confirmLabel={t('confirm')}
+      confirmType="submit"
+      confirmForm="iframe-form"
     >
-      <div className="flex flex-col gap-6">
+      <form id="iframe-form" noValidate onSubmit={handleFormSubmit} className="flex flex-col gap-6">
         <TextInput
+          ref={titleRef}
           id="iframe-title"
           label={t('titleLabel')}
           value={title}
@@ -63,6 +76,7 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
         />
 
         <TextInput
+          ref={urlRef}
           id="iframe-url"
           type="url"
           label={t('urlLabel')}
@@ -75,7 +89,7 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
           error={urlError}
           required
         />
-      </div>
+      </form>
     </BasicModal>
   );
 };

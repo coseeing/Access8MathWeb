@@ -7,30 +7,33 @@ const sizeClasses = {
   l: 'px-4 py-3 text-base leading-[1.5] disabled:px-[15px] disabled:py-[11px]',
 };
 
-const PrimaryButton = React.forwardRef(({ size = 'sm', className, children, ...props }, ref) => {
-  return (
-    <button
-      ref={ref}
-      type="button"
-      className={cn(
-        'flex items-center justify-center bg-primary text-white rounded-lg',
-        'hover:bg-blue-800',
-        'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
-        'disabled:bg-bg-disabled disabled:text-text-disabled disabled:border disabled:border-text-secondary disabled:cursor-not-allowed',
-        sizeClasses[size],
-        className
-      )}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-});
+const PrimaryButton = React.forwardRef(
+  ({ size = 'sm', type = 'button', className, children, ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        type={type}
+        className={cn(
+          'flex items-center justify-center bg-primary text-white rounded-lg',
+          'hover:bg-blue-800',
+          'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary',
+          'disabled:bg-bg-disabled disabled:text-text-disabled disabled:border disabled:border-text-secondary disabled:cursor-not-allowed',
+          sizeClasses[size],
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  }
+);
 
 PrimaryButton.displayName = 'PrimaryButton';
 
 PrimaryButton.propTypes = {
   size: PropTypes.oneOf(['sm', 'l']),
+  type: PropTypes.string,
   className: PropTypes.string,
   children: PropTypes.node,
 };

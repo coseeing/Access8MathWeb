@@ -15,6 +15,8 @@ const BasicModal = ({
   hasConfirm = true,
   cancelLabel = 'Cancel',
   confirmLabel = 'Confirm',
+  confirmType = 'button',
+  confirmForm,
   size = 'l',
   children,
 }) => {
@@ -47,7 +49,14 @@ const BasicModal = ({
                 </Button>
               )}
               {hasConfirm && (
-                <Button className="w-full" variant="primary" onClick={onConfirm} size={size}>
+                <Button
+                  className="w-full"
+                  variant="primary"
+                  size={size}
+                  type={confirmType}
+                  form={confirmForm}
+                  onClick={confirmType === 'submit' ? undefined : onConfirm}
+                >
                   {confirmLabel}
                 </Button>
               )}
@@ -66,6 +75,8 @@ BasicModal.propTypes = {
   cancelLabel: PropTypes.string,
   onConfirm: PropTypes.func,
   confirmLabel: PropTypes.string,
+  confirmType: PropTypes.oneOf(['button', 'submit']),
+  confirmForm: PropTypes.string,
   title: PropTypes.string,
   children: PropTypes.node,
   hasCancel: PropTypes.bool,

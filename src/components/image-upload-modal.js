@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { IconAlertTriangle, IconPhoto, IconPlus, IconX } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n';
@@ -291,6 +291,8 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const [linkOption, setLinkOption] = useState('no-link');
   const [targetUrl, setTargetUrl] = useState('');
   const [targetUrlError, setTargetUrlError] = useState('');
+  const altTextRef = useRef(null);
+  const targetUrlRef = useRef(null);
 
   const t = useTranslation('upload-image-modal');
 
@@ -312,21 +314,19 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const handleConfirm = () => {
     if (!imageSource) return; // TODO: ask designer where to show image validation error
 
-    let valid = true;
-    if (!altText.trim()) {
-      setAltTextError(t('altTextRequired'));
-      valid = false;
+    const isAltTextEmpty = !altText.trim();
+    const isTargetUrlEmpty = linkOption === 'with-link' && !targetUrl.trim();
+    const isTargetUrlInvalid =
+      linkOption === 'with-link' && !isTargetUrlEmpty && !isValidUrl(targetUrl);
+
+    if (isAltTextEmpty) setAltTextError(t('altTextRequired'));
+    if (isTargetUrlEmpty) setTargetUrlError(t('targetUrlRequired'));
+    else if (isTargetUrlInvalid) setTargetUrlError(t('targetUrlInvalid'));
+    if (isAltTextEmpty || isTargetUrlEmpty || isTargetUrlInvalid) {
+      if (isAltTextEmpty) altTextRef.current?.focus();
+      else targetUrlRef.current?.focus();
+      return;
     }
-    if (linkOption === 'with-link') {
-      if (!targetUrl.trim()) {
-        setTargetUrlError(t('targetUrlRequired'));
-        valid = false;
-      } else if (!isValidUrl(targetUrl)) {
-        setTargetUrlError(t('targetUrlInvalid'));
-        valid = false;
-      }
-    }
-    if (!valid) return;
 
     onConfirm({
       file: imageSource.file,
@@ -338,22 +338,34 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
     handleClose();
   };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    handleConfirm();
+  };
+
   return (
     <BasicModal
       title={t('title')}
       isOpen={isOpen}
       onClose={handleClose}
       onCancel={handleClose}
-      onConfirm={handleConfirm}
       cancelLabel={t('cancel')}
       confirmLabel={t('confirm')}
+      confirmType="submit"
+      confirmForm="image-upload-form"
     >
-      <div className="flex flex-col gap-6">
+      <form
+        id="image-upload-form"
+        noValidate
+        onSubmit={handleFormSubmit}
+        className="flex flex-col gap-6"
+      >
         {/* Image source */}
         <ImageSource onChange={setImageSource} />
 
         {/* Alt text */}
         <TextInput
+          ref={altTextRef}
           id="alt-text"
           label={t('altText')}
           value={altText}
@@ -392,6 +404,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
         />
         {linkOption === 'with-link' && (
           <TextInput
+            ref={targetUrlRef}
             id="target-url"
             label={t('targetUrl')}
             value={targetUrl}
@@ -404,7 +417,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
             required
           />
         )}
-      </div>
+      </form>
     </BasicModal>
   );
 };
