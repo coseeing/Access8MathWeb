@@ -12,6 +12,7 @@
   "removeImage": "移除圖片",
   "optional": "(選填)",
   "altTextRequired": "請輸入替代文字",
+  "imageSourceRequired": "請填寫圖片 URL 或上傳圖片",
   "dropTitle": "拖曳檔案上傳",
   "dropMeta": "大小限制：{{maxSize}}MB　建議尺寸：1200 x 800 px　支援格式：jpg/jpeg, png",
   "uploadFailed": "圖片上傳失敗",

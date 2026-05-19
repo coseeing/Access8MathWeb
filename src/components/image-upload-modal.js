@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 import { IconAlertTriangle, IconPhoto, IconPlus, IconX } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n';
 import { ellipsizeMiddle, isValidUrl } from '@/lib/url';
@@ -10,7 +11,7 @@ import RadioGroup from '@/components/core/radio-group';
 
 const MAX_FILE_SIZE_MB = 10;
 
-const ImageSource = ({ onChange }) => {
+const ImageSource = ({ onChange, error, embedUrlRef }) => {
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadError, setUploadError] = useState(false);
   const [embedUrl, setEmbedUrl] = useState('');
@@ -199,7 +200,13 @@ const ImageSource = ({ onChange }) => {
   };
 
   return (
-    <fieldset className="bg-bg-main flex flex-col gap-3 p-3 rounded-lg border-0 m-0">
+    <fieldset
+      aria-describedby={error ? 'image-source-error' : undefined}
+      className={cn(
+        'bg-bg-main flex flex-col gap-3 p-3 rounded-lg m-0',
+        error ? 'border border-error' : 'border-0'
+      )}
+    >
       <legend className="sr-only">{t('imageSource')}</legend>
 
       {/* Status message for screen readers */}
@@ -257,6 +264,7 @@ const ImageSource = ({ onChange }) => {
         <div className="flex gap-2 items-start">
           <div className="flex-1">
             <TextInput
+              ref={embedUrlRef}
               id="embed-url"
               aria-describedby="embed-url-hint"
               value={embedUrl}
@@ -275,22 +283,32 @@ const ImageSource = ({ onChange }) => {
           </PrimaryButton>
         </div>
       </div>
+
+      {error && (
+        <p id="image-source-error" role="alert" className="text-sm text-error leading-[1.4]">
+          {error}
+        </p>
+      )}
     </fieldset>
   );
 };
 
 ImageSource.propTypes = {
   onChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  embedUrlRef: PropTypes.oneOfType([PropTypes.func, PropTypes.shape({ current: PropTypes.any })]),
 };
 
 const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const [imageSource, setImageSource] = useState(null);
+  const [imageSourceError, setImageSourceError] = useState('');
   const [altText, setAltText] = useState('');
   const [altTextError, setAltTextError] = useState('');
   const [caption, setCaption] = useState('');
   const [linkOption, setLinkOption] = useState('no-link');
   const [targetUrl, setTargetUrl] = useState('');
   const [targetUrlError, setTargetUrlError] = useState('');
+  const embedUrlRef = useRef(null);
   const altTextRef = useRef(null);
   const targetUrlRef = useRef(null);
 
@@ -298,6 +316,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
 
   const resetForm = () => {
     setImageSource(null);
+    setImageSourceError('');
     setAltText('');
     setAltTextError('');
     setCaption('');
@@ -312,18 +331,19 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   };
 
   const handleConfirm = () => {
-    if (!imageSource) return; // TODO: ask designer where to show image validation error
-
+    const isImageSourceEmpty = !imageSource;
     const isAltTextEmpty = !altText.trim();
     const isTargetUrlEmpty = linkOption === 'with-link' && !targetUrl.trim();
     const isTargetUrlInvalid =
       linkOption === 'with-link' && !isTargetUrlEmpty && !isValidUrl(targetUrl);
 
+    if (isImageSourceEmpty) setImageSourceError(t('imageSourceRequired'));
     if (isAltTextEmpty) setAltTextError(t('altTextRequired'));
     if (isTargetUrlEmpty) setTargetUrlError(t('targetUrlRequired'));
     else if (isTargetUrlInvalid) setTargetUrlError(t('targetUrlInvalid'));
-    if (isAltTextEmpty || isTargetUrlEmpty || isTargetUrlInvalid) {
-      if (isAltTextEmpty) altTextRef.current?.focus();
+    if (isImageSourceEmpty || isAltTextEmpty || isTargetUrlEmpty || isTargetUrlInvalid) {
+      if (isImageSourceEmpty) embedUrlRef.current?.focus();
+      else if (isAltTextEmpty) altTextRef.current?.focus();
       else targetUrlRef.current?.focus();
       return;
     }
@@ -361,7 +381,14 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
         className="flex flex-col gap-6"
       >
         {/* Image source */}
-        <ImageSource onChange={setImageSource} />
+        <ImageSource
+          error={imageSourceError}
+          embedUrlRef={embedUrlRef}
+          onChange={(source) => {
+            setImageSource(source);
+            if (source) setImageSourceError('');
+          }}
+        />
 
         {/* Alt text */}
         <TextInput
