@@ -2,7 +2,6 @@ import React, { useId } from 'react';
 import PropTypes from 'prop-types';
 import { IconExternalLink } from '@tabler/icons-react';
 
-import Tooltip from '@/components/core/tooltip';
 import { useTranslation } from '@/lib/i18n';
 
 const linkClassName =
@@ -12,7 +11,7 @@ const ExternalLink = ({ display = '', target = '', title = '', newTab = false })
   const t = useTranslation('common');
   const newTabDescriptionId = useId();
 
-  const anchor = (
+  return (
     <a
       href={target}
       {...(newTab && {
@@ -20,7 +19,7 @@ const ExternalLink = ({ display = '', target = '', title = '', newTab = false })
         rel: 'noopener noreferrer',
         'aria-describedby': newTabDescriptionId,
       })}
-      title={title}
+      {...(title && { title })}
       className={linkClassName}
     >
       {display}
@@ -32,8 +31,6 @@ const ExternalLink = ({ display = '', target = '', title = '', newTab = false })
       )}
     </a>
   );
-
-  return title ? <Tooltip label={title}>{anchor}</Tooltip> : anchor;
 };
 
 ExternalLink.propTypes = {

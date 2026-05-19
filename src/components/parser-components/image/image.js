@@ -2,7 +2,6 @@ import React, { useId, useState } from 'react';
 import PropTypes from 'prop-types';
 import { IconExternalLink } from '@tabler/icons-react';
 
-import Tooltip from '@/components/core/tooltip';
 import { useTranslation } from '@/lib/i18n';
 
 const useImageBroken = (source) => {
@@ -58,23 +57,6 @@ LinkedImg.propTypes = {
   onError: PropTypes.func,
 };
 
-const AltTooltip = ({ alt = '', disabled = false, children }) => {
-  if (!alt || disabled) return children;
-  return (
-    <span className="block overflow-hidden">
-      <Tooltip label={alt}>
-        <span className="block -mt-[15px] pt-[15px]">{children}</span>
-      </Tooltip>
-    </span>
-  );
-};
-
-AltTooltip.propTypes = {
-  alt: PropTypes.string,
-  disabled: PropTypes.bool,
-  children: PropTypes.node.isRequired,
-};
-
 const Caption = ({ display = '', children }) => (
   <figure>
     {children}
@@ -88,12 +70,8 @@ Caption.propTypes = {
 };
 
 const Image = ({ alt = '', source = '' }) => {
-  const { broken, onError } = useImageBroken(source);
-  return (
-    <AltTooltip alt={alt} disabled={broken}>
-      <Img source={source} alt={alt} onError={onError} />
-    </AltTooltip>
-  );
+  const { onError } = useImageBroken(source);
+  return <Img source={source} alt={alt} onError={onError} />;
 };
 
 Image.propTypes = {
@@ -103,11 +81,7 @@ Image.propTypes = {
 
 export const ImageLink = ({ alt = '', source = '', target = '' }) => {
   const { broken, onError } = useImageBroken(source);
-  return (
-    <AltTooltip alt={alt} disabled={broken}>
-      <LinkedImg source={source} alt={alt} target={target} broken={broken} onError={onError} />
-    </AltTooltip>
-  );
+  return <LinkedImg source={source} alt={alt} target={target} broken={broken} onError={onError} />;
 };
 
 ImageLink.propTypes = {
@@ -117,12 +91,10 @@ ImageLink.propTypes = {
 };
 
 export const ImageDisplay = ({ alt = '', display = '', source = '' }) => {
-  const { broken, onError } = useImageBroken(source);
+  const { onError } = useImageBroken(source);
   return (
     <Caption display={display}>
-      <AltTooltip alt={alt} disabled={broken}>
-        <Img source={source} alt={alt} onError={onError} />
-      </AltTooltip>
+      <Img source={source} alt={alt} onError={onError} />
     </Caption>
   );
 };
@@ -137,9 +109,7 @@ export const ImageDisplayLink = ({ alt = '', display = '', source = '', target =
   const { broken, onError } = useImageBroken(source);
   return (
     <Caption display={display}>
-      <AltTooltip alt={alt} disabled={broken}>
-        <LinkedImg source={source} alt={alt} target={target} broken={broken} onError={onError} />
-      </AltTooltip>
+      <LinkedImg source={source} alt={alt} target={target} broken={broken} onError={onError} />
     </Caption>
   );
 };
