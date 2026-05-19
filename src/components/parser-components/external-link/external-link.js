@@ -5,7 +5,7 @@ import { IconExternalLink } from '@tabler/icons-react';
 import Tooltip from '@/components/core/tooltip';
 
 const linkClassName =
-  'inline-flex items-center gap-1 px-2 py-1 rounded text-primary underline hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+  'inline-flex items-center text-primary underline rounded-sm hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary';
 
 const ExternalLink = ({ display = '', target = '', title = '', newTab = false }) => {
   const anchor = (
