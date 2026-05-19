@@ -3,5 +3,6 @@
   "locale": {
     "en": "英文",
     "zh-TW": "中文"
-  }
+  },
+  "openInNewTab": "開啟新分頁"
 }

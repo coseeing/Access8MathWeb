@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 import PropTypes from 'prop-types';
 import { IconExternalLink } from '@tabler/icons-react';
 
 import Tooltip from '@/components/core/tooltip';
+import { useTranslation } from '@/lib/i18n';
 
 const useImageBroken = (source) => {
   const [erroredSource, setErroredSource] = useState(null);
@@ -22,19 +23,32 @@ Img.propTypes = {
   onError: PropTypes.func,
 };
 
-const LinkedImg = ({ source = '', alt = '', target = '', broken = false, onError }) => (
-  <a href={target} target="_blank" rel="noopener noreferrer" className="relative block">
-    <Img source={source} alt={alt} onError={onError} />
-    {!broken && (
-      <span
-        aria-hidden="true"
-        className="absolute top-2 left-2 flex items-center justify-center bg-white rounded p-1 text-gray-700 shadow-shadow1"
-      >
-        <IconExternalLink size={20} />
+const LinkedImg = ({ source = '', alt = '', target = '', broken = false, onError }) => {
+  const t = useTranslation('common');
+  const newTabDescriptionId = useId();
+  return (
+    <a
+      href={target}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-describedby={newTabDescriptionId}
+      className="relative block"
+    >
+      <Img source={source} alt={alt} onError={onError} />
+      {!broken && (
+        <span
+          aria-hidden="true"
+          className="absolute top-2 left-2 flex items-center justify-center bg-white rounded p-1 text-gray-700 shadow-shadow1"
+        >
+          <IconExternalLink size={20} />
+        </span>
+      )}
+      <span id={newTabDescriptionId} className="sr-only" aria-hidden="true">
+        {t('openInNewTab')}
       </span>
-    )}
-  </a>
-);
+    </a>
+  );
+};
 
 LinkedImg.propTypes = {
   source: PropTypes.string,

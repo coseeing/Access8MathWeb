@@ -3,5 +3,6 @@
   "locale": {
     "en": "English",
     "zh-TW": "Taiwanese Mandarin"
-  }
+  },
+  "openInNewTab": "Open in new tab"
 }
