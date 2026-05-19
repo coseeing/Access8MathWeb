@@ -322,9 +322,9 @@ export default function Home() {
         title={displayConfig.title}
         onTitleChange={(title) => setDisplayConfig({ title })}
       />
-      <main className="pt-[72px] flex flex-col md:flex-row overflow-x-hidden overflow-y-auto">
+      <main className="min-w-[768px] flex flex-col lg:flex-row">
         {/* Left side input panel */}
-        <div className="md:w-3/5 bg-blue-50 p-6">
+        <div className="lg:w-3/5 bg-blue-50 p-6">
           <div className="flex items-center justify-between mb-4">
             <h2>{t('editContent')}</h2>
             <div className="flex items-center gap-2">
@@ -336,7 +336,7 @@ export default function Home() {
                   items={latexDelimiterOptions}
                   value={displayConfig.latexDelimiter}
                   onChange={(option) => setDisplayConfig({ latexDelimiter: option })}
-                  buttonClassName="w-[88px] h-7"
+                  buttonClassName="w-[64px] h-7"
                 />
               </div>
               <Button variant="secondary" onClick={insertMark}>
@@ -378,7 +378,7 @@ export default function Home() {
         </div>
 
         {/* Right side output panel */}
-        <div className="md:w-2/5 flex flex-col md:h-full h-[600px] p-6">
+        <div className="lg:w-2/5 flex flex-col lg:h-full h-[600px] p-6">
           <div className="flex justify-between items-center mb-4">
             <h2>{t('preview')}</h2>
             <div>
