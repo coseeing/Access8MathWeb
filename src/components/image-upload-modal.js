@@ -10,7 +10,7 @@ import RadioGroup from '@/components/core/radio-group';
 
 const MAX_FILE_SIZE_MB = 10;
 
-const ImageSource = ({ onChange }) => {
+const ImageSource = ({ onChange, error, onErrorClear }) => {
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadError, setUploadError] = useState(false);
   const [embedUrl, setEmbedUrl] = useState('');
@@ -48,6 +48,7 @@ const ImageSource = ({ onChange }) => {
     if (!file) return;
 
     resetSourceState();
+    onErrorClear?.();
 
     if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
       setUploadError(true);
@@ -91,6 +92,7 @@ const ImageSource = ({ onChange }) => {
     if (!trimmed) return;
 
     resetSourceState({ resetFileInput: true });
+    onErrorClear?.();
 
     if (!isValidUrl(trimmed)) {
       setEmbedError(true);
@@ -260,7 +262,10 @@ const ImageSource = ({ onChange }) => {
               id="embed-url"
               aria-describedby="embed-url-hint"
               value={embedUrl}
-              onChange={(val) => setEmbedUrl(val)}
+              onChange={(val) => {
+                setEmbedUrl(val);
+                if (error) onErrorClear?.();
+              }}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault();
@@ -268,6 +273,7 @@ const ImageSource = ({ onChange }) => {
                 }
               }}
               placeholder={t('embedUrlPlaceholder')}
+              error={error}
             />
           </div>
           <PrimaryButton size="l" onClick={handleEmbed} className="shrink-0">
@@ -281,10 +287,13 @@ const ImageSource = ({ onChange }) => {
 
 ImageSource.propTypes = {
   onChange: PropTypes.func.isRequired,
+  error: PropTypes.string,
+  onErrorClear: PropTypes.func,
 };
 
 const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const [imageSource, setImageSource] = useState(null);
+  const [sourceError, setSourceError] = useState('');
   const [altText, setAltText] = useState('');
   const [altTextError, setAltTextError] = useState('');
   const [caption, setCaption] = useState('');
@@ -296,6 +305,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
 
   const resetForm = () => {
     setImageSource(null);
+    setSourceError('');
     setAltText('');
     setAltTextError('');
     setCaption('');
@@ -310,9 +320,11 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   };
 
   const handleConfirm = () => {
-    if (!imageSource) return; // TODO: ask designer where to show image validation error
-
     let valid = true;
+    if (!imageSource) {
+      setSourceError(t('sourceRequired'));
+      valid = false;
+    }
     if (!altText.trim()) {
       setAltTextError(t('altTextRequired'));
       valid = false;
@@ -350,7 +362,14 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
     >
       <div className="flex flex-col gap-6">
         {/* Image source */}
-        <ImageSource onChange={setImageSource} />
+        <ImageSource
+          onChange={(src) => {
+            setImageSource(src);
+            if (src) setSourceError('');
+          }}
+          error={sourceError}
+          onErrorClear={() => setSourceError('')}
+        />
 
         {/* Alt text */}
         <TextInput
