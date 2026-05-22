@@ -12,6 +12,7 @@
   "removeImage": "Remove Image",
   "optional": "(Optional)",
   "altTextRequired": "Alt text is required",
+  "sourceRequired": "Please enter an image URL or upload an image",
   "dropTitle": "Drag & drop to upload",
   "dropMeta": "Max size: {{maxSize}}MB  Recommended: 1200 x 800 px  Formats: jpg/jpeg, png",
   "uploadFailed": "Image upload failed",
