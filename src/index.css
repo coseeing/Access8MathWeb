@@ -62,6 +62,13 @@ math {
   padding-left: 1.5em;
 }
 
+.right-side-preview-area table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
 .right-side-preview-area table td,
 .right-side-preview-area table th {
   padding: 8px;
@@ -99,5 +106,5 @@ math {
 }
 
 .right-side-preview-area a:not([class]) {
-  @apply inline-flex items-center gap-1 px-2 py-1 rounded text-primary underline hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+  @apply inline-flex items-center text-primary underline rounded-sm hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary;
 }
