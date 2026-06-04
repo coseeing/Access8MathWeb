@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* The app shell fills the viewport; only inner panels scroll, never the page. */
+body {
+  overflow: hidden;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

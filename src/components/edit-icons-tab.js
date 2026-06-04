@@ -79,7 +79,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
         as="div"
         selectedIndex={selectedMainTabIndex}
         onChange={setSelectedMainTabIndex}
-        className="flex flex-col w-full h-[600px] border-r border-border-main"
+        className="flex flex-col w-full h-full border-r border-border-main"
       >
         <Tab.List as="div" className="w-full flex items-center border-b border-border-main">
           {mainTabList.map(({ id }, index) => (
@@ -105,10 +105,8 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
               <div className="flex h-full w-full">
                 <Tab.List
                   as="div"
-                  className="flex flex-col px-2 py-3 gap-2 border-r border-border-main"
+                  className="flex flex-col px-2 py-3 gap-2 border-r border-border-main min-h-0 overflow-y-auto"
                   style={{
-                    maxHeight: '562px',
-                    overflowY: 'auto',
                     scrollbarWidth: 'none', // hide scrollbar in Firefox
                     msOverflowStyle: 'none', // hide scrollbar in IE/Edge
                   }}
