@@ -4,6 +4,17 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* The app shell fills the viewport; only inner panels scroll, never the page. */
+body {
+  overflow: hidden;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -107,4 +118,16 @@ math {
 
 .right-side-preview-area a:not([class]) {
   @apply inline-flex items-center text-primary underline rounded-sm hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary;
+}
+
+.right-side-preview-area iframe {
+  @apply w-full aspect-video;
+}
+
+.right-side-preview-area.darkmode a {
+  @apply text-blue-200 hover:text-blue-500 focus-visible:outline-blue-300;
+}
+
+.right-side-preview-area.darkmode figcaption {
+  color: white;
 }

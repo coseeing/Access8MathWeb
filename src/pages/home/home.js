@@ -315,16 +315,16 @@ export default function Home() {
   }
 
   return (
-    <>
+    <div className="flex h-screen flex-col overflow-hidden">
       <Header
         onImportClick={importClick}
         onExportClick={() => setShowSettingModal(true)}
         title={displayConfig.title}
         onTitleChange={(title) => setDisplayConfig({ title })}
       />
-      <main className="min-w-[768px] flex flex-col lg:flex-row">
+      <main className="min-w-[768px] flex flex-1 min-h-0 flex-col overflow-auto lg:flex-row lg:overflow-hidden">
         {/* Left side input panel */}
-        <div className="lg:w-3/5 bg-blue-50 p-6">
+        <div className="lg:w-3/5 bg-blue-50 p-6 flex flex-col min-h-0">
           <div className="flex items-center justify-between mb-4">
             <h2>{t('editContent')}</h2>
             <div className="flex items-center gap-2">
@@ -361,7 +361,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="flex h-[600px] border border-border-main bg-white rounded-lg overflow-hidden">
+          <div className="flex h-[600px] lg:h-auto lg:flex-1 lg:min-h-0 border border-border-main bg-white rounded-lg overflow-hidden">
             <div className="w-1/3 flex-shrink-0 h-full">
               <EditIconsTab insertLatex={insertLatex} addImageToExport={addImageToExport} />
             </div>
@@ -382,8 +382,8 @@ export default function Home() {
         </div>
 
         {/* Right side output panel */}
-        <div className="lg:w-2/5 flex flex-col lg:h-full h-[600px] p-6">
-          <div className="flex justify-between items-center mb-4">
+        <div className="lg:w-2/5 flex flex-col min-h-0 p-6">
+          <div className="flex justify-between items-center mb-4 shrink-0">
             <h2>{t('preview')}</h2>
             <div>
               <DropdownMenu
@@ -413,7 +413,7 @@ export default function Home() {
             </div>
           </div>
           <div
-            className={`right-side-preview-area border border-border-main leading-[1.5] space-y-3 p-4 flex-1 rounded-lg ${
+            className={`right-side-preview-area border border-border-main leading-[1.5] space-y-3 p-4 max-h-[600px] lg:max-h-none lg:min-h-0 overflow-y-auto rounded-lg ${
               displayConfig.documentColor === DocumentColor.DARK
                 ? 'darkmode bg-gray-800 text-white'
                 : 'bg-white text-text-primary'
@@ -441,6 +441,6 @@ export default function Home() {
           data={data}
         />
       </main>
-    </>
+    </div>
   );
 }
