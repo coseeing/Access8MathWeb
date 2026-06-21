@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from '@/lib/i18n';
 import { isValidUrl } from '@/lib/url';
@@ -13,6 +13,8 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
   const [openInNewTab, setOpenInNewTab] = useState(true);
   const [displayError, setDisplayError] = useState('');
   const [urlError, setUrlError] = useState('');
+  const displayRef = useRef(null);
+  const urlRef = useRef(null);
   const t = useTranslation('link-input-modal');
 
   const resetForm = () => {
@@ -37,7 +39,10 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
     if (isDisplayEmpty) setDisplayError(t('displayRequiredError'));
     if (isUrlEmpty) setUrlError(t('urlRequiredError'));
     else if (isUrlInvalid) setUrlError(t('urlInvalidError'));
-    if (isDisplayEmpty || isUrlEmpty || isUrlInvalid) return;
+    if (isDisplayEmpty || isUrlEmpty || isUrlInvalid) {
+      (isDisplayEmpty ? displayRef : urlRef).current?.focus();
+      return;
+    }
 
     const prefix = openInNewTab ? '@' : '';
     const titlePart = title.trim() ? `[[${title.trim()}]]` : '';
@@ -60,6 +65,7 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
       <div className="flex flex-col gap-6">
         <TextInput
           id="link-display"
+          ref={displayRef}
           label={t('display')}
           value={display}
           onChange={(val) => {
@@ -80,6 +86,8 @@ const LinkInputModal = ({ isOpen, onClose, onConfirm }) => {
         />
         <TextInput
           id="link-url"
+          ref={urlRef}
+          type="url"
           label={t('url')}
           value={url}
           onChange={(val) => {

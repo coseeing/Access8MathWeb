@@ -24,6 +24,9 @@ const BasicModal = ({
   const Body = asForm ? 'form' : Fragment;
   const bodyProps = asForm
     ? {
+        // Custom validation owns error messaging (translated, persistent, announced via
+        // role="alert"), so suppress the browser's transient native validation bubbles.
+        noValidate: true,
         onSubmit: (e) => {
           e.preventDefault();
           onConfirm();
