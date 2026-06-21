@@ -16,8 +16,21 @@ const BasicModal = ({
   cancelLabel = 'Cancel',
   confirmLabel = 'Confirm',
   size = 'l',
+  asForm = false,
   children,
 }) => {
+  // When asForm, the body and footer live inside a <form> so Enter submits from any
+  // field (native implicit submission) and the confirm button carries submit semantics.
+  const Body = asForm ? 'form' : Fragment;
+  const bodyProps = asForm
+    ? {
+        onSubmit: (e) => {
+          e.preventDefault();
+          onConfirm();
+        },
+      }
+    : {};
+
   return (
     <Transition.Root appear show={isOpen} as={Fragment}>
       <Dialog className="fixed z-10 inset-0 overflow-y-auto px-10" onClose={onClose}>
@@ -39,19 +52,33 @@ const BasicModal = ({
             >
               {title}
             </Dialog.Title>
-            <div className="mb-6">{children}</div>
-            <div className="flex justify-center">
-              {hasCancel && (
-                <Button className="mr-3 w-full" variant="secondary" onClick={onCancel} size={size}>
-                  {cancelLabel}
-                </Button>
-              )}
-              {hasConfirm && (
-                <Button className="w-full" variant="primary" onClick={onConfirm} size={size}>
-                  {confirmLabel}
-                </Button>
-              )}
-            </div>
+            <Body {...bodyProps}>
+              <div className="mb-6">{children}</div>
+              <div className="flex justify-center">
+                {hasCancel && (
+                  <Button
+                    type="button"
+                    className="mr-3 w-full"
+                    variant="secondary"
+                    onClick={onCancel}
+                    size={size}
+                  >
+                    {cancelLabel}
+                  </Button>
+                )}
+                {hasConfirm && (
+                  <Button
+                    type={asForm ? 'submit' : 'button'}
+                    className="w-full"
+                    variant="primary"
+                    onClick={asForm ? undefined : onConfirm}
+                    size={size}
+                  >
+                    {confirmLabel}
+                  </Button>
+                )}
+              </div>
+            </Body>
           </Dialog.Panel>
         </div>
       </Dialog>
@@ -71,6 +98,7 @@ BasicModal.propTypes = {
   hasCancel: PropTypes.bool,
   hasConfirm: PropTypes.bool,
   size: PropTypes.oneOf(['sm', 'l']),
+  asForm: PropTypes.bool,
 };
 
 export default BasicModal;

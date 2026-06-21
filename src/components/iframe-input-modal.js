@@ -47,6 +47,7 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
       onConfirm={handleConfirm}
       cancelLabel={t('cancel')}
       confirmLabel={t('confirm')}
+      asForm
     >
       <div className="flex flex-col gap-6">
         <TextInput
