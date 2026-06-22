@@ -101,7 +101,8 @@ math {
 .right-side-preview-area.darkmode h3,
 .right-side-preview-area.darkmode h4,
 .right-side-preview-area.darkmode h5,
-.right-side-preview-area.darkmode h6 {
+.right-side-preview-area.darkmode h6,
+.right-side-preview-area.darkmode figcaption {
   color: white;
 }
 
