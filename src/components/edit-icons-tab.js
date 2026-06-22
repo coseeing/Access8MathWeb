@@ -79,7 +79,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
         as="div"
         selectedIndex={selectedMainTabIndex}
         onChange={setSelectedMainTabIndex}
-        className="flex flex-col w-full h-[600px] border-r border-border-main"
+        className="flex flex-col w-full h-full border-r border-border-main"
       >
         <Tab.List as="div" className="w-full flex items-center border-b border-border-main">
           {mainTabList.map(({ id }, index) => (
@@ -94,7 +94,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
             </Tab>
           ))}
         </Tab.List>
-        <Tab.Panels as="div" className="flex flex-1 h-full w-full">
+        <Tab.Panels as="div" className="flex flex-1 h-full w-full min-h-0">
           <Tab.Panel className="h-full w-full">
             <Tab.Group
               as="div"
@@ -107,7 +107,8 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                   as="div"
                   className="flex flex-col px-2 py-3 gap-2 border-r border-border-main"
                   style={{
-                    maxHeight: '562px',
+                    maxHeight: '100%',
+                    minHeight: 0,
                     overflowY: 'auto',
                     scrollbarWidth: 'none', // hide scrollbar in Firefox
                     msOverflowStyle: 'none', // hide scrollbar in IE/Edge
@@ -130,7 +131,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                     </Tooltip>
                   ))}
                 </Tab.List>
-                <Tab.Panels as="div" className="flex-1 px-2 py-3 overflow-y-auto">
+                <Tab.Panels as="div" className="flex-1 min-h-0 px-2 py-3 overflow-y-auto">
                   {mathTabList.map((mathTab) => {
                     return (
                       <Tab.Panel key={mathTab.id} className="flex flex-wrap gap-2">
