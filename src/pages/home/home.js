@@ -382,7 +382,7 @@ export default function Home() {
         </div>
 
         {/* Right side output panel */}
-        <div className="lg:w-2/5 flex flex-col lg:h-full h-[600px] p-6">
+        <div className="lg:w-2/5 flex flex-col p-6">
           <div className="flex justify-between items-center mb-4">
             <h2>{t('preview')}</h2>
             <div>
@@ -413,7 +413,7 @@ export default function Home() {
             </div>
           </div>
           <div
-            className={`right-side-preview-area border border-border-main leading-[1.5] space-y-3 p-4 flex-1 rounded-lg ${
+            className={`right-side-preview-area border border-border-main leading-[1.5] space-y-3 p-4 h-[600px] overflow-y-auto rounded-lg ${
               displayConfig.documentColor === DocumentColor.DARK
                 ? 'darkmode bg-gray-800 text-white'
                 : 'bg-white text-text-primary'
