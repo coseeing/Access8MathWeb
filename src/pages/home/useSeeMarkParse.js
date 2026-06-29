@@ -14,6 +14,9 @@ import Image, {
   ImageLink,
 } from '@/components/parser-components/image/image';
 import InternalLink from '@/components/parser-components/internal-link/internal-link';
+import Iframe from '@/components/parser-components/iframe/iframe';
+import YouTube from '@/components/parser-components/youtube/youtube';
+import CodePen from '@/components/parser-components/codepen/codepen';
 
 const useSeeMarkParse = ({ latexDelimiter, documentFormat, imageFiles }) => {
   const seeMarkReactParse = useCallback(
@@ -35,6 +38,9 @@ const useSeeMarkParse = ({ latexDelimiter, documentFormat, imageFiles }) => {
           imageLink: ImageLink,
           imageDisplay: ImageDisplay,
           imageDisplayLink: ImageDisplayLink,
+          iframe: Iframe,
+          youtube: YouTube,
+          codepen: CodePen,
         },
       })(markdown);
     },
