@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { IconExternalLink } from '@tabler/icons-react';
 
 const linkClassName =
-  'inline-flex items-center text-primary underline rounded-sm hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary';
+  'inline-flex items-center text-primary underline rounded-sm hover:text-blue-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary [.darkmode_&]:text-blue-200 [.darkmode_&]:hover:text-blue-500 [.darkmode_&]:focus-visible:outline-blue-200';
 
 const ExternalLink = ({ display = '', target = '', title = '', newTab = false }) => (
   <a
