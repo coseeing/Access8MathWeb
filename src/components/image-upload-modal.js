@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import { IconAlertTriangle, IconPhoto, IconPlus, IconX } from '@tabler/icons-react';
 import { useTranslation } from '@/lib/i18n';
@@ -10,7 +10,7 @@ import RadioGroup from '@/components/core/radio-group';
 
 const MAX_FILE_SIZE_MB = 10;
 
-const ImageSource = ({ onChange, error, onErrorClear }) => {
+const ImageSource = React.forwardRef(({ onChange, error, onErrorClear }, ref) => {
   const [uploadFile, setUploadFile] = useState(null);
   const [uploadError, setUploadError] = useState(false);
   const [embedUrl, setEmbedUrl] = useState('');
@@ -20,10 +20,14 @@ const ImageSource = ({ onChange, error, onErrorClear }) => {
   const [statusMessage, setStatusMessage] = useState('');
 
   const fileInputRef = useRef(null);
+  const embedInputRef = useRef(null);
   const blobUrlRef = useRef(null);
   const loadRequestIdRef = useRef(0);
 
   const t = useTranslation('upload-image-modal');
+
+  // The source-required error surfaces on the embed-url field, so focus it on failed submit.
+  useImperativeHandle(ref, () => ({ focus: () => embedInputRef.current?.focus() }), []);
 
   const revokeBlobUrl = useCallback(() => {
     if (blobUrlRef.current) {
@@ -260,6 +264,8 @@ const ImageSource = ({ onChange, error, onErrorClear }) => {
           <div className="flex-1">
             <TextInput
               id="embed-url"
+              ref={embedInputRef}
+              type="url"
               aria-describedby="embed-url-hint"
               value={embedUrl}
               onChange={(val) => {
@@ -283,7 +289,9 @@ const ImageSource = ({ onChange, error, onErrorClear }) => {
       </div>
     </fieldset>
   );
-};
+});
+
+ImageSource.displayName = 'ImageSource';
 
 ImageSource.propTypes = {
   onChange: PropTypes.func.isRequired,
@@ -300,6 +308,10 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   const [linkOption, setLinkOption] = useState('no-link');
   const [targetUrl, setTargetUrl] = useState('');
   const [targetUrlError, setTargetUrlError] = useState('');
+
+  const sourceRef = useRef(null);
+  const altTextRef = useRef(null);
+  const targetUrlRef = useRef(null);
 
   const t = useTranslation('upload-image-modal');
 
@@ -320,25 +332,28 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
   };
 
   const handleConfirm = () => {
-    let valid = true;
+    let firstErrorRef = null;
     if (!imageSource) {
       setSourceError(t('sourceRequired'));
-      valid = false;
+      firstErrorRef = firstErrorRef || sourceRef;
     }
     if (!altText.trim()) {
       setAltTextError(t('altTextRequired'));
-      valid = false;
+      firstErrorRef = firstErrorRef || altTextRef;
     }
     if (linkOption === 'with-link') {
       if (!targetUrl.trim()) {
         setTargetUrlError(t('targetUrlRequired'));
-        valid = false;
+        firstErrorRef = firstErrorRef || targetUrlRef;
       } else if (!isValidUrl(targetUrl)) {
         setTargetUrlError(t('targetUrlInvalid'));
-        valid = false;
+        firstErrorRef = firstErrorRef || targetUrlRef;
       }
     }
-    if (!valid) return;
+    if (firstErrorRef) {
+      firstErrorRef.current?.focus();
+      return;
+    }
 
     onConfirm({
       file: imageSource.file,
@@ -359,10 +374,12 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
       onConfirm={handleConfirm}
       cancelLabel={t('cancel')}
       confirmLabel={t('confirm')}
+      asForm
     >
       <div className="flex flex-col gap-6">
         {/* Image source */}
         <ImageSource
+          ref={sourceRef}
           onChange={(src) => {
             setImageSource(src);
             if (src) setSourceError('');
@@ -374,6 +391,7 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
         {/* Alt text */}
         <TextInput
           id="alt-text"
+          ref={altTextRef}
           label={t('altText')}
           value={altText}
           onChange={(val) => {
@@ -412,6 +430,8 @@ const ImageUploadModal = ({ isOpen, onClose, onConfirm }) => {
         {linkOption === 'with-link' && (
           <TextInput
             id="target-url"
+            ref={targetUrlRef}
+            type="url"
             label={t('targetUrl')}
             value={targetUrl}
             onChange={(val) => {

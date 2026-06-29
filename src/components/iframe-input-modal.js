@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useTranslation } from '@/lib/i18n';
 import { isValidUrl } from '@/lib/url';
@@ -10,6 +10,8 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
   const [url, setUrl] = useState('');
   const [titleError, setTitleError] = useState('');
   const [urlError, setUrlError] = useState('');
+  const titleRef = useRef(null);
+  const urlRef = useRef(null);
   const t = useTranslation('iframe-input-modal');
 
   const resetForm = () => {
@@ -32,7 +34,10 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
     if (isTitleEmpty) setTitleError(t('titleRequiredError'));
     if (isUrlEmpty) setUrlError(t('urlRequiredError'));
     else if (isUrlInvalid) setUrlError(t('urlInvalidError'));
-    if (isTitleEmpty || isUrlEmpty || isUrlInvalid) return;
+    if (isTitleEmpty || isUrlEmpty || isUrlInvalid) {
+      (isTitleEmpty ? titleRef : urlRef).current?.focus();
+      return;
+    }
 
     onConfirm(title.trim(), url.trim());
     handleClose();
@@ -47,10 +52,12 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
       onConfirm={handleConfirm}
       cancelLabel={t('cancel')}
       confirmLabel={t('confirm')}
+      asForm
     >
       <div className="flex flex-col gap-6">
         <TextInput
           id="iframe-title"
+          ref={titleRef}
           label={t('titleLabel')}
           value={title}
           onChange={(val) => {
@@ -64,6 +71,7 @@ const IframeInputModal = ({ isOpen, onClose, onConfirm }) => {
 
         <TextInput
           id="iframe-url"
+          ref={urlRef}
           type="url"
           label={t('urlLabel')}
           value={url}
