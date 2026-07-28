@@ -27,7 +27,7 @@ const LanguageMenu = () => {
       triggerButton={
         <Button
           variant="tertiary"
-          className="min-w-[64px] lg:min-w-[88px]"
+          className="min-w-16 lg:min-w-[88px]"
           aria-label={t('changeLocale')}
         >
           <IconLanguage size={16} className="flex-none mr-1" aria-hidden="true" />
