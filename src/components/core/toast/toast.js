@@ -100,7 +100,7 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
         key={id}
         role="status"
         aria-live="polite"
-        className={`min-h-8 w-80 pl-4 pr-2 py-[6px] flex items-center gap-1 text-sm mb-2 rounded-lg ${toastTypeClasses[type]}`}
+        className={`min-h-8 w-80 pl-4 pr-2 py-1.5 flex items-center gap-1 text-sm mb-2 rounded-lg ${toastTypeClasses[type]}`}
         onMouseEnter={handlePause}
         onMouseLeave={handleResume}
       >

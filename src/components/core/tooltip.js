@@ -90,12 +90,12 @@ const Tooltip = ({ children, label, position = 'top' }) => {
   });
 
   const arrowClass = {
-    top: 'absolute left-1/2 -translate-x-1/2 -bottom-[14px] border-[7px] border-transparent border-t-[#1A1A1A99]',
+    top: 'absolute left-1/2 -translate-x-1/2 -bottom-3.5 border-[7px] border-transparent border-t-[#1A1A1A99]',
     bottom:
-      'absolute left-1/2 -translate-x-1/2 -top-[14px] border-[7px] border-transparent border-b-[#1A1A1A99]',
-    left: 'absolute top-1/2 -translate-y-1/2 -right-[14px] border-[7px] border-transparent border-l-[#1A1A1A99]',
+      'absolute left-1/2 -translate-x-1/2 -top-3.5 border-[7px] border-transparent border-b-[#1A1A1A99]',
+    left: 'absolute top-1/2 -translate-y-1/2 -right-3.5 border-[7px] border-transparent border-l-[#1A1A1A99]',
     right:
-      'absolute top-1/2 -translate-y-1/2 -left-[14px] border-[7px] border-transparent border-r-[#1A1A1A99]',
+      'absolute top-1/2 -translate-y-1/2 -left-3.5 border-[7px] border-transparent border-r-[#1A1A1A99]',
   };
 
   return (

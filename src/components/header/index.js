@@ -31,7 +31,7 @@ const Header = ({ onImportClick, onExportClick, title, onTitleChange }) => {
       <div className="flex items-center gap-3">
         <Button
           variant="tertiary"
-          className="min-w-[64px] lg:min-w-[88px] flex items-center gap-1"
+          className="min-w-16 lg:min-w-[88px] flex items-center gap-1"
           onClick={() => setShowTipModal(true)}
         >
           <IconBulb size={16} aria-hidden="true" />
@@ -39,14 +39,10 @@ const Header = ({ onImportClick, onExportClick, title, onTitleChange }) => {
         </Button>
         <Menu />
         <LanguageMenu />
-        <Button
-          variant="secondary"
-          className="min-w-[64px] lg:min-w-[88px]"
-          onClick={onImportClick}
-        >
+        <Button variant="secondary" className="min-w-16 lg:min-w-[88px]" onClick={onImportClick}>
           {t('import')}
         </Button>
-        <Button variant="primary" className="min-w-[64px] lg:min-w-[88px]" onClick={onExportClick}>
+        <Button variant="primary" className="min-w-16 lg:min-w-[88px]" onClick={onExportClick}>
           {t('export')}
         </Button>
       </div>

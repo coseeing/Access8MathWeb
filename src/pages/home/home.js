@@ -340,7 +340,7 @@ export default function Home() {
                   items={latexDelimiterOptions}
                   value={displayConfig.latexDelimiter}
                   onChange={(option) => setDisplayConfig({ latexDelimiter: option })}
-                  buttonClassName="w-[64px] h-7"
+                  buttonClassName="w-16 h-7"
                 />
               </div>
               <Button variant="secondary" onClick={insertMark}>
