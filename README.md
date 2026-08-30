@@ -11,7 +11,7 @@ https://github.com/coseeing/Access8MathWeb/wiki/Release-Flow
 
 ## Prerequisites
 
-- Node.js >= 20.19
+- Node.js 20.19+, 22.12+ or 24+ (see `engines` in package.json)
 - NPM >= 9
 
 ## Install Coseeing Github Packages
