@@ -3,7 +3,6 @@ import { vi } from 'vitest';
 
 import React, { act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 
 import Toaster from './toaster';
 import { showToast } from '@/components/core/toast/service';
@@ -22,7 +21,6 @@ describe('<Toaster />', () => {
       clearAllToasts();
     });
     vi.clearAllTimers();
-    vi.runOnlyPendingTimers();
     vi.useRealTimers();
   });
 

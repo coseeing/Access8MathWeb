@@ -10,6 +10,7 @@ const config = {
   typescript: {
     reactDocgen: 'react-docgen',
   },
-  // `@` alias, svgr and PostCSS are inherited from vite.config.mjs
+  // `@` alias and svgr are inherited from vite.config.mjs; PostCSS (Tailwind)
+  // is auto-discovered from postcss.config.js.
 };
 export default config;
