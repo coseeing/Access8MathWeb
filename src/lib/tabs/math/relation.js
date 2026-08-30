@@ -1,11 +1,11 @@
-import { ReactComponent as Cong } from '@/components/svg/relation/cong.svg';
-import { ReactComponent as Sim } from '@/components/svg/relation/sim.svg';
-import { ReactComponent as Le } from '@/components/svg/relation/le.svg';
-import { ReactComponent as Ge } from '@/components/svg/relation/ge.svg';
-import { ReactComponent as Ne } from '@/components/svg/relation/ne.svg';
-import { ReactComponent as Approx } from '@/components/svg/relation/approx.svg';
-import { ReactComponent as Propto } from '@/components/svg/relation/propto.svg';
-import { ReactComponent as Doteqdot } from '@/components/svg/relation/doteqdot.svg';
+import Cong from '@/components/svg/relation/cong.svg?react';
+import Sim from '@/components/svg/relation/sim.svg?react';
+import Le from '@/components/svg/relation/le.svg?react';
+import Ge from '@/components/svg/relation/ge.svg?react';
+import Ne from '@/components/svg/relation/ne.svg?react';
+import Approx from '@/components/svg/relation/approx.svg?react';
+import Propto from '@/components/svg/relation/propto.svg?react';
+import Doteqdot from '@/components/svg/relation/doteqdot.svg?react';
 
 const relation = [
   {

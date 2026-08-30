@@ -1,10 +1,10 @@
-import { ReactComponent as Frac } from '@/components/svg/common/frac.svg';
-import { ReactComponent as Sqrt } from '@/components/svg/common/sqrt.svg';
-import { ReactComponent as Root } from '@/components/svg/common/root.svg';
-import { ReactComponent as Sumupdown } from '@/components/svg/common/sumupdown.svg';
-import { ReactComponent as Vector } from '@/components/svg/common/vector.svg';
-import { ReactComponent as Limit } from '@/components/svg/common/limit.svg';
-import { ReactComponent as Logarithm } from '@/components/svg/common/logarithm.svg';
+import Frac from '@/components/svg/common/frac.svg?react';
+import Sqrt from '@/components/svg/common/sqrt.svg?react';
+import Root from '@/components/svg/common/root.svg?react';
+import Sumupdown from '@/components/svg/common/sumupdown.svg?react';
+import Vector from '@/components/svg/common/vector.svg?react';
+import Limit from '@/components/svg/common/limit.svg?react';
+import Logarithm from '@/components/svg/common/logarithm.svg?react';
 
 const common = [
   {

@@ -1,19 +1,19 @@
-import { ReactComponent as GenericIcon } from '@/components/svg/markdown/generic_list.svg';
-import { ReactComponent as NumberedListIcon } from '@/components/svg/markdown/numbered_list.svg';
-import { ReactComponent as HorizontalRule } from '@/components/svg/markdown/horizontal_rule.svg';
-import { ReactComponent as Heading1 } from '@/components/svg/markdown/heading1.svg';
-import { ReactComponent as Heading2 } from '@/components/svg/markdown/heading2.svg';
-import { ReactComponent as Heading3 } from '@/components/svg/markdown/heading3.svg';
-import { ReactComponent as Heading4 } from '@/components/svg/markdown/heading4.svg';
-import { ReactComponent as Heading5 } from '@/components/svg/markdown/heading5.svg';
-import { ReactComponent as Heading6 } from '@/components/svg/markdown/heading6.svg';
-import { ReactComponent as Italic } from '@/components/svg/markdown/italic.svg';
-import { ReactComponent as Bold } from '@/components/svg/markdown/bold.svg';
-import { ReactComponent as CreateLink } from '@/components/svg/markdown/create_link.svg';
-import { ReactComponent as InsertImage } from '@/components/svg/markdown/insert_image.svg';
-import { ReactComponent as Quote } from '@/components/svg/markdown/quote.svg';
-import { ReactComponent as Table } from '@/components/svg/markdown/table.svg';
-import { ReactComponent as InsertIframe } from '@/components/svg/markdown/insert_iframe.svg';
+import GenericIcon from '@/components/svg/markdown/generic_list.svg?react';
+import NumberedListIcon from '@/components/svg/markdown/numbered_list.svg?react';
+import HorizontalRule from '@/components/svg/markdown/horizontal_rule.svg?react';
+import Heading1 from '@/components/svg/markdown/heading1.svg?react';
+import Heading2 from '@/components/svg/markdown/heading2.svg?react';
+import Heading3 from '@/components/svg/markdown/heading3.svg?react';
+import Heading4 from '@/components/svg/markdown/heading4.svg?react';
+import Heading5 from '@/components/svg/markdown/heading5.svg?react';
+import Heading6 from '@/components/svg/markdown/heading6.svg?react';
+import Italic from '@/components/svg/markdown/italic.svg?react';
+import Bold from '@/components/svg/markdown/bold.svg?react';
+import CreateLink from '@/components/svg/markdown/create_link.svg?react';
+import InsertImage from '@/components/svg/markdown/insert_image.svg?react';
+import Quote from '@/components/svg/markdown/quote.svg?react';
+import Table from '@/components/svg/markdown/table.svg?react';
+import InsertIframe from '@/components/svg/markdown/insert_iframe.svg?react';
 
 const markdowns = [
   {
