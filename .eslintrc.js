@@ -1,10 +1,11 @@
 module.exports = {
+  root: true,
   env: {
     browser: true,
     es2021: true,
     node: true,
   },
-  ignorePatterns: ['storybook-static/**'],
+  ignorePatterns: ['storybook-static/**', 'build/**', 'out/**'],
   extends: [
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
