@@ -1,4 +1,3 @@
-/* eslint-env jest */
 import { vi } from 'vitest';
 
 import React, { act } from 'react';
@@ -22,7 +21,6 @@ describe('<Toaster />', () => {
     act(() => {
       clearAllToasts();
     });
-    vi.clearAllTimers();
     vi.useRealTimers();
   });
 
