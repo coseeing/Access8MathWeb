@@ -1,8 +1,8 @@
-import { ReactComponent as Because } from '@/components/svg/logic/because.svg';
-import { ReactComponent as Therefore } from '@/components/svg/logic/therefore.svg';
-import { ReactComponent as Iff } from '@/components/svg/logic/iff.svg';
-import { ReactComponent as Implies } from '@/components/svg/logic/implies.svg';
-import { ReactComponent as Impliedby } from '@/components/svg/logic/impliedby.svg';
+import Because from '@/components/svg/logic/because.svg?react';
+import Therefore from '@/components/svg/logic/therefore.svg?react';
+import Iff from '@/components/svg/logic/iff.svg?react';
+import Implies from '@/components/svg/logic/implies.svg?react';
+import Impliedby from '@/components/svg/logic/impliedby.svg?react';
 
 const logic = [
   {

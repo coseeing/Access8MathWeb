@@ -1,7 +1,7 @@
-import { ReactComponent as Times } from '@/components/svg/operator/times.svg';
-import { ReactComponent as Div } from '@/components/svg/operator/div.svg';
-import { ReactComponent as Pm } from '@/components/svg/operator/pm.svg';
-import { ReactComponent as Modulus } from '@/components/svg/operator/modulus.svg';
+import Times from '@/components/svg/operator/times.svg?react';
+import Div from '@/components/svg/operator/div.svg?react';
+import Pm from '@/components/svg/operator/pm.svg?react';
+import Modulus from '@/components/svg/operator/modulus.svg?react';
 
 const operator = [
   {

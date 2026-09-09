@@ -27,6 +27,7 @@ const FADE_OUT_DURATION = 300; // Match the transition duration
  */
 const Toast = ({ toast, onRemove, onRemoveStart }) => {
   const timerRef = useRef(null);
+  const dismissTimerRef = useRef(null);
   const remainingDurationRef = useRef(0);
   const startTimeRef = useRef(0);
   const { id, type, message, duration, showCloseButton, isExiting } = toast;
@@ -36,7 +37,7 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
     onRemoveStart(id);
 
     // After animation duration, remove from queue
-    setTimeout(() => {
+    dismissTimerRef.current = setTimeout(() => {
       onRemove(id);
     }, FADE_OUT_DURATION);
   }, [id, onRemove, onRemoveStart]);
@@ -76,11 +77,15 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
     };
   }, [duration, handleDismiss, isExiting]);
 
-  // Clean up timer on unmount
+  // Clean up timers on unmount, including a pending dismiss timeout so it
+  // cannot fire against the store after this toast is gone
   useEffect(() => {
     return () => {
       if (timerRef.current) {
         clearTimeout(timerRef.current);
+      }
+      if (dismissTimerRef.current) {
+        clearTimeout(dismissTimerRef.current);
       }
     };
   }, []);
@@ -108,8 +113,8 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
           <div
             className={`w-4 h-4 mask-cover mask-no-repeat ${iconTypeClasses[type]}`}
             style={{
-              maskImage: `url(${AlertCircleIcon})`,
-              WebkitMaskImage: `url(${AlertCircleIcon})`,
+              maskImage: `url("${AlertCircleIcon}")`,
+              WebkitMaskImage: `url("${AlertCircleIcon}")`,
             }}
             aria-hidden="true"
           />
@@ -124,8 +129,8 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
             <div
               className={`w-4 h-4 mask-cover mask-no-repeat ${iconTypeClasses[type]}`}
               style={{
-                maskImage: `url(${CloseIcon})`,
-                WebkitMaskImage: `url(${CloseIcon})`,
+                maskImage: `url("${CloseIcon}")`,
+                WebkitMaskImage: `url("${CloseIcon}")`,
               }}
             />
           </button>

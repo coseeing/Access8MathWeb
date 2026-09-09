@@ -1,12 +1,12 @@
-import { ReactComponent as Binom } from '@/components/svg/other/binom.svg';
-import { ReactComponent as Infty } from '@/components/svg/other/infty.svg';
-import { ReactComponent as OverLeftRightArrow } from '@/components/svg/other/overleftrightarrow.svg';
-import { ReactComponent as Overline } from '@/components/svg/other/overline.svg';
-import { ReactComponent as OverRightArrow } from '@/components/svg/other/overrightarrow.svg';
-import { ReactComponent as SimultaneousEquations } from '@/components/svg/other/simultaneous-equations.svg';
-import { ReactComponent as Floor } from '@/components/svg/other/floor.svg';
-import { ReactComponent as Ceil } from '@/components/svg/other/ceil.svg';
-import { ReactComponent as RepeatingDecimal } from '@/components/svg/other/repeating-decimal.svg';
+import Binom from '@/components/svg/other/binom.svg?react';
+import Infty from '@/components/svg/other/infty.svg?react';
+import OverLeftRightArrow from '@/components/svg/other/overleftrightarrow.svg?react';
+import Overline from '@/components/svg/other/overline.svg?react';
+import OverRightArrow from '@/components/svg/other/overrightarrow.svg?react';
+import SimultaneousEquations from '@/components/svg/other/simultaneous-equations.svg?react';
+import Floor from '@/components/svg/other/floor.svg?react';
+import Ceil from '@/components/svg/other/ceil.svg?react';
+import RepeatingDecimal from '@/components/svg/other/repeating-decimal.svg?react';
 
 const other = [
   {
