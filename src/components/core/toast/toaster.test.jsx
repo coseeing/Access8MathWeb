@@ -9,8 +9,10 @@ import { showToast } from '@/components/core/toast/service';
 import { clearAllToasts, MAX_VISIBLE_TOASTS } from './store';
 
 describe('<Toaster />', () => {
-  // We need to use fake timers to control setTimeout. Enable them per test so
-  // Vitest's own test-timeout timer is armed with real timers first.
+  // We need to use fake timers to control setTimeout. Arm them per test (and
+  // restore real timers in afterEach) so every test starts from a fresh fake
+  // clock; with a single module-level clock shared across tests, the
+  // pause/resume test hangs in waitFor.
   beforeEach(() => {
     vi.useFakeTimers();
   });
