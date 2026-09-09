@@ -108,8 +108,8 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
           <div
             className={`w-4 h-4 mask-cover mask-no-repeat ${iconTypeClasses[type]}`}
             style={{
-              maskImage: `url(${AlertCircleIcon})`,
-              WebkitMaskImage: `url(${AlertCircleIcon})`,
+              maskImage: `url("${AlertCircleIcon}")`,
+              WebkitMaskImage: `url("${AlertCircleIcon}")`,
             }}
             aria-hidden="true"
           />
@@ -124,8 +124,8 @@ const Toast = ({ toast, onRemove, onRemoveStart }) => {
             <div
               className={`w-4 h-4 mask-cover mask-no-repeat ${iconTypeClasses[type]}`}
               style={{
-                maskImage: `url(${CloseIcon})`,
-                WebkitMaskImage: `url(${CloseIcon})`,
+                maskImage: `url("${CloseIcon}")`,
+                WebkitMaskImage: `url("${CloseIcon}")`,
               }}
             />
           </button>
