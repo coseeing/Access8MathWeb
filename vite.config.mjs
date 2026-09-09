@@ -17,11 +17,13 @@ function versionFilePlugin() {
     name: 'access8math-version-file',
     apply: 'build',
     configResolved(config) {
-      // Use the resolved outDir so other consumers of this config (Storybook's
-      // Vite builder) write into their own output directory, not build/.
-      outDir = config.build.outDir;
+      // config.build.outDir is as-authored (relative to root), so resolve it
+      // here. Other consumers of this config (Storybook's Vite builder) then
+      // write into their own output directory, not build/.
+      outDir = path.resolve(config.root, config.build.outDir);
     },
-    closeBundle() {
+    // writeBundle (not closeBundle) so nothing is written when the build fails.
+    writeBundle() {
       const version = process.env.npm_package_version || 'unknown';
       const buildDate = new Date().toISOString();
       fs.writeFileSync(

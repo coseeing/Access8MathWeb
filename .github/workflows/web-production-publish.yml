@@ -21,6 +21,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
+      - name: Setup NodeJS env
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22.x'
+
       - name: Authenticate with github package registry
         run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
 
