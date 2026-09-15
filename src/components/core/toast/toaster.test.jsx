@@ -1,24 +1,27 @@
-/* eslint-env jest */
+import { vi } from 'vitest';
 
 import React, { act } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
 
 import Toaster from './toaster';
 import { showToast } from '@/components/core/toast/service';
 import { clearAllToasts, MAX_VISIBLE_TOASTS } from './store';
 
-// We need to use fake timers to control setTimeout
-jest.useFakeTimers();
-
 describe('<Toaster />', () => {
+  // We need to use fake timers to control setTimeout. Arm them per test (and
+  // restore real timers in afterEach) so every test starts from a fresh fake
+  // clock; with a single module-level clock shared across tests, the
+  // pause/resume test hangs in waitFor.
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
+
   // Reset the store and timers after each test
   afterEach(() => {
     act(() => {
       clearAllToasts();
     });
-    jest.clearAllTimers();
-    jest.runOnlyPendingTimers();
+    vi.useRealTimers();
   });
 
   it('should render nothing when no toast is active', () => {
@@ -36,7 +39,7 @@ describe('<Toaster />', () => {
     // The toast should appear immediately
     const toastElement = await screen.findByText('File uploaded!');
     expect(toastElement).toBeInTheDocument();
-    expect(toastElement.closest('div')).toHaveClass('bg-green-500');
+    expect(toastElement.closest('div')).toHaveClass('bg-status-success-bg');
   });
 
   it('should render multiple toasts simultaneously', async () => {
@@ -97,7 +100,7 @@ describe('<Toaster />', () => {
 
     // After 1 second + animation, short toast should disappear
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     await waitFor(() => {
@@ -110,7 +113,7 @@ describe('<Toaster />', () => {
 
     // After 3 seconds total, medium toast should disappear
     act(() => {
-      jest.advanceTimersByTime(2000);
+      vi.advanceTimersByTime(2000);
     });
 
     await waitFor(() => {
@@ -133,7 +136,7 @@ describe('<Toaster />', () => {
 
     // Fast-forward time by 1.5 seconds
     act(() => {
-      jest.advanceTimersByTime(1500);
+      vi.advanceTimersByTime(1500);
     });
 
     // Pause only the hover toast timer
@@ -141,7 +144,7 @@ describe('<Toaster />', () => {
 
     // Advance time by another 1 second (total 2.5s)
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     // Regular toast should disappear after 2s
@@ -157,7 +160,7 @@ describe('<Toaster />', () => {
 
     // Now run the remaining time for the hover toast (3.5s remaining)
     act(() => {
-      jest.advanceTimersByTime(3500);
+      vi.advanceTimersByTime(3500);
     });
 
     await waitFor(() => {
@@ -191,7 +194,7 @@ describe('<Toaster />', () => {
 
     // Run timers for the leave animation (300ms setTimeout + animation time)
     act(() => {
-      jest.advanceTimersByTime(400); // A bit more than 300ms to ensure both animation and setTimeout complete
+      vi.advanceTimersByTime(400); // A bit more than 300ms to ensure both animation and setTimeout complete
     });
 
     // Wait for the DOM to update after the toast is removed from the store

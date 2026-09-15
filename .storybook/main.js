@@ -1,29 +1,16 @@
-const path = require('path');
-
-/** @type { import('@storybook/react-webpack5').StorybookConfig } */
+/** @type { import('@storybook/react-vite').StorybookConfig } */
 const config = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: [
-    '@storybook/preset-create-react-app',
-    '@storybook/addon-docs',
-    '@storybook/addon-onboarding',
-    '@storybook/addon-themes',
-  ],
+  addons: ['@storybook/addon-docs', '@storybook/addon-onboarding', '@storybook/addon-themes'],
   framework: {
-    name: '@storybook/react-webpack5',
+    name: '@storybook/react-vite',
     options: {},
   },
   staticDirs: ['../public'],
   typescript: {
     reactDocgen: 'react-docgen',
   },
-  webpackFinal: async (config) => {
-    // Add support for @ alias
-    config.resolve.alias = {
-      ...config.resolve.alias,
-      '@': path.resolve(__dirname, '../src'),
-    };
-    return config;
-  },
+  // `@` alias and svgr are inherited from vite.config.mjs; PostCSS (Tailwind)
+  // is auto-discovered from postcss.config.js.
 };
 export default config;

@@ -1,20 +1,20 @@
-import { ReactComponent as In } from '@/components/svg/set/in.svg';
-import { ReactComponent as Notin } from '@/components/svg/set/notin.svg';
-import { ReactComponent as Subset } from '@/components/svg/set/subset.svg';
-import { ReactComponent as Cap } from '@/components/svg/set/cap.svg';
-import { ReactComponent as Complement } from '@/components/svg/set/complement.svg';
-import { ReactComponent as Cup } from '@/components/svg/set/cup.svg';
-import { ReactComponent as EmptySet } from '@/components/svg/set/emptyset.svg';
-import { ReactComponent as Exists } from '@/components/svg/set/exists.svg';
-import { ReactComponent as Forall } from '@/components/svg/set/forall.svg';
-import { ReactComponent as NaturalNumber } from '@/components/svg/set/natural-number.svg';
-import { ReactComponent as NotSubset } from '@/components/svg/set/not-subset.svg';
-import { ReactComponent as NotSupset } from '@/components/svg/set/not-supset.svg';
-import { ReactComponent as RealNumber } from '@/components/svg/set/real-number.svg';
-import { ReactComponent as SetMinus } from '@/components/svg/set/setminus.svg';
-import { ReactComponent as SubsetNeqq } from '@/components/svg/set/subsetneqq.svg';
-import { ReactComponent as Supset } from '@/components/svg/set/supset.svg';
-import { ReactComponent as SupsetNeqq } from '@/components/svg/set/supsetneqq.svg';
+import In from '@/components/svg/set/in.svg?react';
+import Notin from '@/components/svg/set/notin.svg?react';
+import Subset from '@/components/svg/set/subset.svg?react';
+import Cap from '@/components/svg/set/cap.svg?react';
+import Complement from '@/components/svg/set/complement.svg?react';
+import Cup from '@/components/svg/set/cup.svg?react';
+import EmptySet from '@/components/svg/set/emptyset.svg?react';
+import Exists from '@/components/svg/set/exists.svg?react';
+import Forall from '@/components/svg/set/forall.svg?react';
+import NaturalNumber from '@/components/svg/set/natural-number.svg?react';
+import NotSubset from '@/components/svg/set/not-subset.svg?react';
+import NotSupset from '@/components/svg/set/not-supset.svg?react';
+import RealNumber from '@/components/svg/set/real-number.svg?react';
+import SetMinus from '@/components/svg/set/setminus.svg?react';
+import SubsetNeqq from '@/components/svg/set/subsetneqq.svg?react';
+import Supset from '@/components/svg/set/supset.svg?react';
+import SupsetNeqq from '@/components/svg/set/supsetneqq.svg?react';
 
 const set = [
   {

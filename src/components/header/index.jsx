@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { ReactComponent as A8mLogo } from '@/components/svg/a8m-logo.svg';
+import A8mLogo from '@/components/svg/a8m-logo.svg?react';
 import Menu from './menu';
 import LanguageMenu from './language-menu';
 import TipModal from '@/components/home/tip-modal';
