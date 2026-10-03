@@ -29,10 +29,8 @@ i18n
   .init({
     lng: locale,
     fallbackLng: 'en',
-    // Every caller passes an explicit namespace. Without this, i18next also
-    // requests its built-in default `translation` namespace, which has no file.
-    // Over electron-serve's app:// protocol that miss is a network error rather
-    // than a 404, so the backend retries forever and Suspense never resolves.
+    // Keep an existing default namespace: without it i18next requests the
+    // non-existent `translation.json`, which leaves the packaged Electron app blank.
     ns: ['common'],
     defaultNS: 'common',
     debug: true,
