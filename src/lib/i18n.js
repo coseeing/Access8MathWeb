@@ -29,6 +29,10 @@ i18n
   .init({
     lng: locale,
     fallbackLng: 'en',
+    // Keep an existing default namespace: without it i18next requests the
+    // non-existent `translation.json`, which leaves the packaged Electron app blank.
+    ns: ['common'],
+    defaultNS: 'common',
     debug: true,
     interpolation: {
       escapeValue: false, // not needed for react as it escapes by default
