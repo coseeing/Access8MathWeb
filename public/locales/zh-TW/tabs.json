@@ -21,7 +21,11 @@
     "quote": "引用",
     "table": "表格"
   },
+  "favorite": {
+    "empty": "尚未建立常用符號。在符號上按右鍵（或快顯鍵、Shift+F10）即可加入常用。"
+  },
   "categorys": {
+    "favorite": "常用符號",
     "common": "常見",
     "operator": "運算子",
     "relation": "關係",

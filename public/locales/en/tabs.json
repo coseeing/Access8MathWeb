@@ -22,7 +22,11 @@
     "quote": "quote",
     "table": "table"
   },
+  "favorite": {
+    "empty": "No favorite symbols yet. Right-click a symbol (or press the context menu key or Shift+F10) to add it to favorites."
+  },
   "categorys": {
+    "favorite": "Favorites",
     "common": "Common",
     "operator": "Operator",
     "relation": "Relation",

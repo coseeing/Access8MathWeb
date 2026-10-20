@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@headlessui/react';
+import { IconTagStarred } from '@tabler/icons-react';
 
 import { useTranslation } from '@/lib/i18n';
 import mainTabList from '@/lib/tabs/main';
@@ -8,10 +9,15 @@ import markdowns from '@/lib/tabs/markdowns';
 
 import { compare } from '@/lib/data-process';
 import mathTabList from '@/lib/tabs/math';
+import useFavoriteMathTemplates from '@/lib/favorite-math-templates/use-favorite-math-templates';
 import ImageUploadModal from './image-upload-modal';
 import LinkInputModal from './link-input-modal';
 import IframeInputModal from './iframe-input-modal';
 import Tooltip from './core/tooltip';
+
+// The favorites category comes before every category in mathTabList.
+const FAVORITE_TAB_INDEX = 0;
+const FIRST_MATH_TAB_INDEX = 1;
 
 const generateUniqueId = (length = 8) => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -20,9 +26,38 @@ const generateUniqueId = (length = 8) => {
   );
 };
 
+const getCategoryTabClassName = (isSelected) =>
+  `group relative rounded category-icon flex items-center justify-center cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+    isSelected ? 'active bg-blue-100' : 'bg-white hover:bg-blue-100'
+  }`;
+
+const MathTemplateButton = ({ template, label, onClick }) => (
+  <Tooltip label={label} position="top">
+    <button
+      aria-label={label}
+      className="group relative bg-white rounded border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+      onClick={onClick}
+    >
+      <template.Icon width={50} height={50} className="rounded" />
+    </button>
+  </Tooltip>
+);
+
+MathTemplateButton.propTypes = {
+  template: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    Icon: PropTypes.elementType.isRequired,
+  }).isRequired,
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+};
+
 const EditIconsTab = ({ insertLatex, addImageToExport }) => {
+  const { favoriteTemplates } = useFavoriteMathTemplates();
   const [selectedMainTabIndex, setSelectedMainTabIndex] = useState(0);
-  const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(0);
+  const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(() =>
+    favoriteTemplates.length > 0 ? FAVORITE_TAB_INDEX : FIRST_MATH_TAB_INDEX
+  );
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false);
@@ -114,17 +149,24 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                     msOverflowStyle: 'none', // hide scrollbar in IE/Edge
                   }}
                 >
-                  {mathTabList.map((tab, mathTabIndex) => (
+                  <Tooltip label={t('categorys.favorite')} position="right">
+                    <Tab
+                      as="button"
+                      aria-label={t('categorys.favorite')}
+                      className={({ selected }) => getCategoryTabClassName(selected)}
+                    >
+                      <span className="flex items-center justify-center w-[52px] h-[52px]">
+                        <IconTagStarred size={30} stroke={1.5} color="#454545" aria-hidden="true" />
+                      </span>
+                    </Tab>
+                  </Tooltip>
+                  {mathTabList.map((tab) => (
                     <Tooltip key={tab.id} label={t(`categorys.${tab.id}`)} position="right">
                       <Tab
                         as="button"
                         key={tab.id}
                         aria-label={t(`categorys.${tab.id}`)}
-                        className={`group relative rounded category-icon flex items-center justify-center cursor-pointer transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                          selectedMathTabIndex === mathTabIndex
-                            ? 'active bg-blue-100'
-                            : 'bg-white hover:bg-blue-100'
-                        }`}
+                        className={({ selected }) => getCategoryTabClassName(selected)}
                       >
                         <tab.Icon width={52} height={52} />
                       </Tab>
@@ -132,19 +174,32 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                   ))}
                 </Tab.List>
                 <Tab.Panels as="div" className="flex-1 min-h-0 px-2 py-3 overflow-y-auto">
+                  <Tab.Panel className="flex flex-wrap gap-2">
+                    {favoriteTemplates.length > 0 ? (
+                      favoriteTemplates.map((template) => (
+                        <MathTemplateButton
+                          key={template.id}
+                          template={template}
+                          label={t(`latexs.${template.id}`)}
+                          onClick={() => insertLatex(template)}
+                        />
+                      ))
+                    ) : (
+                      <p className="px-2 text-sm leading-[1.5] text-center text-text-secondary">
+                        {t('favorite.empty')}
+                      </p>
+                    )}
+                  </Tab.Panel>
                   {mathTabList.map((mathTab) => {
                     return (
                       <Tab.Panel key={mathTab.id} className="flex flex-wrap gap-2">
                         {(mathTab?.subTabs || []).sort(compare('order', 'asc')).map((subTab) => (
-                          <Tooltip key={subTab.id} label={t(`latexs.${subTab.id}`)} position="top">
-                            <button
-                              aria-label={t(`latexs.${subTab.id}`)}
-                              className="group relative bg-white rounded border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                              onClick={() => insertLatex(subTab)}
-                            >
-                              <subTab.Icon width={50} height={50} className="rounded" />
-                            </button>
-                          </Tooltip>
+                          <MathTemplateButton
+                            key={subTab.id}
+                            template={subTab}
+                            label={t(`latexs.${subTab.id}`)}
+                            onClick={() => insertLatex(subTab)}
+                          />
                         ))}
                       </Tab.Panel>
                     );
