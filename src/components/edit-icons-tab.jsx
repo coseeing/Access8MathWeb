@@ -10,10 +10,14 @@ import markdowns from '@/lib/tabs/markdowns';
 import { compare } from '@/lib/data-process';
 import mathTabList from '@/lib/tabs/math';
 import useFavoriteMathTemplates from '@/lib/favorite-math-templates/use-favorite-math-templates';
+import { FavoriteResult, FAVORITE_MATH_TEMPLATE_LIMIT } from '@/lib/favorite-math-templates/store';
 import ImageUploadModal from './image-upload-modal';
 import LinkInputModal from './link-input-modal';
 import IframeInputModal from './iframe-input-modal';
 import Tooltip from './core/tooltip';
+import ContextMenu, { getContextMenuPosition } from './core/context-menu';
+import AlertModal from './core/modal/alert-modal';
+import { showToast } from './core/toast/service';
 
 // The favorites category comes before every category in mathTabList.
 const FAVORITE_TAB_INDEX = 0;
@@ -31,12 +35,25 @@ const getCategoryTabClassName = (isSelected) =>
     isSelected ? 'active bg-blue-100' : 'bg-white hover:bg-blue-100'
   }`;
 
-const MathTemplateButton = ({ template, label, onClick }) => (
+const FAVORITE_ALERT_COPY = {
+  [FavoriteResult.LIMIT_REACHED]: {
+    title: 'favorite.limitReachedTitle',
+    message: 'favorite.limitReachedMessage',
+  },
+  [FavoriteResult.ALREADY_EXISTS]: {
+    title: 'favorite.duplicateTitle',
+    message: 'favorite.duplicateMessage',
+  },
+};
+
+const MathTemplateButton = ({ template, label, onClick, onContextMenu, onKeyDown }) => (
   <Tooltip label={label} position="top">
     <button
       aria-label={label}
       className="group relative bg-white rounded border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
       onClick={onClick}
+      onContextMenu={onContextMenu}
+      onKeyDown={onKeyDown}
     >
       <template.Icon width={50} height={50} className="rounded" />
     </button>
@@ -50,10 +67,12 @@ MathTemplateButton.propTypes = {
   }).isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
+  onContextMenu: PropTypes.func,
+  onKeyDown: PropTypes.func,
 };
 
 const EditIconsTab = ({ insertLatex, addImageToExport }) => {
-  const { favoriteTemplates } = useFavoriteMathTemplates();
+  const { favoriteTemplates, addFavorite } = useFavoriteMathTemplates();
   const [selectedMainTabIndex, setSelectedMainTabIndex] = useState(0);
   const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(() =>
     favoriteTemplates.length > 0 ? FAVORITE_TAB_INDEX : FIRST_MATH_TAB_INDEX
@@ -61,8 +80,52 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
   const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
   const [isIframeModalOpen, setIsIframeModalOpen] = useState(false);
+  const [contextMenu, setContextMenu] = useState(null);
+  // `reason` outlives `isOpen` so the copy does not blank out while the alert closes.
+  const [favoriteAlert, setFavoriteAlert] = useState({ isOpen: false, reason: null });
 
   const t = useTranslation('tabs');
+
+  const closeContextMenu = useCallback(() => setContextMenu(null), []);
+
+  const openContextMenu = useCallback((event, template) => {
+    event.preventDefault();
+    const trigger = event.currentTarget;
+    const position = getContextMenuPosition(event);
+    // A new key per opening remounts the menu, so it re-focuses and re-measures.
+    setContextMenu((previous) => ({
+      key: (previous?.key ?? 0) + 1,
+      template,
+      trigger,
+      position,
+    }));
+  }, []);
+
+  const handleTemplateKeyDown = useCallback(
+    (event, template) => {
+      // Not every browser maps Shift+F10 to a `contextmenu` event (e.g. Chrome on macOS).
+      if (event.key === 'F10' && event.shiftKey) {
+        openContextMenu(event, template);
+      }
+    },
+    [openContextMenu]
+  );
+
+  const handleAddFavorite = useCallback(
+    (template) => {
+      const { ok, reason } = addFavorite(template.id);
+      if (ok) {
+        showToast.success(t('favorite.added', { name: t(`latexs.${template.id}`) }));
+        return;
+      }
+      if (FAVORITE_ALERT_COPY[reason]) {
+        setFavoriteAlert({ isOpen: true, reason });
+        return;
+      }
+      showToast.error(t('favorite.saveFailed'));
+    },
+    [addFavorite, t]
+  );
 
   const handleLinkConfirm = useCallback(
     (markdown) => {
@@ -199,6 +262,8 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                             template={subTab}
                             label={t(`latexs.${subTab.id}`)}
                             onClick={() => insertLatex(subTab)}
+                            onContextMenu={(event) => openContextMenu(event, subTab)}
+                            onKeyDown={(event) => handleTemplateKeyDown(event, subTab)}
                           />
                         ))}
                       </Tab.Panel>
@@ -251,6 +316,34 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
         isOpen={isIframeModalOpen}
         onClose={() => setIsIframeModalOpen(false)}
         onConfirm={handleIframeConfirm}
+      />
+      {contextMenu && (
+        <ContextMenu
+          key={contextMenu.key}
+          position={contextMenu.position}
+          label={t(`latexs.${contextMenu.template.id}`)}
+          items={[
+            {
+              id: 'add-favorite',
+              label: t('favorite.add'),
+              onSelect: () => handleAddFavorite(contextMenu.template),
+            },
+          ]}
+          returnFocusTo={contextMenu.trigger}
+          onClose={closeContextMenu}
+        />
+      )}
+      <AlertModal
+        isOpen={favoriteAlert.isOpen}
+        title={favoriteAlert.reason && t(FAVORITE_ALERT_COPY[favoriteAlert.reason].title)}
+        message={
+          favoriteAlert.reason &&
+          t(FAVORITE_ALERT_COPY[favoriteAlert.reason].message, {
+            limit: FAVORITE_MATH_TEMPLATE_LIMIT,
+          })
+        }
+        confirmLabel={t('favorite.confirm')}
+        onClose={() => setFavoriteAlert((alert) => ({ ...alert, isOpen: false }))}
       />
     </>
   );

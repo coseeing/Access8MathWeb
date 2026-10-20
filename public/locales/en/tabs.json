@@ -23,7 +23,15 @@
     "table": "table"
   },
   "favorite": {
-    "empty": "No favorite symbols yet. Right-click a symbol (or press the context menu key or Shift+F10) to add it to favorites."
+    "empty": "No favorite symbols yet. Right-click a symbol (or press the context menu key or Shift+F10) to add it to favorites.",
+    "add": "Add to favorites",
+    "added": "Added {{name}} to favorites",
+    "limitReachedTitle": "Favorites limit reached",
+    "limitReachedMessage": "You can have up to {{limit}} favorite symbols.\nRemove one before adding a new symbol.",
+    "duplicateTitle": "Already in favorites",
+    "duplicateMessage": "This symbol is already in your favorites.",
+    "confirm": "OK",
+    "saveFailed": "Couldn't save favorites. Please try again."
   },
   "categorys": {
     "favorite": "Favorites",
