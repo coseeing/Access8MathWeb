@@ -1,0 +1,18 @@
+{
+  "title": "Edit favorite symbols",
+  "listLabel": "Favorite symbols",
+  "moveUp": "Move {{name}} up",
+  "moveDown": "Move {{name}} down",
+  "remove": "Remove {{name}}",
+  "movedUp": "Moved {{name}} up, now {{position}} of {{total}}",
+  "movedDown": "Moved {{name}} down, now {{position}} of {{total}}",
+  "removed": "Removed {{name}}",
+  "noFavoritesLeft": "All favorite symbols removed. Select Done to save.",
+  "cancel": "Cancel",
+  "confirm": "Done",
+  "saved": "Favorite symbols updated",
+  "saveFailed": "Couldn't save favorites. Please try again.",
+  "emptyTitle": "No favorite symbols yet",
+  "emptyMessage": "Right-click a symbol (or press the context menu key or Shift+F10) to add it to favorites.",
+  "emptyConfirm": "OK"
+}
