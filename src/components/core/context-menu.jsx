@@ -153,12 +153,13 @@ const ContextMenu = ({ position, label, items, returnFocusTo, onClose }) => {
       ref={menuRef}
       role="menu"
       aria-label={label}
-      className="fixed z-50 min-w-[96px] py-1 rounded bg-[#1A1A1A99] text-white text-sm leading-[1.4]"
+      // Sized to its items and styled like Tooltip, so a single item reads as one dark label.
+      className="fixed z-50 overflow-hidden rounded bg-[#1A1A1A99] text-white text-sm leading-[1.4]"
       style={{ left: `${placement.x}px`, top: `${placement.y}px` }}
       onKeyDown={handleKeyDown}
       onKeyUp={handleKeyUp}
       onBlur={handleBlur}
-      // Keep focus on the active item when pressing the menu's padding.
+      // Keep focus on the active item while pressing inside the menu.
       onMouseDown={(event) => event.preventDefault()}
       onContextMenu={(event) => event.preventDefault()}
     >
@@ -171,7 +172,7 @@ const ContextMenu = ({ position, label, items, returnFocusTo, onClose }) => {
           type="button"
           role="menuitem"
           tabIndex={index === activeIndex ? 0 : -1}
-          className="block w-full px-3 py-1 text-left whitespace-nowrap outline-none focus:bg-[#1A1A1A]"
+          className="block w-full px-3 py-1 text-left whitespace-nowrap outline-none hover:bg-[#1A1A1A] focus-visible:bg-[#1A1A1A]"
           onClick={() => select(index)}
           onMouseEnter={() => setActiveIndex(index)}
         >
