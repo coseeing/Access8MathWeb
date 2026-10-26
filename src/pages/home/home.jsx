@@ -328,7 +328,6 @@ export default function Home() {
       <main className="min-w-[768px] flex flex-col lg:flex-row lg:flex-1 lg:min-h-0 lg:overflow-hidden">
         {/* Left side input panel */}
         <div className="lg:w-3/5 bg-blue-50 p-6 flex flex-col lg:h-full min-h-0">
-          {/* Wraps on narrow screens instead of squeezing the toolbar. */}
           <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-4">
             <h2 className="whitespace-nowrap">{t('editContent')}</h2>
             <div className="ml-auto flex flex-wrap items-center justify-end gap-2 [&>*]:whitespace-nowrap">

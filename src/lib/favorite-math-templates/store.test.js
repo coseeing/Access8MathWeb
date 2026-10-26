@@ -242,8 +242,8 @@ describe('favoriteMathTemplatesStore', () => {
   });
 
   describe('sync from other tabs', () => {
-    // jsdom does not fire `storage` in the writing document, so another tab's write is
-    // simulated by changing localStorage and then dispatching the event by hand.
+    // jsdom does not fire `storage` in the document that wrote, so these tests simulate another
+    // tab by changing localStorage and dispatching the event by hand.
     const writeFromOtherTab = (value) => {
       seed(value);
       dispatchStorageEvent({ key: KEY });

@@ -6,16 +6,14 @@ const VIEWPORT_MARGIN = 8;
 const TRIGGER_GAP = 4;
 
 /**
- * Where to open a context menu for a `contextmenu` or keyboard event on `event.currentTarget`.
- * Pointer events open at the pointer; keyboard-triggered ones open just below the trigger.
- * @param {MouseEvent | KeyboardEvent} event
- * @returns {{ x: number, y: number }}
+ * Pointer events open the menu at the pointer. Keyboard-triggered ones open it just below
+ * `event.currentTarget`.
  */
 export const getContextMenuPosition = (event) => {
   const rect = event.currentTarget.getBoundingClientRect();
   const { clientX, clientY } = event;
-  // Keyboard-triggered `contextmenu` events report the trigger's centre (or 0,0) as their
-  // position. Browsers that dispatch them as PointerEvents mark them with an empty pointerType.
+  // Keyboard-triggered `contextmenu` events report the trigger's centre or 0,0 as their
+  // position. Browsers that dispatch them as PointerEvents give them an empty pointerType.
   const isKeyboard = (event.nativeEvent ?? event).pointerType === '';
   const isPointerOnTrigger =
     !isKeyboard &&
@@ -32,8 +30,8 @@ export const getContextMenuPosition = (event) => {
 };
 
 /**
- * A menu (menu/menuitem pattern) shown at a viewport position, e.g. on right click.
- * Mount it to open it; it calls `onClose` when it should be unmounted.
+ * A context menu that follows the WAI-ARIA menu pattern. Mounting it opens it, and it calls
+ * `onClose` when the parent should unmount it.
  */
 const ContextMenu = ({ position, label, items, returnFocusTo, onClose }) => {
   const menuRef = useRef(null);
@@ -41,7 +39,8 @@ const ContextMenu = ({ position, label, items, returnFocusTo, onClose }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [placement, setPlacement] = useState(position);
 
-  // preventScroll: scrolling the template panel under the pointer would make the next click miss.
+  // Without preventScroll the template panel could scroll under the pointer and the next click
+  // would miss.
   const returnFocus = useCallback(() => {
     returnFocusTo?.focus({ preventScroll: true });
   }, [returnFocusTo]);
@@ -60,7 +59,6 @@ const ContextMenu = ({ position, label, items, returnFocusTo, onClose }) => {
     items[index].onSelect();
   };
 
-  // Keep the menu inside the viewport.
   useLayoutEffect(() => {
     const { width, height } = menuRef.current.getBoundingClientRect();
     setPlacement({
@@ -141,7 +139,8 @@ const ContextMenu = ({ position, label, items, returnFocusTo, onClose }) => {
     }
   };
 
-  // Focus moving elsewhere without a press on the page, e.g. into an iframe or another app.
+  // Closes the menu when focus leaves without a press on the page, for example into an iframe
+  // or another app.
   const handleBlur = (event) => {
     if (!menuRef.current?.contains(event.relatedTarget)) {
       onClose();

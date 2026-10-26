@@ -12,7 +12,8 @@ const keyPaths = (value, prefix = '') =>
       )
     : [prefix];
 
-// Only the favorites copy is checked: some existing namespaces already differ between locales.
+// This checks only the favorites copy, because some existing namespaces already differ
+// between locales.
 describe('favorite math templates copy', () => {
   it.each([
     ['tabs.json favorite', zhTabs.favorite, enTabs.favorite],

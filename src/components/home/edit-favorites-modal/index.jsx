@@ -21,7 +21,7 @@ const ActionButton = React.forwardRef(({ label, Icon, disabled, onClick }, ref) 
     ref={ref}
     type="button"
     aria-label={label}
-    // aria-disabled instead of disabled, so the button keeps focus after moving to an end.
+    // Uses aria-disabled instead of disabled so the button keeps focus once its row reaches an end.
     aria-disabled={disabled || undefined}
     className={cn(
       'p-2 rounded focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary',
@@ -43,18 +43,19 @@ ActionButton.propTypes = {
 };
 
 /**
- * Reorders and removes favorite math templates on a draft that is saved only on confirm.
- * Remount it (e.g. with a new `key`) for every opening, so the draft starts from the saved list.
+ * Reorders and removes favorite math templates in a draft and saves the draft only on confirm.
+ * Give it a new `key` for every opening so the draft starts from the saved list.
  */
 const EditFavoritesModal = ({ isOpen, onClose }) => {
   const t = useTranslation('edit-favorites-modal');
   const tTabs = useTranslation('tabs');
   const { favoriteIds, saveFavorites } = useFavoriteMathTemplates();
   const [draftIds, setDraftIds] = useState(favoriteIds);
-  // Decided once per opening, so removing every row does not swap the dialog for the empty alert.
+  // Fixed at opening so that removing every row does not swap the dialog for the empty alert.
   const [hasFavorites] = useState(favoriteIds.length > 0);
   const [announcement, setAnnouncement] = useState('');
-  // Counts failed saves in a row; each failure remounts the alert so it is announced again.
+  // Counts failed saves in a row. Each failure remounts the alert so screen readers announce it
+  // again.
   const [saveFailureCount, setSaveFailureCount] = useState(0);
   const [focusTarget, setFocusTarget] = useState(null);
   const actionRefs = useRef({});
@@ -117,8 +118,8 @@ const EditFavoritesModal = ({ isOpen, onClose }) => {
     onClose();
   };
 
-  // While the dialog is open the rest of the page, including the toaster, is hidden from
-  // assistive technology, so the success toast waits until the dialog is gone.
+  // While the dialog is open, Headless UI hides the rest of the page, toaster included, from
+  // assistive technology. The success toast waits until the dialog is gone.
   const handleAfterLeave = () => {
     if (isSavedRef.current) {
       isSavedRef.current = false;

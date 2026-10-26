@@ -277,7 +277,6 @@ describe('<EditIconsTab />', () => {
       await waitFor(() => expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument());
       await waitFor(() => expect(button).toHaveFocus());
 
-      // A duplicate still hits the limit first.
       openCategory('common');
       rightClickTemplate('frac');
       chooseAddFavorite();

@@ -103,7 +103,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
 
   const handleTemplateKeyDown = useCallback(
     (event, template) => {
-      // Not every browser maps Shift+F10 to a `contextmenu` event (e.g. Chrome on macOS).
+      // Chrome on macOS, for one, does not turn Shift+F10 into a `contextmenu` event.
       if (event.key === 'F10' && event.shiftKey) {
         openContextMenu(event, template);
       }

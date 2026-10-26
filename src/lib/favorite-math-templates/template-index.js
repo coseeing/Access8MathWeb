@@ -1,10 +1,6 @@
 import mathTabList from '@/lib/tabs/math';
 
-/**
- * Lookup of every math template by id, built from the static `mathTabList`.
- * Favorites persist only ids, so ids must stay globally unique across categories.
- * @type {Map<string, object>}
- */
+// Favorites persist only ids, so ids must stay unique across all categories.
 export const mathTemplateIndex = new Map(
   mathTabList.flatMap((tab) => tab.subTabs.map((template) => [template.id, template]))
 );

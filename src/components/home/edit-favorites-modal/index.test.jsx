@@ -18,7 +18,7 @@ vi.mock('@/components/core/toast/service', () => ({
   showToast: { success: vi.fn(), error: vi.fn() },
 }));
 
-// Opens the modal the way the home page does: a new key per opening.
+// Opens the modal like the home page does, with a new key per opening.
 const Harness = () => {
   const [modal, setModal] = useState({ isOpen: false, key: 0 });
   return (
@@ -50,11 +50,12 @@ const rowNames = () =>
     .getAllByRole('img')
     .map((img) => img.getAttribute('aria-label'));
 
-// The live region must sit inside the dialog: the rest of the page is inert while it is open.
+// The live region must sit inside the dialog, because the rest of the page is inert while the
+// dialog is open.
 const liveRegion = () => within(screen.getByRole('dialog', { name: 'title' })).getByRole('status');
 
-// Headless UI skips its leave transition, and so `afterLeave`, for elements without a size,
-// which is every element in jsdom.
+// Headless UI skips the leave transition, and with it `afterLeave`, for elements without a
+// size. In jsdom no element has a size.
 const giveElementsASize = () => {
   vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
     x: 0,
@@ -184,7 +185,7 @@ describe('<EditFavoritesModal />', () => {
         'arc',
         'frac',
       ]);
-      // Not while the dialog still hides the toaster from assistive technology.
+      // The toast waits while the dialog still hides the toaster from assistive technology.
       expect(showToast.success).not.toHaveBeenCalled();
 
       await waitFor(() => expect(showToast.success).toHaveBeenCalledWith('saved'));
@@ -232,7 +233,7 @@ describe('<EditFavoritesModal />', () => {
       expect(favoriteMathTemplatesStore.getIds()).toEqual(['frac', 'sqrt', 'arc']);
       expect(showToast.success).not.toHaveBeenCalled();
 
-      // A retry that fails again is announced again, as a new alert.
+      // A second failed save renders a new alert, so screen readers announce it again.
       fireEvent.click(screen.getByRole('button', { name: 'confirm' }));
       expect(screen.getByRole('alert')).not.toBe(alert);
 

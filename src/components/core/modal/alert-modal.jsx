@@ -6,7 +6,7 @@ import { IconAlertTriangle } from '@tabler/icons-react';
 import Button from '@/components/core/button';
 
 /**
- * A blocking message with a single confirm button (alertdialog pattern).
+ * A blocking message with one confirm button, following the alertdialog pattern.
  * `message` may contain line breaks.
  */
 const AlertModal = ({ isOpen, title, message, confirmLabel, onClose }) => {
@@ -21,7 +21,6 @@ const AlertModal = ({ isOpen, title, message, confirmLabel, onClose }) => {
         onClose={onClose}
       >
         <div className="flex items-center justify-center min-h-screen">
-          {/* background layer */}
           <div className="fixed inset-0 bg-black/60" />
           <Dialog.Panel className="flex flex-col items-center bg-white p-6 z-10 w-full max-w-sm rounded-lg text-center">
             <div

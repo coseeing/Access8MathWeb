@@ -32,8 +32,8 @@ const getLocalStorage = () => {
 };
 
 /**
- * Turns a raw stored value into a list that upholds every invariant:
- * known template ids only, no duplicates, at most FAVORITE_MATH_TEMPLATE_LIMIT.
+ * Turns a raw stored value into a clean list: known template ids only, no duplicates,
+ * at most FAVORITE_MATH_TEMPLATE_LIMIT.
  * @param {string | null} raw
  * @returns {string[]}
  */
@@ -62,7 +62,7 @@ const readStoredIds = () => {
 const isValidIdList = (ids) =>
   Array.isArray(ids) &&
   ids.length <= FAVORITE_MATH_TEMPLATE_LIMIT &&
-  // Spread so holes in a sparse array are checked as `undefined` instead of skipped.
+  // Spread so `every` sees holes in a sparse array as `undefined` instead of skipping them.
   [...ids].every((id) => typeof id === 'string' && mathTemplateIndex.has(id)) &&
   new Set(ids).size === ids.length;
 
@@ -81,7 +81,7 @@ const createFavoriteMathTemplatesStore = () => {
     }
   };
 
-  // Without subscribers no `storage` events are received, so the cached list may be stale.
+  // Without subscribers the store does not listen for `storage` events, so its cache may be stale.
   const getIds = () => {
     if (store.getState() === null || subscriptions.size === 0) {
       setIds(readStoredIds());
@@ -108,18 +108,14 @@ const createFavoriteMathTemplatesStore = () => {
     if (event.key !== null && event.key !== FAVORITE_MATH_TEMPLATE_STORAGE_KEY) {
       return;
     }
-    // Read the current value rather than `event.newValue`: events arrive asynchronously and
-    // this tab may have written again since.
+    // Read the current value instead of `event.newValue`, because the event arrives
+    // asynchronously and this tab may have written since.
     setIds(readStoredIds());
   };
 
   return {
     getIds,
 
-    /**
-     * @param {(ids: string[]) => void} callback
-     * @returns {() => void} Unsubscribe function.
-     */
     subscribe(callback) {
       // Load before registering, so the lazy first read never notifies anyone.
       getIds();
@@ -143,7 +139,7 @@ const createFavoriteMathTemplatesStore = () => {
     },
 
     /**
-     * Appends a template to the end of the list. The limit is checked before duplicates.
+     * Appends a template to the end of the list. Checks the limit before duplicates.
      * @param {string} id
      * @returns {FavoriteOperationResult}
      */
@@ -162,7 +158,7 @@ const createFavoriteMathTemplatesStore = () => {
     },
 
     /**
-     * Replaces the whole list, e.g. after reordering or removing in the edit modal.
+     * Replaces the whole list, for example after edits in the edit modal.
      * @param {string[]} ids
      * @returns {FavoriteOperationResult}
      */
