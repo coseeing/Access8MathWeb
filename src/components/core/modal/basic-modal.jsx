@@ -17,6 +17,8 @@ const BasicModal = ({
   confirmLabel = 'Confirm',
   size = 'l',
   asForm = false,
+  initialFocus,
+  afterLeave,
   children,
 }) => {
   // When asForm, the body and footer live inside a <form> so Enter submits from any
@@ -35,8 +37,12 @@ const BasicModal = ({
     : {};
 
   return (
-    <Transition.Root appear show={isOpen} as={Fragment}>
-      <Dialog className="fixed z-10 inset-0 overflow-y-auto px-10" onClose={onClose}>
+    <Transition.Root appear show={isOpen} as={Fragment} afterLeave={afterLeave}>
+      <Dialog
+        className="fixed z-10 inset-0 overflow-y-auto px-10"
+        initialFocus={initialFocus}
+        onClose={onClose}
+      >
         <div className="flex items-center justify-center min-h-screen">
           {/* background layer */}
           <div className="fixed inset-0 bg-black/60" />
@@ -102,6 +108,8 @@ BasicModal.propTypes = {
   hasConfirm: PropTypes.bool,
   size: PropTypes.oneOf(['sm', 'l']),
   asForm: PropTypes.bool,
+  initialFocus: PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+  afterLeave: PropTypes.func,
 };
 
 export default BasicModal;

@@ -18,6 +18,7 @@
   "setting": "Setting",
   "bracket2dollar": "{} to $",
   "dollar2bracket": "$ to {}",
+  "editFavorites": "Edit favorites",
   "pleaseInputTitle": "Please input file title",
   "latexDelimiter": {
     "name": "LaTeX delimiter",

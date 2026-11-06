@@ -1,0 +1,18 @@
+{
+  "title": "編輯常用符號",
+  "listLabel": "常用符號",
+  "moveUp": "上移 {{name}}",
+  "moveDown": "下移 {{name}}",
+  "remove": "刪除 {{name}}",
+  "movedUp": "{{name}} 已上移，目前第 {{position}} 個，共 {{total}} 個",
+  "movedDown": "{{name}} 已下移，目前第 {{position}} 個，共 {{total}} 個",
+  "removed": "已刪除 {{name}}",
+  "noFavoritesLeft": "已刪除所有常用符號，按「完成」儲存。",
+  "cancel": "取消",
+  "confirm": "完成",
+  "saved": "您已成功編輯常用符號",
+  "saveFailed": "無法儲存常用符號，請稍後再試",
+  "emptyTitle": "尚未建立任何常用符號",
+  "emptyMessage": "請先在欲建立的符號上按右鍵（或快顯鍵、Shift+F10）來加入常用符號",
+  "emptyConfirm": "確認"
+}
