@@ -219,6 +219,24 @@ describe('<EditFavoritesModal />', () => {
       expect(rowNames()).toEqual(['latexs.frac', 'latexs.sqrt', 'latexs.arc']);
     });
 
+    it('closes without saving when nothing was edited, keeping changes made elsewhere', async () => {
+      await openModal();
+      act(() => {
+        favoriteMathTemplatesStore.saveFavorites(['sqrt']);
+      });
+      giveElementsASize();
+      fireEvent.click(screen.getByRole('button', { name: 'confirm' }));
+
+      await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument());
+      // Give `afterLeave` the same chance it gets in the saving test.
+      await new Promise((resolve) => setTimeout(resolve, 50));
+      expect(JSON.parse(localStorage.getItem(FAVORITE_MATH_TEMPLATE_STORAGE_KEY))).toEqual([
+        'sqrt',
+      ]);
+      expect(showToast.success).not.toHaveBeenCalled();
+      await waitFor(() => expect(screen.getByRole('button', { name: 'open' })).toHaveFocus());
+    });
+
     it('stays open and reports a failed save without changing the saved list', async () => {
       await openModal();
       fireEvent.click(actionButton('remove', 'frac'));

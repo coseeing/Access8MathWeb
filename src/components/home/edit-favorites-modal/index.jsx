@@ -16,6 +16,8 @@ const Action = {
   REMOVE: 'remove',
 };
 
+const isSameList = (a, b) => a.length === b.length && a.every((id, index) => id === b[index]);
+
 const ActionButton = React.forwardRef(({ label, Icon, disabled, onClick }, ref) => (
   <button
     ref={ref}
@@ -51,8 +53,10 @@ const EditFavoritesModal = ({ isOpen, onClose }) => {
   const tTabs = useTranslation('tabs');
   const { favoriteIds, saveFavorites } = useFavoriteMathTemplates();
   const [draftIds, setDraftIds] = useState(favoriteIds);
-  // Fixed at opening so that removing every row does not swap the dialog for the empty alert.
-  const [hasFavorites] = useState(favoriteIds.length > 0);
+  const [initialIds] = useState(favoriteIds);
+  // Based on the list at opening, so that removing every row does not swap the dialog for the
+  // empty alert.
+  const hasFavorites = initialIds.length > 0;
   const [announcement, setAnnouncement] = useState('');
   // Counts failed saves in a row. Each failure remounts the alert so screen readers announce it
   // again.
@@ -110,6 +114,12 @@ const EditFavoritesModal = ({ isOpen, onClose }) => {
   };
 
   const handleConfirm = () => {
+    // Another tab may have changed the list since the dialog opened, and saving an unedited
+    // draft would silently revert that.
+    if (isSameList(draftIds, initialIds)) {
+      onClose();
+      return;
+    }
     if (!saveFavorites(draftIds).ok) {
       setSaveFailureCount((count) => count + 1);
       return;
