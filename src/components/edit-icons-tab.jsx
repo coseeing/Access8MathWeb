@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@headlessui/react';
 import { IconTagStarred } from '@tabler/icons-react';
@@ -23,6 +23,11 @@ import { showToast } from './core/toast/service';
 const FAVORITE_TAB_INDEX = 0;
 const FIRST_MATH_TAB_INDEX = 1;
 
+const TemplatePanel = {
+  CATEGORY: 'category',
+  FAVORITES: 'favorites',
+};
+
 const generateUniqueId = (length = 8) => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   return Array.from({ length }, () => chars.charAt(Math.floor(Math.random() * chars.length))).join(
@@ -46,10 +51,10 @@ const FAVORITE_ALERT_COPY = {
   },
 };
 
-const MathTemplateButton = ({ template, label, onClick, onOpenMenu }) => {
+const MathTemplateButton = React.forwardRef(({ template, label, onClick, onOpenMenu }, ref) => {
   const handleKeyDown = (event) => {
     // Chrome on macOS, for one, does not turn Shift+F10 into a `contextmenu` event.
-    if (onOpenMenu && event.key === 'F10' && event.shiftKey) {
+    if (event.key === 'F10' && event.shiftKey) {
       onOpenMenu(event);
     }
   };
@@ -57,6 +62,7 @@ const MathTemplateButton = ({ template, label, onClick, onOpenMenu }) => {
   return (
     <Tooltip label={label} position="top">
       <button
+        ref={ref}
         aria-label={label}
         className="group relative bg-white rounded border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
         onClick={onClick}
@@ -67,7 +73,9 @@ const MathTemplateButton = ({ template, label, onClick, onOpenMenu }) => {
       </button>
     </Tooltip>
   );
-};
+});
+
+MathTemplateButton.displayName = 'MathTemplateButton';
 
 MathTemplateButton.propTypes = {
   template: PropTypes.shape({
@@ -76,11 +84,12 @@ MathTemplateButton.propTypes = {
   }).isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  onOpenMenu: PropTypes.func,
+  onOpenMenu: PropTypes.func.isRequired,
 };
 
 const EditIconsTab = ({ insertLatex, addImageToExport }) => {
-  const { favoriteTemplates, addFavorite } = useFavoriteMathTemplates();
+  const { favoriteIds, favoriteTemplates, addFavorite, removeFavorite } =
+    useFavoriteMathTemplates();
   const [selectedMainTabIndex, setSelectedMainTabIndex] = useState(0);
   const [selectedMathTabIndex, setSelectedMathTabIndex] = useState(() =>
     favoriteTemplates.length > 0 ? FAVORITE_TAB_INDEX : FIRST_MATH_TAB_INDEX
@@ -91,12 +100,14 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
   const [contextMenu, setContextMenu] = useState(null);
   // `reason` outlives `isOpen` so the copy does not blank out while the alert closes.
   const [favoriteAlert, setFavoriteAlert] = useState({ isOpen: false, reason: null });
+  const favoriteTabRef = useRef(null);
+  const favoriteButtonRefs = useRef({});
 
   const t = useTranslation('tabs');
 
   const closeContextMenu = useCallback(() => setContextMenu(null), []);
 
-  const openContextMenu = useCallback((event, template) => {
+  const openContextMenu = useCallback((event, template, panel) => {
     event.preventDefault();
     const trigger = event.currentTarget;
     const position = getContextMenuPosition(event);
@@ -104,6 +115,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
     setContextMenu((previous) => ({
       key: (previous?.key ?? 0) + 1,
       template,
+      panel,
       trigger,
       position,
     }));
@@ -123,6 +135,22 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
       showToast.error(t('favorite.saveFailed'));
     },
     [addFavorite, t]
+  );
+
+  const handleRemoveFavorite = useCallback(
+    (template) => {
+      const index = favoriteIds.indexOf(template.id);
+      const neighborId = favoriteIds[index + 1] ?? favoriteIds[index - 1];
+      if (!removeFavorite(template.id).ok) {
+        showToast.error(t('favorite.saveFailed'));
+        return;
+      }
+      // The trigger unmounts when React commits the removal, so focus moves first to a node that
+      // survives the commit instead of falling to <body>.
+      (neighborId ? favoriteButtonRefs.current[neighborId] : favoriteTabRef.current).focus();
+      showToast.success(t('favorite.removed', { name: t(`latexs.${template.id}`) }));
+    },
+    [favoriteIds, removeFavorite, t]
   );
 
   const handleLinkConfirm = useCallback(
@@ -213,6 +241,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                   <Tooltip label={t('categorys.favorite')} position="right">
                     <Tab
                       as="button"
+                      ref={favoriteTabRef}
                       aria-label={t('categorys.favorite')}
                       className={({ selected }) => getCategoryTabClassName(selected)}
                     >
@@ -240,9 +269,15 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                       favoriteTemplates.map((template) => (
                         <MathTemplateButton
                           key={template.id}
+                          ref={(node) => {
+                            favoriteButtonRefs.current[template.id] = node;
+                          }}
                           template={template}
                           label={t(`latexs.${template.id}`)}
                           onClick={() => insertLatex(template)}
+                          onOpenMenu={(event) =>
+                            openContextMenu(event, template, TemplatePanel.FAVORITES)
+                          }
                         />
                       ))
                     ) : (
@@ -260,7 +295,9 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                             template={subTab}
                             label={t(`latexs.${subTab.id}`)}
                             onClick={() => insertLatex(subTab)}
-                            onOpenMenu={(event) => openContextMenu(event, subTab)}
+                            onOpenMenu={(event) =>
+                              openContextMenu(event, subTab, TemplatePanel.CATEGORY)
+                            }
                           />
                         ))}
                       </Tab.Panel>
@@ -319,13 +356,23 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
           key={contextMenu.key}
           position={contextMenu.position}
           label={t(`latexs.${contextMenu.template.id}`)}
-          items={[
-            {
-              id: 'add-favorite',
-              label: t('favorite.add'),
-              onSelect: () => handleAddFavorite(contextMenu.template),
-            },
-          ]}
+          items={
+            contextMenu.panel === TemplatePanel.FAVORITES
+              ? [
+                  {
+                    id: 'remove-favorite',
+                    label: t('favorite.remove'),
+                    onSelect: () => handleRemoveFavorite(contextMenu.template),
+                  },
+                ]
+              : [
+                  {
+                    id: 'add-favorite',
+                    label: t('favorite.add'),
+                    onSelect: () => handleAddFavorite(contextMenu.template),
+                  },
+                ]
+          }
           returnFocusTo={contextMenu.trigger}
           onClose={closeContextMenu}
         />

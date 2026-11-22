@@ -310,11 +310,137 @@ describe('<EditIconsTab />', () => {
       );
     });
 
-    it('does not open the add menu on templates in the favorites category', () => {
+    it('offers only adding in a category, even for a template that is already a favorite', () => {
+      seedFavorites(['frac']);
+      renderEditIconsTab();
+      openCategory('common');
+      rightClickTemplate('frac');
+      expect(
+        within(screen.getByRole('menu'))
+          .getAllByRole('menuitem')
+          .map((item) => item.textContent)
+      ).toEqual(['favorite.add']);
+    });
+  });
+
+  describe('removing a favorite', () => {
+    const chooseRemoveFavorite = () => {
+      fireEvent.click(screen.getByRole('menuitem', { name: 'favorite.remove' }));
+    };
+
+    it('opens a remove-only menu named after the favorite on right click, without inserting', () => {
+      seedFavorites(['sqrt', 'frac']);
+      const { insertLatex } = renderEditIconsTab();
+      rightClickTemplate('frac');
+
+      const menu = screen.getByRole('menu', { name: 'latexs.frac' });
+      expect(
+        within(menu)
+          .getAllByRole('menuitem')
+          .map((item) => item.textContent)
+      ).toEqual(['favorite.remove']);
+      expect(within(menu).getByRole('menuitem')).toHaveFocus();
+      expect(insertLatex).not.toHaveBeenCalled();
+    });
+
+    it('removes with the keyboard alone and moves focus to the next favorite', () => {
+      seedFavorites(['sqrt', 'frac', 'root']);
+      renderEditIconsTab();
+      const button = screen.getByRole('button', { name: 'latexs.frac' });
+      act(() => button.focus());
+      fireEvent.keyDown(button, { key: 'F10', shiftKey: true });
+      fireEvent.keyDown(screen.getByRole('menu'), { key: 'Enter' });
+
+      expect(favoriteMathTemplatesStore.getIds()).toEqual(['sqrt', 'root']);
+      expect(JSON.parse(localStorage.getItem(FAVORITE_MATH_TEMPLATE_STORAGE_KEY))).toEqual([
+        'sqrt',
+        'root',
+      ]);
+      expect(showToast.success).toHaveBeenCalledWith('favorite.removed {"name":"latexs.frac"}');
+      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: 'latexs.frac' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'latexs.root' })).toHaveFocus();
+    });
+
+    it('moves focus to the previous favorite after removing the last one in the list', () => {
+      seedFavorites(['sqrt', 'frac']);
+      renderEditIconsTab();
+      rightClickTemplate('frac');
+      chooseRemoveFavorite();
+
+      expect(favoriteMathTemplatesStore.getIds()).toEqual(['sqrt']);
+      expect(screen.getByRole('button', { name: 'latexs.sqrt' })).toHaveFocus();
+    });
+
+    it('moves focus to the favorites tab after removing the only favorite', () => {
       seedFavorites(['frac']);
       renderEditIconsTab();
       rightClickTemplate('frac');
-      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+      chooseRemoveFavorite();
+
+      expect(favoriteMathTemplatesStore.getIds()).toEqual([]);
+      expect(screen.getByText('favorite.empty')).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: 'categorys.favorite' })).toHaveFocus();
+    });
+
+    it('reports a failed save, keeps the favorite and keeps focus on it', () => {
+      seedFavorites(['sqrt', 'frac']);
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+        throw new DOMException('Quota exceeded', 'QuotaExceededError');
+      });
+      renderEditIconsTab();
+      const button = rightClickTemplate('frac');
+      chooseRemoveFavorite();
+
+      expect(showToast.error).toHaveBeenCalledWith('favorite.saveFailed');
+      expect(showToast.success).not.toHaveBeenCalled();
+      expect(favoriteMathTemplatesStore.getIds()).toEqual(['sqrt', 'frac']);
+      expect(button).toHaveFocus();
+    });
+
+    it('keeps the favorite when the menu is dismissed with Escape', () => {
+      seedFavorites(['frac']);
+      renderEditIconsTab();
+      const button = rightClickTemplate('frac');
+      fireEvent.keyDown(screen.getByRole('menu'), { key: 'Escape' });
+
+      expect(favoriteMathTemplatesStore.getIds()).toEqual(['frac']);
+      expect(button).toHaveFocus();
+    });
+
+    it('writes nothing when another tab already removed the favorite', () => {
+      seedFavorites(['sqrt', 'frac', 'root']);
+      renderEditIconsTab();
+      rightClickTemplate('frac');
+      act(() => {
+        seedFavorites(['sqrt', 'root']);
+        window.dispatchEvent(
+          new StorageEvent('storage', {
+            storageArea: localStorage,
+            key: FAVORITE_MATH_TEMPLATE_STORAGE_KEY,
+          })
+        );
+      });
+      const setItem = vi.spyOn(Storage.prototype, 'setItem');
+      chooseRemoveFavorite();
+
+      expect(setItem).not.toHaveBeenCalled();
+      expect(favoriteMathTemplatesStore.getIds()).toEqual(['sqrt', 'root']);
+      expect(showToast.success).toHaveBeenCalledWith('favorite.removed {"name":"latexs.frac"}');
+      expect(showToast.error).not.toHaveBeenCalled();
+      expect(screen.getByRole('button', { name: 'latexs.sqrt' })).toHaveFocus();
+    });
+
+    it('adds a removed favorite back at the end of the list', () => {
+      seedFavorites(['frac', 'sqrt']);
+      renderEditIconsTab();
+      rightClickTemplate('frac');
+      chooseRemoveFavorite();
+      openCategory('common');
+      rightClickTemplate('frac');
+      chooseAddFavorite();
+
+      expect(favoriteMathTemplatesStore.getIds()).toEqual(['sqrt', 'frac']);
     });
   });
 });
