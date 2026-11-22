@@ -158,6 +158,20 @@ const createFavoriteMathTemplatesStore = () => {
     },
 
     /**
+     * Removes a template and keeps the order of the rest. An id that is not in the list is
+     * already removed, so this succeeds without writing.
+     * @param {string} id
+     * @returns {FavoriteOperationResult}
+     */
+    removeFavorite(id) {
+      const ids = getIds();
+      if (!ids.includes(id)) {
+        return succeed();
+      }
+      return persist(ids.filter((favoriteId) => favoriteId !== id));
+    },
+
+    /**
      * Replaces the whole list, for example after edits in the edit modal.
      * @param {string[]} ids
      * @returns {FavoriteOperationResult}
