@@ -29,6 +29,7 @@ import SegmentedControl from '@/components/core/button/segmented-control';
 import EditIconsTab from '@/components/edit-icons-tab';
 import SettingModal from '@/components/home/setting-modal';
 import ConvertHintModal from '@/components/home/convert-hint-modal';
+import EditFavoritesModal from '@/components/home/edit-favorites-modal';
 import { useDisplayConfig, ExportType, LatexDelimiter, DocumentColor } from '@/lib/display-config';
 import { importSource } from '@/lib/import-source';
 
@@ -42,6 +43,8 @@ export default function Home() {
   const [data, setData] = useState('');
   const [showSettingModal, setShowSettingModal] = useState(false);
   const [showConvertHintModal, setShowConvertHintModal] = useState(false);
+  // A new key per opening remounts the modal, so its draft starts from the saved favorites.
+  const [editFavoritesModal, setEditFavoritesModal] = useState({ isOpen: false, key: 0 });
   const [exportType, setExportType] = useState(ExportType.ZIP);
   const [imageFiles, setImageFiles] = useState({});
 
@@ -325,9 +328,9 @@ export default function Home() {
       <main className="min-w-[768px] flex flex-col lg:flex-row lg:flex-1 lg:min-h-0 lg:overflow-hidden">
         {/* Left side input panel */}
         <div className="lg:w-3/5 bg-blue-50 p-6 flex flex-col lg:h-full min-h-0">
-          <div className="flex items-center justify-between mb-4">
-            <h2>{t('editContent')}</h2>
-            <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 mb-4">
+            <h2 className="whitespace-nowrap">{t('editContent')}</h2>
+            <div className="ml-auto flex flex-wrap items-center justify-end gap-2 [&>*]:whitespace-nowrap">
               <div className="flex items-center">
                 <div
                   id="latex-delimiter-label"
@@ -357,6 +360,12 @@ export default function Home() {
                 {displayConfig.latexDelimiter === LatexDelimiter.DOLLAR
                   ? t('dollar2bracket')
                   : t('bracket2dollar')}
+              </Button>
+              <Button
+                variant="secondary"
+                onClick={() => setEditFavoritesModal(({ key }) => ({ isOpen: true, key: key + 1 }))}
+              >
+                {t('editFavorites')}
               </Button>
             </div>
           </div>
@@ -442,6 +451,11 @@ export default function Home() {
           laTeXSepConvert={laTeXSepConvert}
           LatexDelimiter={LatexDelimiter}
           data={data}
+        />
+        <EditFavoritesModal
+          key={editFavoritesModal.key}
+          isOpen={editFavoritesModal.isOpen}
+          onClose={() => setEditFavoritesModal((modal) => ({ ...modal, isOpen: false }))}
         />
       </main>
     </div>

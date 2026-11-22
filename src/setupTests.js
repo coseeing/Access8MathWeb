@@ -6,3 +6,13 @@ import '@testing-library/jest-dom/vitest';
 // jest.* call behaves like its vi.* equivalent instead of throwing from a file
 // contributors never touch.
 vi.stubGlobal('jest', vi);
+
+// Headless UI's Dialog observes its panel size, and jsdom has no ResizeObserver.
+vi.stubGlobal(
+  'ResizeObserver',
+  class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+);
