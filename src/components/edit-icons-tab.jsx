@@ -46,19 +46,28 @@ const FAVORITE_ALERT_COPY = {
   },
 };
 
-const MathTemplateButton = ({ template, label, onClick, onContextMenu, onKeyDown }) => (
-  <Tooltip label={label} position="top">
-    <button
-      aria-label={label}
-      className="group relative bg-white rounded border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-      onClick={onClick}
-      onContextMenu={onContextMenu}
-      onKeyDown={onKeyDown}
-    >
-      <template.Icon width={50} height={50} className="rounded" />
-    </button>
-  </Tooltip>
-);
+const MathTemplateButton = ({ template, label, onClick, onOpenMenu }) => {
+  const handleKeyDown = (event) => {
+    // Chrome on macOS, for one, does not turn Shift+F10 into a `contextmenu` event.
+    if (onOpenMenu && event.key === 'F10' && event.shiftKey) {
+      onOpenMenu(event);
+    }
+  };
+
+  return (
+    <Tooltip label={label} position="top">
+      <button
+        aria-label={label}
+        className="group relative bg-white rounded border border-gray-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+        onClick={onClick}
+        onContextMenu={onOpenMenu}
+        onKeyDown={handleKeyDown}
+      >
+        <template.Icon width={50} height={50} className="rounded" />
+      </button>
+    </Tooltip>
+  );
+};
 
 MathTemplateButton.propTypes = {
   template: PropTypes.shape({
@@ -67,8 +76,7 @@ MathTemplateButton.propTypes = {
   }).isRequired,
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
-  onContextMenu: PropTypes.func,
-  onKeyDown: PropTypes.func,
+  onOpenMenu: PropTypes.func,
 };
 
 const EditIconsTab = ({ insertLatex, addImageToExport }) => {
@@ -100,16 +108,6 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
       position,
     }));
   }, []);
-
-  const handleTemplateKeyDown = useCallback(
-    (event, template) => {
-      // Chrome on macOS, for one, does not turn Shift+F10 into a `contextmenu` event.
-      if (event.key === 'F10' && event.shiftKey) {
-        openContextMenu(event, template);
-      }
-    },
-    [openContextMenu]
-  );
 
   const handleAddFavorite = useCallback(
     (template) => {
@@ -262,8 +260,7 @@ const EditIconsTab = ({ insertLatex, addImageToExport }) => {
                             template={subTab}
                             label={t(`latexs.${subTab.id}`)}
                             onClick={() => insertLatex(subTab)}
-                            onContextMenu={(event) => openContextMenu(event, subTab)}
-                            onKeyDown={(event) => handleTemplateKeyDown(event, subTab)}
+                            onOpenMenu={(event) => openContextMenu(event, subTab)}
                           />
                         ))}
                       </Tab.Panel>
