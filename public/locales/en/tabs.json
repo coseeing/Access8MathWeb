@@ -25,7 +25,9 @@
   "favorite": {
     "empty": "No favorite symbols yet. Right-click a symbol (or press the context menu key or Shift+F10) to add it to favorites.",
     "add": "Add to favorites",
+    "remove": "Remove from favorites",
     "added": "Added {{name}} to favorites",
+    "removed": "Removed {{name}} from favorites",
     "limitReachedTitle": "Favorites limit reached",
     "limitReachedMessage": "You can have up to {{limit}} favorite symbols.\nRemove one before adding a new symbol.",
     "duplicateTitle": "Already in favorites",

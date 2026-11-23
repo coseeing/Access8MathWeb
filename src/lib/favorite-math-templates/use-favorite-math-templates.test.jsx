@@ -44,6 +44,12 @@ describe('useFavoriteMathTemplates', () => {
     expect(result.current.favoriteIds).toEqual(['frac']);
     expect(result.current.favoriteTemplates).toEqual([mathTemplateIndex.get('frac')]);
 
+    act(() => {
+      result.current.removeFavorite('frac');
+    });
+    expect(result.current.favoriteIds).toEqual([]);
+    expect(result.current.favoriteTemplates).toEqual([]);
+
     // useSyncExternalStore warns when getSnapshot returns a new value on every call.
     expect(consoleError).not.toHaveBeenCalled();
   });

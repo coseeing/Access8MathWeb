@@ -24,7 +24,9 @@
   "favorite": {
     "empty": "尚未建立常用符號。在符號上按右鍵（或快顯鍵、Shift+F10）即可加入常用。",
     "add": "加入常用",
+    "remove": "從常用刪除",
     "added": "您已成功將 {{name}} 加入至常用符號",
+    "removed": "您已成功將 {{name}} 從常用符號刪除",
     "limitReachedTitle": "常用符號已超過上限",
     "limitReachedMessage": "最多只能有 {{limit}} 個常用符號\n請刪除其他符號以加入新的符號",
     "duplicateTitle": "常用符號已重複",

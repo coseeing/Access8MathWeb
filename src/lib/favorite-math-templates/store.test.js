@@ -184,6 +184,64 @@ describe('favoriteMathTemplatesStore', () => {
     });
   });
 
+  describe('removeFavorite', () => {
+    it('removes the id, keeps the order of the rest and persists it', () => {
+      seed(['sqrt', 'frac', 'arc']);
+      expect(store.removeFavorite('frac')).toEqual({ ok: true, reason: FavoriteResult.SUCCESS });
+      expect(store.getIds()).toEqual(['sqrt', 'arc']);
+      expect(JSON.parse(rawStored())).toEqual(['sqrt', 'arc']);
+    });
+
+    it('succeeds without writing when the id is not in the list', () => {
+      seed(['sqrt']);
+      const before = rawStored();
+      const listener = vi.fn();
+      store.subscribe(listener);
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(quotaError);
+
+      expect(store.removeFavorite('frac')).toEqual({ ok: true, reason: FavoriteResult.SUCCESS });
+      expect(store.removeFavorite('not-a-template').ok).toBe(true);
+      expect(listener).not.toHaveBeenCalled();
+      vi.restoreAllMocks();
+      expect(rawStored()).toBe(before);
+    });
+
+    it('succeeds without writing when the same id is removed twice', () => {
+      seed(['sqrt', 'frac']);
+      store.removeFavorite('frac');
+      const setItem = vi.spyOn(Storage.prototype, 'setItem');
+
+      expect(store.removeFavorite('frac')).toEqual({ ok: true, reason: FavoriteResult.SUCCESS });
+      expect(setItem).not.toHaveBeenCalled();
+      expect(store.getIds()).toEqual(['sqrt']);
+    });
+
+    it('leaves state and storage unchanged when the write fails', () => {
+      seed(['sqrt', 'frac']);
+      const before = rawStored();
+      const listener = vi.fn();
+      store.subscribe(listener);
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(quotaError);
+
+      expect(store.removeFavorite('frac')).toEqual({
+        ok: false,
+        reason: FavoriteResult.STORAGE_ERROR,
+      });
+      expect(store.getIds()).toEqual(['sqrt', 'frac']);
+      expect(listener).not.toHaveBeenCalled();
+      vi.restoreAllMocks();
+      expect(rawStored()).toBe(before);
+    });
+
+    it('notifies subscribers with the new list', () => {
+      seed(['sqrt', 'frac']);
+      const listener = vi.fn();
+      store.subscribe(listener);
+      store.removeFavorite('sqrt');
+      expect(listener).toHaveBeenCalledWith(['frac']);
+    });
+  });
+
   describe('saveFavorites', () => {
     it('persists a reordered and shortened list', () => {
       seed(['frac', 'sqrt', 'arc']);
