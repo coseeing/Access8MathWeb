@@ -1,4 +1,4 @@
-import React, { useState, useRef, cloneElement, useId, useEffect, Children } from 'react';
+import React, { useState, useRef, cloneElement, useId, useLayoutEffect, Children } from 'react';
 import PropTypes from 'prop-types';
 
 const getPositionStyles = (triggerRect, tooltipRect, position = 'top', offset = 8) => {
@@ -46,17 +46,7 @@ const Tooltip = ({ children, label, position = 'top' }) => {
   const tooltipRef = useRef(null);
   const tooltipId = useId();
 
-  const updateRects = () => {
-    if (triggerRef.current) {
-      setTriggerRect(triggerRef.current.getBoundingClientRect());
-    }
-    if (tooltipRef.current) {
-      setTooltipRect(tooltipRef.current.getBoundingClientRect());
-    }
-  };
-
   const showTooltip = () => {
-    updateRects();
     setIsVisible(true);
   };
 
@@ -64,8 +54,9 @@ const Tooltip = ({ children, label, position = 'top' }) => {
     setIsVisible(false);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (isVisible && tooltipRef.current) {
+      setTriggerRect(triggerRef.current.getBoundingClientRect());
       setTooltipRect(tooltipRef.current.getBoundingClientRect());
     }
   }, [label, isVisible]);
